@@ -43,7 +43,9 @@ class Payload {
   num? creditLimit;
   num? totalOutstanding;
   num? lockedAmt;
+  String? panNumber;
   String? channel;
+  Token? token;
   String? requestId;
   String? userId;
   String? accId;
@@ -56,7 +58,9 @@ class Payload {
     this.creditLimit,
     this.totalOutstanding,
     this.lockedAmt,
+    this.panNumber,
     this.channel,
+    this.token,
     this.requestId,
     this.userId,
     this.accId,
@@ -70,7 +74,9 @@ class Payload {
     creditLimit: json["creditLimit"],
     totalOutstanding: json["totalOutstanding"],
     lockedAmt: json["lockedAmt"],
+    panNumber: json["panNumber"],
     channel: json["channel"],
+    token: json["token"] == null ? null : Token.fromJson(json["token"]),
     requestId: json["requestId"],
     userId: json["userId"],
     accId: json["accId"],
@@ -84,10 +90,56 @@ class Payload {
     "creditLimit": creditLimit,
     "totalOutstanding": totalOutstanding,
     "lockedAmt": lockedAmt,
+    "panNumber": panNumber,
     "channel": channel,
+    "token": token?.toJson(),
     "requestId": requestId,
     "userId": userId,
     "accId": accId,
     "puId": puId,
+  };
+}
+
+class Token {
+  String? accessToken;
+  String? tokenType;
+  String? refreshToken;
+  String? expiresIn;
+  String? scope;
+  String? id;
+  List<String>? roles;
+  String? version;
+
+  Token({
+    this.accessToken,
+    this.tokenType,
+    this.refreshToken,
+    this.expiresIn,
+    this.scope,
+    this.id,
+    this.roles,
+    this.version,
+  });
+
+  factory Token.fromJson(Map<String, dynamic> json) => Token(
+    accessToken: json["access_token"],
+    tokenType: json["token_type"],
+    refreshToken: json["refresh_token"],
+    expiresIn: json["expires_in"],
+    scope: json["scope"],
+    id: json["id"],
+    roles: json["roles"] == null ? [] : List<String>.from(json["roles"]!.map((x) => x)),
+    version: json["version"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "access_token": accessToken,
+    "token_type": tokenType,
+    "refresh_token": refreshToken,
+    "expires_in": expiresIn,
+    "scope": scope,
+    "id": id,
+    "roles": roles == null ? [] : List<dynamic>.from(roles!.map((x) => x)),
+    "version": version,
   };
 }

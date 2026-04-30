@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
+
 // import 'package:flutter_alice/alice.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loan_sdk_package/app/config/app_config.dart';
@@ -428,17 +429,13 @@ class NetworkRequester {
 
     headers = {
       "Content-Type":
-          (contentType?.isNotEmpty ?? false)
-              ? contentType
-              : ((basicAuthorizationToken?.isNotEmpty ?? false))
-              ? "application/x-www-form-urlencoded"
-              : "application/json",
+          (contentType?.isNotEmpty ?? false) ? contentType : "application/json",
       "dt": "MOBILE",
       "os": Platform.isAndroid ? "ANDROID" : "IOS",
-      "Authorization": Env.getKredmintBasicToken(),
-          // (basicAuthorizationToken?.isNotEmpty ?? false)
-          //     ? basicAuthorizationToken
-          //     : "Bearer ${Storage.getSdkUser()?.accessToken ?? ""}",
+      "Authorization":
+      (basicAuthorizationToken?.isNotEmpty ?? false)
+              ? basicAuthorizationToken
+              : "Bearer ${Storage.getSdkUser()?.accessToken ?? ""}",
       "did": deviceId,
       "bn": packageInfo?.buildNumber ?? "",
     };

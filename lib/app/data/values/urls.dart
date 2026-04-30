@@ -335,19 +335,6 @@ class Urls {
   static redeemKredcoin({required String baseUrlType, String? query}) =>
       "${Env.getBaseUrl()[baseUrlType]}/account/kred/coin/redeemable";
 
-  static String onboarding({
-    required String token,
-    required String refreshToken,
-    required String buildNo,
-    required String profileId,
-    required String userId,
-    required String accountId,
-    required String version,
-  }) {
-    final platform = Platform.isAndroid ? "android" : "ios";
-    return "${Env.getKredmintV2WebsiteUrl()}auth/?userId=$userId&profileId=$profileId&token=$token&refreshToken=$refreshToken&accountId=$accountId&version=$version&source=mobile_app&bn=$buildNo&os=$platform";
-  }
-
   static String orderConfig({required String baseUrlType}) =>
       "${Env.getBaseUrl()[baseUrlType]}/layout/appConfig";
 

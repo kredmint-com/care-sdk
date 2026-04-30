@@ -15,8 +15,6 @@ import '../modules/credit_onboarding/bank_statement/presentation/bloc/bank_state
 import '../modules/credit_onboarding/bank_statement/presentation/views/bank_statement_view.dart';
 import '../modules/credit_onboarding/gst/presentation/bloc/gst_bloc.dart';
 import '../modules/credit_onboarding/gst/presentation/views/gst_view.dart';
-import '../modules/credit_onboarding/itr/presentation/bloc/itr_bloc.dart';
-import '../modules/credit_onboarding/itr/presentation/views/itr_view.dart';
 import '../modules/credit_onboarding/kyc/presentation/bloc/kyc_bloc.dart';
 import '../modules/credit_onboarding/kyc/presentation/views/kyc_view.dart';
 import '../modules/credit_onboarding/loi_summary/presentation/bloc/loi_bloc.dart';
@@ -50,6 +48,7 @@ class AppPages {
               child: CreditOnboardingView(
                 profileId: args["profileId"],
                 prevPageId: args["prevPageId"],
+                accessToken: args["accessToken"],
               ),
             ),
           );

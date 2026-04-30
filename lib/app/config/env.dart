@@ -31,26 +31,6 @@ class Env {
     return baseUrlMap;
   }
 
-  static String getKredmintWebsiteUrl() {
-    String websiteUrl = "";
-    if (releaseEv.name == ReleaseEnv.prod.name) {
-      websiteUrl = "https://merchant.kredmint.in/";
-    } else {
-      websiteUrl = "https://merchant-dev.kredmint.in/";
-    }
-    return websiteUrl;
-  }
-
-  static String getKredmintV2WebsiteUrl() {
-    String websiteUrl = "";
-    if (releaseEv.name == ReleaseEnv.prod.name) {
-      websiteUrl = "https://merchant-v2.kredmint.in/";
-    } else {
-      websiteUrl = "https://merchant-dev-v2.kredmint.in/";
-    }
-    return websiteUrl;
-  }
-
   static String getKredmintBasicToken() {
     String basicToken = "";
     if (releaseEv.name == ReleaseEnv.prod.name) {
@@ -63,15 +43,5 @@ class Env {
   }
 
   static const String fontFamily = "PlusJakartaSans";
-  static const String privacyPolicy = "https://kredmint.com/privacy-policy";
-  static const String termAndCondition = "https://kredmint.com/terms-condition";
-  static const String playStoreUrl =
-      "https://play.google.com/store/apps/details?id=com.schn9891.onecodewebnew";
-
-  static const String appStoreUrl =
-      "https://apps.apple.com/bs/app/kredmint-quick-business-loan/id6467856549";
-
   static const String placesApiKey = "AIzaSyC5dquFJ9uVZVR-qyxXfVN2NvOgCTqTZl0";
-  // static final firebaseCrashlytics = FirebaseCrashlytics.instance;
-  static const String channelName = "com.schn9891.onecodewebnew/channel";
 }

@@ -3,7 +3,9 @@ import 'package:loan_sdk_package/app/data/network/network_requester.dart';
 import 'package:loan_sdk_package/app/data/values/urls.dart';
 import 'package:loan_sdk_package/app/domain/app_repository.dart';
 import 'package:loan_sdk_package/utils/helper/enums.dart';
+
 import '../../../utils/helper/exception_handler.dart';
+import '../../config/env.dart';
 import '../models/request/sdk_request.dart';
 import '../models/response/user_profile_response.dart';
 
@@ -20,6 +22,7 @@ class AppRepositoryImpl extends AppRepository {
     final response = await networkRequester.post(
       path: path,
       data: sdkRequest.toJson(),
+      basicAuthorizationToken: Env.getKredmintBasicToken(),
     );
     return response is APIException
         ? RepoResponse(error: response)

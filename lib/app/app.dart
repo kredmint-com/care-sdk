@@ -56,6 +56,7 @@ class _AppState extends State<App> {
             Routes.sdkCreditOnboarding,
             extra: {
               "profileId": state.userProfileResponse?.payload?.userId ?? "",
+              "accessToken" : state.userProfileResponse?.payload?.token?.accessToken ?? "",
               "prevPageId": "",
             },
           );

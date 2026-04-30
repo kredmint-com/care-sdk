@@ -21,10 +21,12 @@ class CreditOnboardingView extends StatefulWidget {
     super.key,
     required this.profileId,
     this.prevPageId,
+    this.accessToken,
   });
 
   final String profileId;
   final String? prevPageId;
+  final String? accessToken;
 
   @override
   State<CreditOnboardingView> createState() => _CreditOnboardingViewState();
@@ -47,7 +49,18 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
   }
 
   void init() {
-    Storage.setSdkUser(Storage.getSdkUser()?.copyWith(id: widget.profileId));
+    Storage.setSdkUser(
+      Storage.getSdkUser()?.copyWith(
+        id: widget.profileId,
+      ),
+    );
+    if(widget.accessToken?.isNotEmpty ?? false){
+      Storage.setSdkUser(
+        Storage.getSdkUser()?.copyWith(
+          accessToken: widget.accessToken,
+        ),
+      );
+    }
     debugPrint("Entered init : ${Storage.getSdkUser()?.id}");
     context.read<CreditOnboardingBloc>().add(
       OnFetchUserProfilePage(

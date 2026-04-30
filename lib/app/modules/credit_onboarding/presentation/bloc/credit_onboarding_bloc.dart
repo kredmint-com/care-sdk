@@ -9,11 +9,8 @@ import 'package:loan_sdk_package/app/modules/credit_onboarding/presentation/bloc
 import 'package:loan_sdk_package/app/modules/credit_onboarding/presentation/bloc/credit_onboarding_state.dart';
 import 'package:loan_sdk_package/utils/helper/common_method.dart';
 import 'package:loan_sdk_package/utils/loading/loading_utils.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../../../utils/helper/enums.dart';
-import '../../../../../utils/storage/storage_utils.dart';
-import '../../../../data/values/urls.dart';
 import '../../../../route/app_pages.dart';
 import '../../data/models/upload_document_response.dart';
 
@@ -387,24 +384,6 @@ class CreditOnboardingBloc
           },
         );
       }
-    } else {
-      PackageInfo? packageInfo = await PackageInfo.fromPlatform();
-      AppPages.router.replaceNamed(
-        Routes.webViewService,
-        extra: {
-          "url": Urls.onboarding(
-            userId: Storage.getSdkUser()?.id ?? "",
-            token: Storage.getSdkUser()?.accessToken ?? "",
-            refreshToken: Storage.getSdkUser()?.refreshToken ?? "",
-            buildNo: packageInfo.buildNumber,
-            profileId: profileId,
-            accountId: Storage.getSdkUser()?.accountId ?? "",
-            version: Storage.getSdkUser()?.version ?? "",
-          ),
-          "title": "",
-          //onboardingStepsResponse?.payload?.pageCategory?.removeUnderscoreAndCapitalize,
-        },
-      );
     }
   }
 
