@@ -7,8 +7,6 @@ import 'package:loan_sdk_package/app/data/models/request/sdk_request.dart';
 import 'package:loan_sdk_package/app/route/app_pages.dart';
 import 'package:loan_sdk_package/app/themes/app_colors.dart';
 import 'package:loan_sdk_package/utils/storage/storage_utils.dart';
-
-import '../service/analytics_service.dart';
 import 'config/env.dart';
 import 'data/models/dto/user_model.dart';
 
@@ -25,27 +23,23 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    // AnalyticsService().init();
     init();
-    // listenDeepLink();d
   }
 
   void init() async {
-    Storage.setSdkUser(SdkUserModel(phoneNumber: widget.sdkRequest.username));
+    Storage.setSdkUser(
+      SdkUserModel(
+        phoneNumber: widget.sdkRequest.username,
+        clientId: widget.sdkRequest.clientId,
+        clientSecret: widget.sdkRequest.clientSecret,
+      ),
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<AppBloc>().add(
         OnFetchUserProfile(sdkRequest: widget.sdkRequest),
       );
     });
   }
-
-  // void listenDeepLink(){
-  //   final appLinks = AppLinks();
-  //
-  //   final sub = appLinks.uriLinkStream.listen((uri) {
-  //     debugPrint("Deep link url : ${uri.path}...${uri.query}");
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +50,8 @@ class _AppState extends State<App> {
             Routes.sdkCreditOnboarding,
             extra: {
               "profileId": state.userProfileResponse?.payload?.userId ?? "",
-              "accessToken" : state.userProfileResponse?.payload?.token?.accessToken ?? "",
+              "accessToken":
+                  state.userProfileResponse?.payload?.token?.accessToken ?? "",
               "prevPageId": "",
             },
           );

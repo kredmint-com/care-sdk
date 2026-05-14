@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:loan_sdk_package/app/config/env.dart';
-import 'package:loan_sdk_package/utils/storage/storage_utils.dart';
 
 class Urls {
   static String getOtp({required String baseUrlType}) =>

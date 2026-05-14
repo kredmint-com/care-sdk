@@ -36,9 +36,9 @@ abstract class CreditOnboardingRepository {
     required String ifsc,
   });
 
-  Future<RepoResponse<AddressDetailResponse>> getAddressDetail({
-    required String pincode,
-  });
+  // Future<RepoResponse<AddressDetailResponse>> getAddressDetail({
+  //   required String pincode,
+  // });
 
   Future<RepoResponse<UploadDocumentResponse>> uploadDocument({
     required PlatformFile? file,

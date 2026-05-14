@@ -1,4 +1,5 @@
-// import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'dart:convert';
+
 import 'package:loan_sdk_package/app/config/release_env.dart';
 
 class Env {
@@ -31,17 +32,14 @@ class Env {
     return baseUrlMap;
   }
 
-  static String getKredmintBasicToken() {
-    String basicToken = "";
-    if (releaseEv.name == ReleaseEnv.prod.name) {
-      basicToken = "Basic b2F1dGhfY2xpZW50X2lkOnNlY3JldC1hcHA=";
-    } else {
-      basicToken =
-          "Basic cVlTZWRUbGMxOHdrRGR2WGhMTnpUc3V1RU8wZzY2OmowcGRJT3FYNERreVRodzZCbWxGSlg2QnhjR2s3cw==";
-    }
-    return basicToken;
+  static String generateBasicToken({
+    required String clientId,
+    required String clientSecret,
+  }) {
+    String combined = '$clientId:$clientSecret';
+    String encoded = base64Encode(utf8.encode(combined));
+    return "Basic $encoded";
   }
 
   static const String fontFamily = "PlusJakartaSans";
-  static const String placesApiKey = "AIzaSyC5dquFJ9uVZVR-qyxXfVN2NvOgCTqTZl0";
 }

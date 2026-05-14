@@ -26,7 +26,7 @@ class CreditOnboardingBloc
     on<OnUpdateField>(_onUpdateField);
     on<OnUpdateUserProfileStage>(_onUpdateUserProfileStage);
     on<OnValidateGst>(_onValidateGst);
-    on<OnFetchAddressDetail>(_onFetchAddressDetail);
+    // on<OnFetchAddressDetail>(_onFetchAddressDetail);
     on<OnReset>(_onReset);
     on<OnResetStepFound>(_onResetStepFound);
     on<OnPickStatementFile>(_onPickStatementFile);
@@ -498,42 +498,42 @@ class CreditOnboardingBloc
     }
   }
 
-  void _onFetchAddressDetail(
-    OnFetchAddressDetail event,
-    Emitter<CreditOnboardingState> emit,
-  ) async {
-    final response = await repository.getAddressDetail(pincode: event.pincode);
-    if (response.data != null) {
-      Map<String, String>? stateCityMap = await commonMethod
-          .getStateCityFromAddressResponse(
-            addressDetailResponse: response.data,
-          );
-      List<Fields?>? fieldsList = state.fieldsList;
-      for (int i = 0; i < (state.fieldsList?.length ?? 0); i++) {
-        if ((stateCityMap?["state"]?.isNotEmpty ?? false) &&
-            (state.fieldsList?[i]?.subType == "state")) {
-          Fields? field = state.fieldsList?[i]?.copyWith(
-            value: stateCityMap?["state"],
-            textEditingController: TextEditingController(
-              text: stateCityMap?["state"],
-            ),
-          );
-          fieldsList?[i] = field;
-        }
-        if ((stateCityMap?["city"]?.isNotEmpty ?? false) &&
-            (state.fieldsList?[i]?.subType == "city")) {
-          Fields? field = state.fieldsList?[i]?.copyWith(
-            value: stateCityMap?["city"],
-            textEditingController: TextEditingController(
-              text: stateCityMap?["city"],
-            ),
-          );
-          fieldsList?[i] = field;
-        }
-      }
-      emit(state.copyWith(fieldsList: fieldsList, fieldAutoPopulated: true));
-    }
-  }
+  // void _onFetchAddressDetail(
+  //   OnFetchAddressDetail event,
+  //   Emitter<CreditOnboardingState> emit,
+  // ) async {
+  //   final response = await repository.getAddressDetail(pincode: event.pincode);
+  //   if (response.data != null) {
+  //     Map<String, String>? stateCityMap = await commonMethod
+  //         .getStateCityFromAddressResponse(
+  //           addressDetailResponse: response.data,
+  //         );
+  //     List<Fields?>? fieldsList = state.fieldsList;
+  //     for (int i = 0; i < (state.fieldsList?.length ?? 0); i++) {
+  //       if ((stateCityMap?["state"]?.isNotEmpty ?? false) &&
+  //           (state.fieldsList?[i]?.subType == "state")) {
+  //         Fields? field = state.fieldsList?[i]?.copyWith(
+  //           value: stateCityMap?["state"],
+  //           textEditingController: TextEditingController(
+  //             text: stateCityMap?["state"],
+  //           ),
+  //         );
+  //         fieldsList?[i] = field;
+  //       }
+  //       if ((stateCityMap?["city"]?.isNotEmpty ?? false) &&
+  //           (state.fieldsList?[i]?.subType == "city")) {
+  //         Fields? field = state.fieldsList?[i]?.copyWith(
+  //           value: stateCityMap?["city"],
+  //           textEditingController: TextEditingController(
+  //             text: stateCityMap?["city"],
+  //           ),
+  //         );
+  //         fieldsList?[i] = field;
+  //       }
+  //     }
+  //     emit(state.copyWith(fieldsList: fieldsList, fieldAutoPopulated: true));
+  //   }
+  // }
 
   void _onSyncPan(OnSyncPan event, Emitter<CreditOnboardingState> emit) async {
     LoadingUtils.showLoader();

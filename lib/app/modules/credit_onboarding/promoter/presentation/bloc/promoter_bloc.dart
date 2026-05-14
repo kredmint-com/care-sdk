@@ -30,7 +30,7 @@ class PromoterBloc extends Bloc<PromoterEvent, PromoterState> {
     on<OnUpdateCurrentAddressStatus>(_onUpdateCurrentAddressStatus);
     on<OnConfirmPromoters>(_onConfirmPromoters);
     on<OnSubmitClicked>(_onSubmitClicked);
-    on<OnFetchAddressDetail>(_onFetchAddressDetail);
+    // on<OnFetchAddressDetail>(_onFetchAddressDetail);
     on<OnResetUserProfileStageMapCompleted>(
         _onResetUserProfileStageMapCompleted);
     on<OnValidatePan>(_onValidatePan);
@@ -108,22 +108,22 @@ class PromoterBloc extends Bloc<PromoterEvent, PromoterState> {
     ));
   }
 
-  void _onFetchAddressDetail(
-      OnFetchAddressDetail event, Emitter<PromoterState> emit) async {
-    final response = await repository.getAddressDetail(pincode: event.pincode);
-    if (response.data != null) {
-      Map<String, String>? stateCityMap =
-          await commonMethod.getStateCityFromAddressResponse(
-        addressDetailResponse: response.data,
-      );
-      if (event.isCurrentAddress) {
-        stateCityMap?["addressType"] = AddressType.current.name;
-      } else {
-        stateCityMap?["addressType"] = AddressType.permanent.name;
-      }
-      emit(state.copyWith(stateCityMap: stateCityMap));
-    }
-  }
+  // void _onFetchAddressDetail(
+  //     OnFetchAddressDetail event, Emitter<PromoterState> emit) async {
+  //   final response = await repository.getAddressDetail(pincode: event.pincode);
+  //   if (response.data != null) {
+  //     Map<String, String>? stateCityMap =
+  //         await commonMethod.getStateCityFromAddressResponse(
+  //       addressDetailResponse: response.data,
+  //     );
+  //     if (event.isCurrentAddress) {
+  //       stateCityMap?["addressType"] = AddressType.current.name;
+  //     } else {
+  //       stateCityMap?["addressType"] = AddressType.permanent.name;
+  //     }
+  //     emit(state.copyWith(stateCityMap: stateCityMap));
+  //   }
+  // }
 
   void _onResetUserProfileStageMapCompleted(
       OnResetUserProfileStageMapCompleted event, Emitter<PromoterState> emit) {

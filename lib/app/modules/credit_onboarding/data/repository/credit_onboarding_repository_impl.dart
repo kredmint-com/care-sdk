@@ -103,18 +103,18 @@ class CreditOnboardingRepositoryImpl extends CreditOnboardingRepository {
         : RepoResponse(data: ValidateIfscResponse.fromJson(response));
   }
 
-  @override
-  Future<RepoResponse<AddressDetailResponse>> getAddressDetail({
-    required String pincode,
-  }) async {
-    final response = await networkRequester.get(
-      path: Urls.getAddressDetail,
-      query: {"address": pincode, "key": Env.placesApiKey},
-    );
-    return response is APIException
-        ? RepoResponse(error: response)
-        : RepoResponse(data: AddressDetailResponse.fromJson(response));
-  }
+  // @override
+  // Future<RepoResponse<AddressDetailResponse>> getAddressDetail({
+  //   required String pincode,
+  // }) async {
+  //   final response = await networkRequester.get(
+  //     path: Urls.getAddressDetail,
+  //     query: {"address": pincode, "key": Env.placesApiKey},
+  //   );
+  //   return response is APIException
+  //       ? RepoResponse(error: response)
+  //       : RepoResponse(data: AddressDetailResponse.fromJson(response));
+  // }
 
   @override
   Future<RepoResponse<UploadDocumentResponse>> uploadDocument({

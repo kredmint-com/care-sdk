@@ -25,6 +25,8 @@ class SdkUserModel {
   String? fullName;
   String? phoneNumber;
   String? userProfileId;
+  String? clientId;
+  String? clientSecret;
 
   SdkUserModel({
     this.accessToken,
@@ -42,6 +44,8 @@ class SdkUserModel {
     this.fullName,
     this.phoneNumber,
     this.userProfileId,
+    this.clientId,
+    this.clientSecret,
   });
 
   SdkUserModel copyWith({
@@ -60,6 +64,8 @@ class SdkUserModel {
     String? fullName,
     String? phoneNumber,
     String? userProfileId,
+    String? clientId,
+    String? clientSecret,
   }) => SdkUserModel(
     accessToken: accessToken ?? this.accessToken,
     orderAccessToken: orderAccessToken ?? this.orderAccessToken,
@@ -76,6 +82,8 @@ class SdkUserModel {
     fullName: fullName ?? this.fullName,
     phoneNumber: phoneNumber ?? this.phoneNumber,
     userProfileId: userProfileId ?? this.userProfileId,
+    clientId: clientId ?? this.clientId,
+    clientSecret: clientSecret ?? this.clientSecret,
   );
 
   factory SdkUserModel.fromJson(Map<String, dynamic> json) => SdkUserModel(
@@ -101,6 +109,8 @@ class SdkUserModel {
             : List<String>.from(json["roles"]!.map((x) => x)),
     fullName: json["fullName"],
     phoneNumber: json["phoneNumber"],
+    clientId: json["clientId"],
+    clientSecret: json["clientSecret"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -121,6 +131,8 @@ class SdkUserModel {
     "roles": roles == null ? [] : List<dynamic>.from(roles!.map((x) => x)),
     "fullName": fullName,
     "phoneNumber": phoneNumber,
+    "clientId": clientId,
+    "clientSecret": clientSecret,
   };
 }
 

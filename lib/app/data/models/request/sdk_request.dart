@@ -15,6 +15,8 @@ class SdkRequest {
   String? version;
   UserContext? userContext;
   ClientMeta? clientMeta;
+  String? clientId;
+  String? clientSecret;
 
   SdkRequest({
     this.username,
@@ -27,6 +29,8 @@ class SdkRequest {
     this.version,
     this.userContext,
     this.clientMeta,
+    this.clientId,
+    this.clientSecret,
   });
 
   factory SdkRequest.fromJson(Map<String, dynamic> json) => SdkRequest(
@@ -40,6 +44,8 @@ class SdkRequest {
     version: json["version"],
     userContext: json["userContext"] == null ? null : UserContext.fromJson(json["userContext"]),
     clientMeta: json["clientMeta"] == null ? null : ClientMeta.fromJson(json["clientMeta"]),
+    clientId: json["clientId"],
+    clientSecret: json["clientSecret"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -53,6 +59,8 @@ class SdkRequest {
     "version": version,
     "userContext": userContext?.toJson(),
     "clientMeta": clientMeta?.toJson(),
+    "clientId" : clientId,
+    "clientSecret" : clientSecret,
   };
 }
 

@@ -5,6 +5,7 @@ import 'package:loan_sdk_package/app/domain/app_repository.dart';
 import 'package:loan_sdk_package/utils/helper/enums.dart';
 
 import '../../../utils/helper/exception_handler.dart';
+import '../../../utils/storage/storage_utils.dart';
 import '../../config/env.dart';
 import '../models/request/sdk_request.dart';
 import '../models/response/user_profile_response.dart';
@@ -18,11 +19,15 @@ class AppRepositoryImpl extends AppRepository {
   Future<RepoResponse<UserProfileResponse>> fetchUserProfile({
     required SdkRequest sdkRequest,
   }) async {
+    final user = Storage.getSdkUser();
     String path = Urls.eligibility(baseUrlType: BaseUrlType.lead.name);
     final response = await networkRequester.post(
       path: path,
       data: sdkRequest.toJson(),
-      basicAuthorizationToken: Env.getKredmintBasicToken(),
+      basicAuthorizationToken: Env.generateBasicToken(
+        clientId: user?.clientId ?? "",
+        clientSecret: user?.clientSecret ?? "",
+      ),
     );
     return response is APIException
         ? RepoResponse(error: response)

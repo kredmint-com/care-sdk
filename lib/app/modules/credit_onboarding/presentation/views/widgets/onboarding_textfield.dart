@@ -136,11 +136,11 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
                 OnValidateGst(gstin: val),
               );
             }
-            if (widget.field?.subType == "pincode") {
-              context.read<CreditOnboardingBloc>().add(
-                OnFetchAddressDetail(pincode: val),
-              );
-            }
+            // if (widget.field?.subType == "pincode") {
+            //   context.read<CreditOnboardingBloc>().add(
+            //     OnFetchAddressDetail(pincode: val),
+            //   );
+            // }
             if (widget.field?.name == "pan") {
               if (val.length == 10) {
                 context.read<CreditOnboardingBloc>().add(

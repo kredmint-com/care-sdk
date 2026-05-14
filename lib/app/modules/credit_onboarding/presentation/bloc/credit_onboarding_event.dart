@@ -31,11 +31,11 @@ class OnValidateGst extends CreditOnboardingEvent {
   OnValidateGst({required this.gstin});
 }
 
-class OnFetchAddressDetail extends CreditOnboardingEvent {
-  final String pincode;
-
-  OnFetchAddressDetail({required this.pincode});
-}
+// class OnFetchAddressDetail extends CreditOnboardingEvent {
+//   final String pincode;
+//
+//   OnFetchAddressDetail({required this.pincode});
+// }
 
 class OnSyncPan extends CreditOnboardingEvent {
   final String panNumber;
