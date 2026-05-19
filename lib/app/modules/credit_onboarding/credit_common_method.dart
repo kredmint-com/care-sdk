@@ -14,7 +14,7 @@ class CreditCommonMethod {
   }) async {
     debugPrint("onBackPress called : $prevPageId");
     if (prevPageId.isEmpty) {
-      getIt<SdkCallbacks>().onSuccess?.call(
+      getIt<SdkCallbacks>().onClose?.call(
         message: "Sdk closed",
         status: SdkStatus.SDK_CLOSED.name,
       );

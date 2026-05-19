@@ -44,17 +44,15 @@ class DownPaymentView extends StatefulWidget {
 }
 
 class _DownPaymentViewState extends State<DownPaymentView> {
-
   @override
   void initState() {
     super.initState();
     init();
   }
 
-  void init(){
-    SdkBackHandler.onBackPressed = _handleBack;
+  void init() {
+    SdkBackHandler.onBackPressed = handleBackPress;
   }
-
 
   @override
   void dispose() {
@@ -65,15 +63,12 @@ class _DownPaymentViewState extends State<DownPaymentView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CreditOnboardingAppBar(title: "", onBackPressed: _handleBack),
+      appBar: CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
 
       bottomSheet: _bottomSheet(),
 
       body: WillPopScope(
-        onWillPop: () async {
-          _handleBack();
-          return false;
-        },
+        onWillPop: handleBackPress,
         child: MultiBlocListener(
           listeners: [
             /// 🔹 Credit onboarding listener
@@ -143,8 +138,8 @@ class _DownPaymentViewState extends State<DownPaymentView> {
   }
 
   /// 🔹 Back handler
-  void _handleBack() {
-    CreditCommonMethod.onBackPress(
+  Future<bool> handleBackPress() async {
+    return await CreditCommonMethod.onBackPress(
       context: context,
       prevPageId: widget.prevPageId,
       profileId: widget.profileId,
@@ -242,7 +237,7 @@ class _DownPaymentViewState extends State<DownPaymentView> {
             children: [
               Text(Strings.paymentSummary, style: Styles.tsBlack3BBold18()),
               GestureDetector(
-                onTap: _handleBack,
+                onTap: handleBackPress,
                 child: Text(
                   Strings.changePlan,
                   style: Styles.tsPrimaryMedium14(),

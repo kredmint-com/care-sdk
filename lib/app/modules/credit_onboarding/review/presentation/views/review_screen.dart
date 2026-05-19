@@ -46,7 +46,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
     SdkBackHandler.onBackPressed = handleBackPress;
   }
 
-  void handleBackPress() {
+  Future<bool> handleBackPress() async {
+    return
     CreditCommonMethod.onBackPress(
       context: context,
       prevPageId: widget.prevPageId,
@@ -83,10 +84,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
           return CircularProgressIndicator();
         }
         return WillPopScope(
-          onWillPop: () async {
-            handleBackPress();
-            return false;
-          },
+          onWillPop: handleBackPress,
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
             child: Column(

@@ -20,7 +20,7 @@ class CreditOnboardingBloc
   final CommonMethod commonMethod;
 
   CreditOnboardingBloc({required this.repository, required this.commonMethod})
-      : super(CreditOnboardingState()) {
+    : super(CreditOnboardingState()) {
     on<OnFetchUserProfilePage>(_onFetchUserProfilePage);
     on<OnUpdateSubmitStatus>(_onUpdateSubmitStatus);
     on<OnUpdateField>(_onUpdateField);
@@ -36,8 +36,10 @@ class CreditOnboardingBloc
     on<OnSyncPan>(_onSyncPan);
   }
 
-  void _onFetchUserProfilePage(OnFetchUserProfilePage event,
-      Emitter<CreditOnboardingState> emit,) async {
+  void _onFetchUserProfilePage(
+    OnFetchUserProfilePage event,
+    Emitter<CreditOnboardingState> emit,
+  ) async {
     // try {
     emit(state.copyWith(formLoading: true));
     LoadingUtils.showLoader();
@@ -55,8 +57,7 @@ class CreditOnboardingBloc
 
           fieldsList.removeAt(i);
           debugPrint(
-            "Base data value : ${baseField.fieldId} ... ${baseField
-                .type} .. ${baseField.value}",
+            "Base data value : ${baseField.fieldId} ... ${baseField.type} .. ${baseField.value}",
           );
           String addressLine1 = "";
           String addressLine2 = "";
@@ -141,8 +142,7 @@ class CreditOnboardingBloc
           );
         } else if (fieldsList?[i]?.type == InputType.file.name) {
           debugPrint(
-            "fieldsList?[i]?.value is List<dynamic> : ${fieldsList?[i]
-                ?.value is List<dynamic>}",
+            "fieldsList?[i]?.value is List<dynamic> : ${fieldsList?[i]?.value is List<dynamic>}",
           );
           if (fieldsList?[i]?.value is List<dynamic>) {
             documentList =
@@ -165,10 +165,9 @@ class CreditOnboardingBloc
       navigateUserToParticularStep(
         profileId: event.profileId,
         prevPageId:
-        (response.data?.payload?.prePageEnable ?? false)
-            ?
-        (response.data?.payload?.prvPageId ?? "")
-            : "",
+            (response.data?.payload?.prePageEnable ?? false)
+                ? (response.data?.payload?.prvPageId ?? "")
+                : "",
         onboardingStepsResponse: response.data,
       );
 
@@ -191,18 +190,17 @@ class CreditOnboardingBloc
     //     ?.contains(onboardingStepsResponse?.payload?.pageCategory ?? "") ??
     // false;
     debugPrint(
-      "Steps present data : $stepPresent .... ${onboardingStepsResponse?.payload
-          ?.pageCategory}",
+      "Steps present data : $stepPresent .... ${onboardingStepsResponse?.payload?.pageCategory}",
     );
     if (stepPresent) {
       if (onboardingStepsResponse?.payload?.pageCategory ==
           PageCategory.BankStatement.name) {
-        AppPages.router.replaceNamed(
+        AppPages.router.pushNamed(
           Routes.bankStatement,
           extra: {
             "pageId": onboardingStepsResponse?.payload?.pageId ?? "",
             "pageCategory":
-            onboardingStepsResponse?.payload?.pageCategory ?? "",
+                onboardingStepsResponse?.payload?.pageCategory ?? "",
             "profileId": profileId,
             "prevPageId": prevPageId,
             "staticPageRes": onboardingStepsResponse?.payload?.staticPageRes,
@@ -210,31 +208,31 @@ class CreditOnboardingBloc
           },
         );
       } else if (onboardingStepsResponse?.payload?.pageCategory?.contains(
-        PageCategory.Promoter.name,
-      ) ??
+            PageCategory.Promoter.name,
+          ) ??
           false) {
-        AppPages.router.replaceNamed(
+        AppPages.router.pushNamed(
           Routes.promoter,
           extra: {
             "pageId": onboardingStepsResponse?.payload?.pageId ?? "",
             "pageCategory":
-            onboardingStepsResponse?.payload?.pageCategory ?? "",
+                onboardingStepsResponse?.payload?.pageCategory ?? "",
             "profileId": profileId,
             "prevPageId": prevPageId,
             "staticPageRes": onboardingStepsResponse?.payload?.staticPageRes,
             "mobileNumber":
-            onboardingStepsResponse?.payload?.meta?.mobile ?? "",
+                onboardingStepsResponse?.payload?.meta?.mobile ?? "",
             "page": onboardingStepsResponse?.payload?.page,
           },
         );
       } else if (onboardingStepsResponse?.payload?.pageCategory ==
           PageCategory.Gst.name) {
-        AppPages.router.replaceNamed(
+        AppPages.router.pushNamed(
           Routes.gst,
           extra: {
             "pageId": onboardingStepsResponse?.payload?.pageId ?? "",
             "pageCategory":
-            onboardingStepsResponse?.payload?.pageCategory ?? "",
+                onboardingStepsResponse?.payload?.pageCategory ?? "",
             "profileId": profileId,
             "gst": onboardingStepsResponse?.payload?.meta?.gst ?? "",
             "prevPageId": prevPageId,
@@ -243,7 +241,7 @@ class CreditOnboardingBloc
         );
       } else if (onboardingStepsResponse?.payload?.pageCategory ==
           PageCategory.Review.name) {
-        AppPages.router.replaceNamed(
+        AppPages.router.pushNamed(
           Routes.review,
           extra: {
             "profileId": profileId,
@@ -253,7 +251,7 @@ class CreditOnboardingBloc
         );
       } else if (onboardingStepsResponse?.payload?.pageCategory ==
           PageCategory.Itr.name) {
-        AppPages.router.replaceNamed(
+        AppPages.router.pushNamed(
           Routes.itr,
           extra: {
             "profileId": profileId,
@@ -261,13 +259,13 @@ class CreditOnboardingBloc
             "prevPageId": prevPageId,
             "pageId": onboardingStepsResponse?.payload?.pageId ?? "",
             "pageCategory":
-            onboardingStepsResponse?.payload?.pageCategory ?? "",
+                onboardingStepsResponse?.payload?.pageCategory ?? "",
             "page": onboardingStepsResponse?.payload?.page,
           },
         );
       } else if (onboardingStepsResponse?.payload?.pageCategory ==
           PageCategory.LoiSummary.name) {
-        AppPages.router.replaceNamed(
+        AppPages.router.pushNamed(
           Routes.loiSummary,
           extra: {
             "profileId": profileId,
@@ -279,7 +277,7 @@ class CreditOnboardingBloc
         );
       } else if (onboardingStepsResponse?.payload?.pageCategory ==
           PageCategory.ProcessingFee.name) {
-        AppPages.router.replaceNamed(
+        AppPages.router.pushNamed(
           Routes.processingFee,
           extra: {
             "profileId": profileId,
@@ -290,61 +288,61 @@ class CreditOnboardingBloc
         );
       } else if (onboardingStepsResponse?.payload?.pageCategory ==
           PageCategory.EmiPlans.name) {
-        AppPages.router.replaceNamed(
+        AppPages.router.pushNamed(
           Routes.emi,
           extra: {
             "pageId": onboardingStepsResponse?.payload?.pageId ?? "",
             "pageCategory":
-            onboardingStepsResponse?.payload?.pageCategory ?? "",
+                onboardingStepsResponse?.payload?.pageCategory ?? "",
             "profileId": profileId,
             "prevPageId": prevPageId,
             "staticPageRes": onboardingStepsResponse?.payload?.staticPageRes,
             "page": onboardingStepsResponse?.payload?.page,
             "tenureId":
-            (onboardingStepsResponse?.payload?.page?.fields?.isEmpty ??
-                true)
-                ? ""
-                : onboardingStepsResponse
-                ?.payload
-                ?.page
-                ?.fields
-                ?.first
-                .fieldId,
+                (onboardingStepsResponse?.payload?.page?.fields?.isEmpty ??
+                        true)
+                    ? ""
+                    : onboardingStepsResponse
+                        ?.payload
+                        ?.page
+                        ?.fields
+                        ?.first
+                        .fieldId,
             "tenureTypeId":
-            ((onboardingStepsResponse?.payload?.page?.fields?.length ??
-                0) >=
-                2)
-                ? (onboardingStepsResponse
-                ?.payload
-                ?.page
-                ?.fields?[1]
-                .fieldId)
-                : "",
+                ((onboardingStepsResponse?.payload?.page?.fields?.length ??
+                            0) >=
+                        2)
+                    ? (onboardingStepsResponse
+                        ?.payload
+                        ?.page
+                        ?.fields?[1]
+                        .fieldId)
+                    : "",
           },
         );
       } else if ((onboardingStepsResponse?.payload?.pageCategory ==
-          PageCategory.KfsEsignUrl.name) ||
+              PageCategory.KfsEsignUrl.name) ||
           (onboardingStepsResponse?.payload?.pageCategory ==
               PageCategory.MandateSignUrl.name)) {
-        AppPages.router.replaceNamed(
+        AppPages.router.pushNamed(
           Routes.kycDetail,
           extra: {
             "pageId": onboardingStepsResponse?.payload?.pageId ?? "",
             "pageCategory":
-            onboardingStepsResponse?.payload?.pageCategory ?? "",
+                onboardingStepsResponse?.payload?.pageCategory ?? "",
             "profileId": profileId,
             "prevPageId": prevPageId,
             "page": onboardingStepsResponse?.payload?.page,
             "digioKycResponse": DigioKycResponse(
               id:
-              onboardingStepsResponse
-                  ?.payload
-                  ?.digioKycResponse
-                  ?.entityId ??
+                  onboardingStepsResponse
+                      ?.payload
+                      ?.digioKycResponse
+                      ?.entityId ??
                   "",
               accessToken: AccessToken(
                 id:
-                onboardingStepsResponse?.payload?.digioKycResponse?.id ??
+                    onboardingStepsResponse?.payload?.digioKycResponse?.id ??
                     "",
               ),
             ),
@@ -352,12 +350,12 @@ class CreditOnboardingBloc
         );
       } else if (onboardingStepsResponse?.payload?.pageCategory ==
           PageCategory.BankDetail.name) {
-        AppPages.router.replaceNamed(
+        AppPages.router.pushNamed(
           Routes.bankDetail,
           extra: {
             "pageId": onboardingStepsResponse?.payload?.pageId ?? "",
             "pageCategory":
-            onboardingStepsResponse?.payload?.pageCategory ?? "",
+                onboardingStepsResponse?.payload?.pageCategory ?? "",
             "profileId": profileId,
             "prevPageId": prevPageId,
             "staticPageRes": onboardingStepsResponse?.payload?.staticPageRes,
@@ -366,62 +364,68 @@ class CreditOnboardingBloc
         );
       } else if (onboardingStepsResponse?.payload?.pageCategory ==
           PageCategory.Success.name) {
-        AppPages.router.replaceNamed(
+        AppPages.router.pushNamed(
           Routes.success,
           extra: {"profileId": profileId, "prevPageId": prevPageId},
         );
       } else if (onboardingStepsResponse?.payload?.pageCategory ==
           PageCategory.ProfileRejected.name) {
-        AppPages.router.replaceNamed(
+        AppPages.router.pushNamed(
           Routes.profileRejected,
           extra: {"profileId": profileId, "prevPageId": prevPageId},
         );
       } else if (onboardingStepsResponse?.payload?.pageCategory ==
           PageCategory.DownPayment.name) {
-        AppPages.router.replaceNamed(
+        AppPages.router.pushNamed(
           Routes.downPayment,
           extra: {
             "pageId": onboardingStepsResponse?.payload?.pageId ?? "",
             "pageCategory":
-            onboardingStepsResponse?.payload?.pageCategory ?? "",
+                onboardingStepsResponse?.payload?.pageCategory ?? "",
             "profileId": profileId,
             "prevPageId": prevPageId,
             "page": onboardingStepsResponse?.payload?.page,
             "processingFeeData":
-            onboardingStepsResponse?.payload?.processingFee,
+                onboardingStepsResponse?.payload?.processingFee,
           },
         );
       }
     }
   }
 
-  void _onUpdateSubmitStatus(OnUpdateSubmitStatus event,
-      Emitter<CreditOnboardingState> emit,) async {
+  void _onUpdateSubmitStatus(
+    OnUpdateSubmitStatus event,
+    Emitter<CreditOnboardingState> emit,
+  ) async {
     emit(state.copyWith(submitClicked: true));
   }
 
-  void _onUpdateField(OnUpdateField event,
-      Emitter<CreditOnboardingState> emit,) async {
+  void _onUpdateField(
+    OnUpdateField event,
+    Emitter<CreditOnboardingState> emit,
+  ) async {
     List<Fields?>? fieldList = state.fieldsList ?? [];
     fieldList[event.index] = event.field;
     List<Fields>? fields =
-    fieldList.where((e) => e != null).cast<Fields>().toList();
+        fieldList.where((e) => e != null).cast<Fields>().toList();
     OnboardingStepsResponse? updatedOnboardingStepsResponse = state
         .onboardingStepsResponse
         ?.copyWith(
-      payload: state.onboardingStepsResponse?.payload?.copyWith(
-        page: state.onboardingStepsResponse?.payload?.page?.copyWith(
-          fields: fields,
-        ),
-      ),
-    );
+          payload: state.onboardingStepsResponse?.payload?.copyWith(
+            page: state.onboardingStepsResponse?.payload?.page?.copyWith(
+              fields: fields,
+            ),
+          ),
+        );
     emit(
       state.copyWith(onboardingStepsResponse: updatedOnboardingStepsResponse),
     );
   }
 
-  void _onUpdateUserProfileStage(OnUpdateUserProfileStage event,
-      Emitter<CreditOnboardingState> emit,) async {
+  void _onUpdateUserProfileStage(
+    OnUpdateUserProfileStage event,
+    Emitter<CreditOnboardingState> emit,
+  ) async {
     emit(state.copyWith(userProfileStageUpdated: false));
     LoadingUtils.showLoader();
     Map<String, dynamic>? dataMap = event.data;
@@ -439,8 +443,10 @@ class CreditOnboardingBloc
     }
   }
 
-  void _onValidateGst(OnValidateGst event,
-      Emitter<CreditOnboardingState> emit,) async {
+  void _onValidateGst(
+    OnValidateGst event,
+    Emitter<CreditOnboardingState> emit,
+  ) async {
     final response = await repository.validateGst(gstin: event.gstin);
     if (response.data != null) {
       List<Fields?>? fieldsList = state.fieldsList;
@@ -466,7 +472,7 @@ class CreditOnboardingBloc
               text: response.data?.payload?.businessType ?? "",
             ),
             readOnly:
-            (response.data?.payload?.businessType?.isNotEmpty ?? false),
+                (response.data?.payload?.businessType?.isNotEmpty ?? false),
           );
           fieldsList?[i] = field;
         }
@@ -477,8 +483,8 @@ class CreditOnboardingBloc
               text: response.data?.payload?.dateOfRegistration ?? "",
             ),
             readOnly:
-            (response.data?.payload?.dateOfRegistration?.isNotEmpty ??
-                false),
+                (response.data?.payload?.dateOfRegistration?.isNotEmpty ??
+                    false),
           );
           fieldsList?[i] = field;
         }
@@ -584,13 +590,17 @@ class CreditOnboardingBloc
     emit(state.copyWith(userProfileStageUpdated: false, submitClicked: false));
   }
 
-  void _onResetStepFound(OnResetStepFound event,
-      Emitter<CreditOnboardingState> emit,) async {
+  void _onResetStepFound(
+    OnResetStepFound event,
+    Emitter<CreditOnboardingState> emit,
+  ) async {
     emit(state.copyWith(stepFound: true));
   }
 
-  void _onPickStatementFile(OnPickStatementFile event,
-      Emitter<CreditOnboardingState> emit,) async {
+  void _onPickStatementFile(
+    OnPickStatementFile event,
+    Emitter<CreditOnboardingState> emit,
+  ) async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -619,8 +629,10 @@ class CreditOnboardingBloc
     }
   }
 
-  void _onDocumentDelete(OnDocumentDelete event,
-      Emitter<CreditOnboardingState> emit,) async {
+  void _onDocumentDelete(
+    OnDocumentDelete event,
+    Emitter<CreditOnboardingState> emit,
+  ) async {
     LoadingUtils.showLoader();
     final response = await repository.deleteDocument(
       id: event.documentId,
@@ -634,8 +646,10 @@ class CreditOnboardingBloc
     }
   }
 
-  void _onFilterFieldOptions(OnFilterFieldOptions event,
-      Emitter<CreditOnboardingState> emit,) {
+  void _onFilterFieldOptions(
+    OnFilterFieldOptions event,
+    Emitter<CreditOnboardingState> emit,
+  ) {
     final fieldList = List<Fields?>.from(state.fieldsList ?? []);
     final field = fieldList[event.index];
 
@@ -644,15 +658,13 @@ class CreditOnboardingBloc
     debugPrint("Total options before filter: ${allOptions.length}");
 
     final filtered =
-    event.query
-        .trim()
-        .isEmpty
-        ? allOptions
-        : allOptions.where((option) {
-      return (option.name ?? "").toLowerCase().contains(
-        event.query.toLowerCase(),
-      );
-    }).toList();
+        event.query.trim().isEmpty
+            ? allOptions
+            : allOptions.where((option) {
+              return (option.name ?? "").toLowerCase().contains(
+                event.query.toLowerCase(),
+              );
+            }).toList();
 
     debugPrint(
       "Options after filtering for '${event.query}': ${filtered.length}",
@@ -662,8 +674,10 @@ class CreditOnboardingBloc
     emit(state.copyWith(fieldsList: List<Fields?>.from(fieldList)));
   }
 
-  void _onResetFieldOptions(OnResetFieldOptions event,
-      Emitter<CreditOnboardingState> emit,) {
+  void _onResetFieldOptions(
+    OnResetFieldOptions event,
+    Emitter<CreditOnboardingState> emit,
+  ) {
     final fieldList = List<Fields?>.from(state.fieldsList ?? []);
     final field = fieldList[event.index];
     final allOptions = List<Option>.from(field?.option ?? []);

@@ -61,8 +61,8 @@ class _EmiViewState extends State<EmiView> {
     SdkBackHandler.onBackPressed = null;
   }
 
-  void handleBackPress() {
-    CreditCommonMethod.onBackPress(
+  Future<bool> handleBackPress() async {
+    return await CreditCommonMethod.onBackPress(
       context: context,
       prevPageId: widget.prevPageId,
       profileId: widget.profileId,
@@ -128,10 +128,7 @@ class _EmiViewState extends State<EmiView> {
 
   Widget bodyWidget({required BuildContext context}) {
     return WillPopScope(
-      onWillPop: () async {
-        handleBackPress();
-        return false;
-      },
+      onWillPop: handleBackPress,
       child: BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
         listener: (context, state) {
           if ((state.userProfileStageUpdated) ?? false) {

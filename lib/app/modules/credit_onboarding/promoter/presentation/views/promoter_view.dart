@@ -65,7 +65,8 @@ class _PromoterViewState extends State<PromoterView> {
     SdkBackHandler.onBackPressed = handleBackPress;
   }
 
-  void handleBackPress() {
+  Future<bool> handleBackPress() async {
+    return
     CreditCommonMethod.onBackPress(
       context: context,
       prevPageId: widget.prevPageId,
@@ -138,10 +139,7 @@ class _PromoterViewState extends State<PromoterView> {
 
   Widget bodyWidget({required BuildContext context}) {
     return WillPopScope(
-      onWillPop: () async {
-        handleBackPress();
-        return false;
-      },
+      onWillPop: handleBackPress,
       child: BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
         listener: (context, state) {
           if ((state.userProfileStageUpdated) ?? false) {

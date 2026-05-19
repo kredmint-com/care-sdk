@@ -90,9 +90,9 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
     }
   }
 
-  void handleBackPress() {
+  Future<bool> handleBackPress() async {
     final creditOnboardingBloc = context.read<CreditOnboardingBloc>();
-    CreditCommonMethod.onBackPress(
+    return CreditCommonMethod.onBackPress(
       context: context,
       prevPageId:
           (creditOnboardingBloc
@@ -282,10 +282,7 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
     return BlocBuilder<CreditOnboardingBloc, CreditOnboardingState>(
       builder: (context, state) {
         return WillPopScope(
-          onWillPop: () async {
-            handleBackPress();
-            return false;
-          },
+          onWillPop: handleBackPress,
           child: BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
             listener: (context, state) async {
               if ((state.submitClicked ?? false) &&

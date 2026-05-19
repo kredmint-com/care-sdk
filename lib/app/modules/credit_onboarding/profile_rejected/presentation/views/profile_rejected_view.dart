@@ -27,9 +27,8 @@ class ProfileRejectedView extends StatefulWidget {
 }
 
 class _ProfileRejectedViewState extends State<ProfileRejectedView> {
-
-  void handleBackPress() {
-    CreditCommonMethod.onBackPress(
+  Future<bool> handleBackPress() async {
+    return await CreditCommonMethod.onBackPress(
       context: context,
       prevPageId: widget.prevPageId,
       profileId: widget.profileId,
@@ -54,14 +53,8 @@ class _ProfileRejectedViewState extends State<ProfileRejectedView> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) async {
-        if (didPop) {
-          return;
-        }
-        handleBackPress();
-      },
+    return WillPopScope(
+      onWillPop: handleBackPress,
       child: Scaffold(
         bottomSheet: Wrap(
           children: [

@@ -28,9 +28,8 @@ class SuccessView extends StatefulWidget {
 }
 
 class _SuccessViewState extends State<SuccessView> {
-
-  void handleBackPress() async {
-    CreditCommonMethod.onBackPress(
+  Future<bool> handleBackPress() async {
+    return CreditCommonMethod.onBackPress(
       context: context,
       prevPageId: widget.prevPageId,
       profileId: widget.profileId,
@@ -55,14 +54,8 @@ class _SuccessViewState extends State<SuccessView> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) async {
-        if (didPop) {
-          return;
-        }
-        handleBackPress();
-      },
+    return WillPopScope(
+      onWillPop: handleBackPress,
       child: Scaffold(
         bottomSheet: Wrap(
           children: [

@@ -65,7 +65,8 @@ class _KycViewState extends State<KycView> {
     );
   }
 
-  void handleBackPress() {
+  Future<bool> handleBackPress() async {
+    return
     CreditCommonMethod.onBackPress(
       context: context,
       prevPageId: widget.prevPageId,
@@ -76,10 +77,7 @@ class _KycViewState extends State<KycView> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        handleBackPress();
-        return false;
-      },
+      onWillPop: handleBackPress,
       child: Scaffold(
         appBar: CreditOnboardingAppBar(
           title: "",

@@ -11,7 +11,7 @@ import 'app/data/models/dto/sdk_callback.dart';
 import 'injection_container.dart';
 
 class LoanSdkPackage {
-  static Future<void> open({
+  static Future<dynamic> open({
     required BuildContext context,
     required SdkRequest sdkRequest,
     Function({required String message, required String status})? onSuccess,
@@ -19,7 +19,9 @@ class LoanSdkPackage {
     Function({required String message, required String status})? onClose,
   }) async {
     await GetStorage.init("loan-sdk-storage-box");
+
     await getIt.reset();
+
     setup(
       callbacks: SdkCallbacks(
         onSuccess: onSuccess,
@@ -27,18 +29,18 @@ class LoanSdkPackage {
         onClose: onClose,
       ),
     );
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      AppPages.router.go(Routes.initial);
-      Navigator.of(context, rootNavigator: true).push(
-        MaterialPageRoute(
-          builder:
-              (_) => BlocProvider(
-                create: (_) => getIt<AppBloc>(),
-                child: _SdkContainer(sdkRequest: sdkRequest),
-              ),
-        ),
-      );
-    });
+
+    AppPages.router.go(Routes.initial);
+
+    return await Navigator.of(context, rootNavigator: true).push(
+      MaterialPageRoute(
+        builder:
+            (_) => BlocProvider(
+              create: (_) => getIt<AppBloc>(),
+              child: _SdkContainer(sdkRequest: sdkRequest),
+            ),
+      ),
+    );
   }
 }
 
@@ -53,11 +55,15 @@ class _SdkContainer extends StatelessWidget {
       canPop: false,
       onPopInvoked: (didPop) async {
         if (didPop) return;
+        debugPrint("On back pressed called : ${SdkBackHandler.onBackPressed}");
 
         /// FIRST GIVE CURRENT SCREEN CHANCE
         if (SdkBackHandler.onBackPressed != null) {
-          SdkBackHandler.onBackPressed!();
-          return;
+          final handled = await SdkBackHandler.onBackPressed!();
+
+          if (handled) {
+            return;
+          }
         }
 
         final router = AppPages.router;
@@ -67,10 +73,12 @@ class _SdkContainer extends StatelessWidget {
           router.pop();
           return;
         }
-        getIt<SdkCallbacks>().onSuccess?.call(
+
+        getIt<SdkCallbacks>().onClose?.call(
           message: "Sdk closed",
           status: SdkStatus.SDK_CLOSED.name,
         );
+
         Navigator.of(context).pop();
       },
       child: Navigator(
@@ -83,5 +91,5 @@ class _SdkContainer extends StatelessWidget {
 }
 
 class SdkBackHandler {
-  static void Function()? onBackPressed;
+  static Future<bool> Function()? onBackPressed;
 }
