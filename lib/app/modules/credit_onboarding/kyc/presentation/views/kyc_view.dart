@@ -7,7 +7,7 @@ import 'package:loan_sdk_package/app/modules/credit_onboarding/kyc/presentation/
 import 'package:loan_sdk_package/utils/storage/storage_utils.dart';
 import 'package:loan_sdk_package/widgets/custom_button.dart';
 
-import '../../../../../../utils/helper/enums.dart';
+import '../../../../../../loan_sdk_package.dart';
 import '../../../../../data/values/strings.dart';
 import '../../../../../route/app_pages.dart';
 import '../../../credit_common_method.dart';
@@ -47,9 +47,14 @@ class _KycViewState extends State<KycView> {
     init();
   }
 
-  void init() {
-    debugPrint("Phone number : ${Storage.getSdkUser()?.phoneNumber ?? ""}");
+  @override
+  void dispose() {
+    super.dispose();
+    SdkBackHandler.onBackPressed = null;
+  }
 
+  void init() {
+    SdkBackHandler.onBackPressed = handleBackPress;
     context.read<KycBloc>().add(
       OnStartDigioKyc(
         documentId: widget.digioKycResponse.id ?? "",
@@ -60,27 +65,25 @@ class _KycViewState extends State<KycView> {
     );
   }
 
+  void handleBackPress() {
+    CreditCommonMethod.onBackPress(
+      context: context,
+      prevPageId: widget.prevPageId,
+      profileId: widget.profileId,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        CreditCommonMethod.onBackPress(
-          context: context,
-          prevPageId: widget.prevPageId,
-          profileId: widget.profileId,
-        );
+        handleBackPress();
         return false;
       },
       child: Scaffold(
         appBar: CreditOnboardingAppBar(
           title: "",
-          onBackPressed: () {
-            CreditCommonMethod.onBackPress(
-              context: context,
-              prevPageId: widget.prevPageId,
-              profileId: widget.profileId,
-            );
-          },
+          onBackPressed: handleBackPress,
         ),
         bottomSheet: Wrap(
           children: [

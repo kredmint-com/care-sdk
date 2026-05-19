@@ -5,17 +5,28 @@ import 'package:loan_sdk_package/app/app.dart';
 import 'package:loan_sdk_package/app/bloc/app_bloc.dart';
 import 'package:loan_sdk_package/app/data/models/request/sdk_request.dart';
 import 'package:loan_sdk_package/app/route/app_pages.dart';
+import 'package:loan_sdk_package/utils/helper/enums.dart';
+
+import 'app/data/models/dto/sdk_callback.dart';
 import 'injection_container.dart';
 
 class LoanSdkPackage {
   static Future<void> open({
     required BuildContext context,
     required SdkRequest sdkRequest,
-    Function(String message)? onSuccess,
+    Function({required String message, required String status})? onSuccess,
+    Function({required String message, required String status})? onFailure,
+    Function({required String message, required String status})? onClose,
   }) async {
     await GetStorage.init("loan-sdk-storage-box");
     await getIt.reset();
-    setup();
+    setup(
+      callbacks: SdkCallbacks(
+        onSuccess: onSuccess,
+        onFailure: onFailure,
+        onClose: onClose,
+      ),
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) {
       AppPages.router.go(Routes.initial);
       Navigator.of(context, rootNavigator: true).push(
@@ -23,10 +34,54 @@ class LoanSdkPackage {
           builder:
               (_) => BlocProvider(
                 create: (_) => getIt<AppBloc>(),
-                child: App(sdkRequest: sdkRequest),
+                child: _SdkContainer(sdkRequest: sdkRequest),
               ),
         ),
       );
     });
   }
+}
+
+class _SdkContainer extends StatelessWidget {
+  final SdkRequest sdkRequest;
+
+  const _SdkContainer({required this.sdkRequest});
+
+  @override
+  Widget build(BuildContext context) {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
+
+        /// FIRST GIVE CURRENT SCREEN CHANCE
+        if (SdkBackHandler.onBackPressed != null) {
+          SdkBackHandler.onBackPressed!();
+          return;
+        }
+
+        final router = AppPages.router;
+
+        /// DEFAULT SDK BACK
+        if (router.canPop()) {
+          router.pop();
+          return;
+        }
+        getIt<SdkCallbacks>().onSuccess?.call(
+          message: "Sdk closed",
+          status: SdkStatus.SDK_CLOSED.name,
+        );
+        Navigator.of(context).pop();
+      },
+      child: Navigator(
+        onGenerateRoute: (_) {
+          return MaterialPageRoute(builder: (_) => App(sdkRequest: sdkRequest));
+        },
+      ),
+    );
+  }
+}
+
+class SdkBackHandler {
+  static void Function()? onBackPressed;
 }

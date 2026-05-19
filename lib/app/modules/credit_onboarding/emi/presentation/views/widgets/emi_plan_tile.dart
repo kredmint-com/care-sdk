@@ -60,7 +60,7 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
           border: Border.all(
             color:
                 widget.isSelected
-                    ? AppColors.primaryColor()
+                    ? AppColors.orangeF9
                     : AppColors.grey300,
             width: 1.3,
           ),
@@ -175,7 +175,7 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryColor() : AppColors.transparent,
+          color: isSelected ? AppColors.orangeF9 : AppColors.transparent,
           borderRadius: BorderRadius.circular(30),
         ),
         child: Text(
@@ -198,7 +198,7 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
         shape: BoxShape.circle,
         border: Border.all(
           color:
-              widget.isSelected ? AppColors.primaryColor() : AppColors.grey400,
+              widget.isSelected ? AppColors.orangeF9 : AppColors.grey400,
           width: 2,
         ),
       ),
@@ -210,7 +210,7 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
                   width: 12,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColors.primaryColor(),
+                    color: AppColors.orangeF9,
                   ),
                 ),
               )

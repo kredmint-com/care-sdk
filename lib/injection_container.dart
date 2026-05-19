@@ -11,6 +11,7 @@ import 'package:loan_sdk_package/service/easebuzz_payment_service.dart';
 import 'package:loan_sdk_package/service/razorpay_payment_service.dart';
 import 'package:loan_sdk_package/utils/helper/common_method.dart';
 
+import 'app/data/models/dto/sdk_callback.dart';
 import 'app/data/network/network_requester.dart';
 import 'app/modules/credit_onboarding/data/repository/credit_onboarding_repository_impl.dart';
 import 'app/modules/credit_onboarding/domain/credit_onboarding_repository.dart';
@@ -19,7 +20,10 @@ import 'app/modules/credit_onboarding/presentation/bloc/credit_onboarding_bloc.d
 
 final getIt = GetIt.asNewInstance();
 
-void setup() {
+void setup({SdkCallbacks? callbacks}) {
+  if (callbacks != null) {
+    getIt.registerSingleton<SdkCallbacks>(callbacks);
+  }
   getIt.registerLazySingleton(() => NetworkRequester());
   getIt.registerFactory<CommonMethod>(() => CommonMethod());
 

@@ -8,6 +8,7 @@ import 'package:loan_sdk_package/app/data/values/strings.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
 import 'package:loan_sdk_package/widgets/input_text_field.dart';
 
+import '../../../../../../loan_sdk_package.dart';
 import '../../../../../../widgets/custom_button.dart';
 import '../../../../../route/app_pages.dart';
 import '../../../credit_common_method.dart';
@@ -64,28 +65,38 @@ class _PromoterViewState extends State<BankDetailView> {
     });
   }
 
+  void handleBackPress() {
+    CreditCommonMethod.onBackPress(
+      context: context,
+      prevPageId: widget.prevPageId,
+      profileId: widget.profileId,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  void init() {
+    SdkBackHandler.onBackPressed = handleBackPress;
+  }
+
   @override
   void dispose() {
     accountController.dispose();
     ifscController.dispose();
     bankNameController.dispose();
     fullNameController.dispose();
+    SdkBackHandler.onBackPressed = null;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CreditOnboardingAppBar(
-        title: "",
-        onBackPressed: () {
-          CreditCommonMethod.onBackPress(
-            context: context,
-            prevPageId: widget.prevPageId,
-            profileId: widget.profileId,
-          );
-        },
-      ),
+      appBar: CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
       bottomSheet: Padding(
         padding: const EdgeInsets.all(20.0),
         child: BlocBuilder<BankDetailBloc, BankDetailState>(
@@ -115,11 +126,7 @@ class _PromoterViewState extends State<BankDetailView> {
   Widget bodyWidget({required BuildContext context}) {
     return WillPopScope(
       onWillPop: () async {
-        CreditCommonMethod.onBackPress(
-          context: context,
-          prevPageId: widget.prevPageId,
-          profileId: widget.profileId,
-        );
+        handleBackPress();
         return false;
       },
       child: BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
@@ -136,7 +143,7 @@ class _PromoterViewState extends State<BankDetailView> {
           listener: (context, state) {
             if (state.bankName?.isNotEmpty ?? false) {
               bankNameController.text = state.bankName ?? "";
-              if(state.submitClicked ?? false) {
+              if (state.submitClicked ?? false) {
                 _formKey.currentState?.validate();
               }
               context.read<BankDetailBloc>().add(OnResetBankName());
@@ -219,6 +226,7 @@ class _PromoterViewState extends State<BankDetailView> {
 
                     /// IFSC Code
                     InputTextField(
+                      capitalize: true,
                       textFieldWrapper: ifscController,
                       hintText: Strings.ifscHint,
                       labelText: Strings.ifscLabel,
@@ -228,7 +236,6 @@ class _PromoterViewState extends State<BankDetailView> {
                           _formKey.currentState?.validate();
                         }
                       },
-                      // 👈 ADD THIS
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
                           return ErrorMessages.ifscRequired;
@@ -248,6 +255,7 @@ class _PromoterViewState extends State<BankDetailView> {
                       textFieldWrapper: bankNameController,
                       hintText: Strings.bankNameHint,
                       labelText: Strings.bankNameLabel,
+                      readOnly: true,
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
                           return ErrorMessages.bankNameRequired;

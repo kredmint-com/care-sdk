@@ -4,6 +4,8 @@ import 'package:loan_sdk_package/app/modules/credit_onboarding/presentation/bloc
 import 'package:loan_sdk_package/app/modules/credit_onboarding/review/presentation/views/widgets/review_detail_widget.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
 import 'package:lottie/lottie.dart';
+
+import '../../../../../../loan_sdk_package.dart';
 import '../../../../../../widgets/custom_button.dart';
 import '../../../../../data/values/animation.dart';
 import '../../../../../data/values/constants.dart';
@@ -31,21 +33,31 @@ class _ReviewScreenState extends State<ReviewScreen> {
   @override
   void initState() {
     super.initState();
+    init();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    SdkBackHandler.onBackPressed = null;
+  }
+
+  void init() {
+    SdkBackHandler.onBackPressed = handleBackPress;
+  }
+
+  void handleBackPress() {
+    CreditCommonMethod.onBackPress(
+      context: context,
+      prevPageId: widget.prevPageId,
+      profileId: widget.profileId,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CreditOnboardingAppBar(
-        title: "",
-        onBackPressed: () {
-          CreditCommonMethod.onBackPress(
-            context: context,
-            prevPageId: widget.prevPageId,
-            profileId: widget.profileId,
-          );
-        },
-      ),
+      appBar: CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
       bottomSheet: Wrap(
         children: [
           Padding(
@@ -72,8 +84,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
         }
         return WillPopScope(
           onWillPop: () async {
-            // onBackPress();
-            return true;
+            handleBackPress();
+            return false;
           },
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),

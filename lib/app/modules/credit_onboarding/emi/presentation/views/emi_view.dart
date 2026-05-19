@@ -10,6 +10,7 @@ import 'package:loan_sdk_package/utils/helper/enums.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
 import 'package:loan_sdk_package/utils/helper/string_extension.dart';
 
+import '../../../../../../loan_sdk_package.dart';
 import '../../../../../../widgets/custom_button.dart';
 import '../../../../../data/values/strings.dart';
 import '../../../../../route/app_pages.dart';
@@ -49,15 +50,33 @@ class EmiView extends StatefulWidget {
 
 class _EmiViewState extends State<EmiView> {
   @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    SdkBackHandler.onBackPressed = null;
+  }
+
+  void handleBackPress() {
+    CreditCommonMethod.onBackPress(
+      context: context,
+      prevPageId: widget.prevPageId,
+      profileId: widget.profileId,
+    );
+  }
+
+  void init() {
+    SdkBackHandler.onBackPressed = handleBackPress;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CreditOnboardingAppBar(title: "", onBackPressed: (){
-        CreditCommonMethod.onBackPress(
-          context: context,
-          prevPageId: widget.prevPageId,
-          profileId: widget.profileId,
-        );
-      }),
+      appBar: CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
       bottomSheet: Wrap(
         children: [
           Padding(
@@ -110,11 +129,7 @@ class _EmiViewState extends State<EmiView> {
   Widget bodyWidget({required BuildContext context}) {
     return WillPopScope(
       onWillPop: () async {
-        CreditCommonMethod.onBackPress(
-          context: context,
-          prevPageId: widget.prevPageId,
-          profileId: widget.profileId,
-        );
+        handleBackPress();
         return false;
       },
       child: BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
@@ -173,7 +188,8 @@ class _EmiViewState extends State<EmiView> {
                                           ?.toString() ??
                                       ""
                                   : (staticPageRes?.emiAmt?.toString() ?? ""),
-                          principalAmount: staticPageRes?.amount?.toString() ?? "",
+                          principalAmount:
+                              staticPageRes?.amount?.toString() ?? "",
                           duration: "${staticPageRes?.tenure} ${Strings.month}",
                           interest: "${staticPageRes?.interest}",
                           isSelected: (index == state.selectedEmiPlanIndex),

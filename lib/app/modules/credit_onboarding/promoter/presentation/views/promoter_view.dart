@@ -7,6 +7,7 @@ import 'package:loan_sdk_package/app/themes/app_colors.dart';
 import 'package:loan_sdk_package/app/themes/styles.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
 
+import '../../../../../../loan_sdk_package.dart';
 import '../../../../../../widgets/custom_button.dart';
 import '../../../../../route/app_pages.dart';
 import '../../../credit_common_method.dart';
@@ -53,8 +54,23 @@ class _PromoterViewState extends State<PromoterView> {
     init();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    SdkBackHandler.onBackPressed = null;
+  }
+
   void init() {
     generatePromoterList();
+    SdkBackHandler.onBackPressed = handleBackPress;
+  }
+
+  void handleBackPress() {
+    CreditCommonMethod.onBackPress(
+      context: context,
+      prevPageId: widget.prevPageId,
+      profileId: widget.profileId,
+    );
   }
 
   void generatePromoterList() {
@@ -92,20 +108,7 @@ class _PromoterViewState extends State<PromoterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: CommonWidget().customAppBar(
-      //   title: "",
-      //   onBackPressed: onBackPress,
-      // ),
-      appBar: CreditOnboardingAppBar(
-        title: "",
-        onBackPressed: () {
-          CreditCommonMethod.onBackPress(
-            context: context,
-            prevPageId: widget.prevPageId,
-            profileId: widget.profileId,
-          );
-        },
-      ),
+      appBar: CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
       bottomSheet: Wrap(
         children: [
           Padding(
@@ -136,11 +139,7 @@ class _PromoterViewState extends State<PromoterView> {
   Widget bodyWidget({required BuildContext context}) {
     return WillPopScope(
       onWillPop: () async {
-        CreditCommonMethod.onBackPress(
-          context: context,
-          prevPageId: widget.prevPageId,
-          profileId: widget.profileId,
-        );
+        handleBackPress();
         return false;
       },
       child: BlocListener<CreditOnboardingBloc, CreditOnboardingState>(

@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:loan_sdk_package/app/data/values/images.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/onboarding_steps_response.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/loi_summary/presentation/bloc/loi_bloc.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/loi_summary/presentation/bloc/loi_event.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/loi_summary/presentation/bloc/loi_state.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/presentation/bloc/credit_onboarding_state.dart';
-import 'package:loan_sdk_package/app/themes/app_colors.dart';
 import 'package:loan_sdk_package/app/themes/styles.dart';
 import 'package:loan_sdk_package/utils/helper/enums.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
 
-import '../../../../../../widgets/common_widget.dart';
+import '../../../../../../loan_sdk_package.dart';
 import '../../../../../../widgets/custom_button.dart';
 import '../../../../../data/values/strings.dart';
 import '../../../../../route/app_pages.dart';
@@ -44,19 +42,37 @@ class LoiSummaryView extends StatefulWidget {
 
 class _LoiSummaryViewState extends State<LoiSummaryView> {
   @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  void init() {
+    SdkBackHandler.onBackPressed = handleBackPress;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    SdkBackHandler.onBackPressed = null;
+  }
+
+  void handleBackPress() {
+    CreditCommonMethod.onBackPress(
+      context: context,
+      prevPageId: widget.prevPageId,
+      profileId: widget.profileId,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: CommonWidget().customAppBar(
       //   title: "",
       //   onBackPressed: onBackPress,
       // ),
-      appBar: CreditOnboardingAppBar(title: "", onBackPressed: (){
-        CreditCommonMethod.onBackPress(
-          context: context,
-          prevPageId: widget.prevPageId,
-          profileId: widget.profileId,
-        );
-      }),
+      appBar: CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
       bottomSheet: Wrap(
         children: [
           Padding(
@@ -90,11 +106,7 @@ class _LoiSummaryViewState extends State<LoiSummaryView> {
   Widget bodyWidget({required BuildContext context}) {
     return WillPopScope(
       onWillPop: () async {
-        CreditCommonMethod.onBackPress(
-          context: context,
-          prevPageId: widget.prevPageId,
-          profileId: widget.profileId,
-        );
+        handleBackPress();
         return false;
       },
       child: BlocListener<CreditOnboardingBloc, CreditOnboardingState>(

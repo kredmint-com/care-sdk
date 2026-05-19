@@ -11,6 +11,7 @@ import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
 import 'package:loan_sdk_package/utils/helper/string_extension.dart';
 import 'package:loan_sdk_package/widgets/input_text_field.dart';
 
+import '../../../../../../loan_sdk_package.dart';
 import '../../../../../../widgets/custom_button.dart';
 import '../../../../../data/values/strings.dart';
 import '../../../../../route/app_pages.dart';
@@ -49,10 +50,29 @@ class _GstViewState extends State<GstView> {
   final formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  void init() {
+    SdkBackHandler.onBackPressed = handleBackPress;
+  }
+
+  void handleBackPress() {
+    CreditCommonMethod.onBackPress(
+      context: context,
+      prevPageId: widget.prevPageId,
+      profileId: widget.profileId,
+    );
+  }
+
+  @override
   void dispose() {
     super.dispose();
     emailController.dispose();
     formKey.currentState?.dispose();
+    SdkBackHandler.onBackPressed = null;
   }
 
   @override
@@ -60,15 +80,7 @@ class _GstViewState extends State<GstView> {
     return Scaffold(
       appBar:
       // CommonWidget().customAppBar(title: "", onBackPressed: onBackPress),
-      CreditOnboardingAppBar(
-        onBackPressed: () {
-          CreditCommonMethod.onBackPress(
-            context: context,
-            prevPageId: widget.prevPageId,
-            profileId: widget.profileId,
-          );
-        },
-      ),
+      CreditOnboardingAppBar(onBackPressed: handleBackPress),
       body: bodyWidget(context: context),
     );
   }
@@ -76,11 +88,7 @@ class _GstViewState extends State<GstView> {
   Widget bodyWidget({required BuildContext context}) {
     return WillPopScope(
       onWillPop: () async {
-        CreditCommonMethod.onBackPress(
-          context: context,
-          prevPageId: widget.prevPageId,
-          profileId: widget.profileId,
-        );
+        handleBackPress();
         return false;
       },
       child: BlocListener<CreditOnboardingBloc, CreditOnboardingState>(

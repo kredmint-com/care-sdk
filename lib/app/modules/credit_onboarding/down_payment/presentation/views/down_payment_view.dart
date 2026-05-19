@@ -10,6 +10,7 @@ import 'package:loan_sdk_package/utils/helper/enums.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
 import 'package:loan_sdk_package/utils/helper/string_extension.dart';
 
+import '../../../../../../loan_sdk_package.dart';
 import '../../../../../../widgets/custom_button.dart';
 import '../../../../../data/values/strings.dart';
 import '../../../../../route/app_pages.dart';
@@ -43,6 +44,24 @@ class DownPaymentView extends StatefulWidget {
 }
 
 class _DownPaymentViewState extends State<DownPaymentView> {
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  void init(){
+    SdkBackHandler.onBackPressed = _handleBack;
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    SdkBackHandler.onBackPressed = null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,11 +69,10 @@ class _DownPaymentViewState extends State<DownPaymentView> {
 
       bottomSheet: _bottomSheet(),
 
-      body: PopScope(
-        canPop: false,
-        onPopInvoked: (didPop) {
-          if (didPop) return;
+      body: WillPopScope(
+        onWillPop: () async {
           _handleBack();
+          return false;
         },
         child: MultiBlocListener(
           listeners: [

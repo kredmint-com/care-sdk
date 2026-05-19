@@ -120,8 +120,6 @@ enum FieldType { email }
 
 enum LayoutSubtype { INVOICE_DISCOUNTING }
 
-enum ProfileStatus { active }
-
 enum VoucherType { EXTERNAL_VOUCHER }
 
 enum CouponStatus { PENDING, FAILED, COMPLETED, ACTIVE }
@@ -181,3 +179,12 @@ enum AllowedInvoiceTypes { SUPPLIER_INVOICE, DRAWDOWN_REQUEST }
 enum BbpsApiVersion { v1, v2 }
 
 enum EmiPlanType {monthly , weekly}
+
+enum ProfileStatus {
+   PROFILE_COMPLETED,
+   PROFILE_REJECTED,
+}
+
+enum SdkStatus {
+  SDK_CLOSED
+}

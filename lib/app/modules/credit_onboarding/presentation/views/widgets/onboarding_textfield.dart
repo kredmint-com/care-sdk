@@ -85,10 +85,10 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
 
   List<TextInputFormatter> getInputFormatters({required Fields? field}) {
     final inputType = getTextInputType(inputType: field?.type ?? "");
-    final subType = widget.field?.subType;
+    final name = widget.field?.name;
 
     if (inputType == TextInputType.number) {
-      if (subType == "pincode") {
+      if (name == "pinCode") {
         return [
           FilteringTextInputFormatter.digitsOnly,
           LengthLimitingTextInputFormatter(6),

@@ -1,40 +1,97 @@
 import 'package:flutter/material.dart';
 import 'package:loan_sdk_package/app/data/values/constants.dart';
-import 'package:loan_sdk_package/app/data/values/strings.dart';
+import 'package:loan_sdk_package/utils/helper/enums.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
 import 'package:loan_sdk_package/widgets/custom_button.dart';
 import 'package:lottie/lottie.dart';
+
+import '../../../../../../injection_container.dart';
+import '../../../../../../loan_sdk_package.dart';
+import '../../../../../data/models/dto/sdk_callback.dart';
 import '../../../../../data/values/animation.dart';
 import '../../../../../themes/styles.dart';
+import '../../../credit_common_method.dart';
 
-class ProfileRejectedView extends StatelessWidget {
-  const ProfileRejectedView({super.key});
+class ProfileRejectedView extends StatefulWidget {
+  const ProfileRejectedView({
+    super.key,
+    required this.profileId,
+    required this.prevPageId,
+  });
+
+  final String profileId;
+  final String prevPageId;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      bottomSheet: Wrap(
-        children: [
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: CustomButton(
-                onTap: () {
-                },
-                buttonText: "Okay",
-              ),
-            ),
-          ),
-        ],
-      ),
-      body: bodyWidget(context: context),
+  State<ProfileRejectedView> createState() => _ProfileRejectedViewState();
+}
+
+class _ProfileRejectedViewState extends State<ProfileRejectedView> {
+
+  void handleBackPress() {
+    CreditCommonMethod.onBackPress(
+      context: context,
+      prevPageId: widget.prevPageId,
+      profileId: widget.profileId,
     );
   }
 
-  Widget bodyWidget({required BuildContext context}) {
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    SdkBackHandler.onBackPressed = null;
+  }
+
+  void init() {
+    SdkBackHandler.onBackPressed = handleBackPress;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          return;
+        }
+        handleBackPress();
+      },
+      child: Scaffold(
+        bottomSheet: Wrap(
+          children: [
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: CustomButton(
+                  onTap: () {
+                    getIt<SdkCallbacks>().onFailure?.call(
+                      message: "Loan application failed",
+                      status: ProfileStatus.PROFILE_REJECTED.name,
+                    );
+
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  buttonText: "Okay",
+                ),
+              ),
+            ),
+          ],
+        ),
+        body: _bodyWidget(),
+      ),
+    );
+  }
+
+  Widget _bodyWidget() {
     return Stack(
       children: [
-        // 🔴 Top Gradient (Red tone for rejection)
+        /// 🔴 Top Gradient
         Container(
           height: MediaQuery.of(context).size.height * 0.42,
           decoration: const BoxDecoration(
@@ -46,7 +103,7 @@ class ProfileRejectedView extends StatelessWidget {
           ),
         ),
 
-        // Curved white container
+        /// Curved white container
         Align(
           alignment: Alignment.topCenter,
           child: Container(
@@ -65,7 +122,7 @@ class ProfileRejectedView extends StatelessWidget {
           children: [
             const Spacer(),
 
-            // ❌ Circle with rejection animation
+            /// ❌ Animation Circle
             Container(
               height: 180,
               width: 180,
@@ -82,7 +139,7 @@ class ProfileRejectedView extends StatelessWidget {
 
             30.h,
 
-            // Title
+            /// Title
             Text(
               "Application Rejected",
               style: Styles.tsBlack3BBold26(),
@@ -91,7 +148,7 @@ class ProfileRejectedView extends StatelessWidget {
 
             12.h,
 
-            // Description
+            /// Description
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Text(

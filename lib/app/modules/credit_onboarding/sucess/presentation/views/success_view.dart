@@ -1,40 +1,95 @@
 import 'package:flutter/material.dart';
 import 'package:loan_sdk_package/app/data/values/strings.dart';
+import 'package:loan_sdk_package/utils/helper/enums.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
 import 'package:loan_sdk_package/widgets/custom_button.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../../../../injection_container.dart';
+import '../../../../../../loan_sdk_package.dart';
+import '../../../../../data/models/dto/sdk_callback.dart';
 import '../../../../../data/values/animation.dart';
 import '../../../../../data/values/constants.dart';
 import '../../../../../themes/styles.dart';
+import '../../../credit_common_method.dart';
 
-class SuccessView extends StatelessWidget {
-  const SuccessView({super.key});
+class SuccessView extends StatefulWidget {
+  const SuccessView({
+    super.key,
+    required this.profileId,
+    required this.prevPageId,
+  });
+
+  final String profileId;
+  final String prevPageId;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      bottomSheet: Wrap(
-        children: [
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: CustomButton(
-                onTap: () {
-                  Navigator.of(context, rootNavigator: true).pop();
-                },
-                buttonText: Strings.proceed,
-              ),
-            ),
-          ),
-        ],
-      ),
+  State<SuccessView> createState() => _SuccessViewState();
+}
 
-      body: bodyWidget(context: context),
+class _SuccessViewState extends State<SuccessView> {
+
+  void handleBackPress() async {
+    CreditCommonMethod.onBackPress(
+      context: context,
+      prevPageId: widget.prevPageId,
+      profileId: widget.profileId,
     );
   }
 
-  Widget bodyWidget({required BuildContext context}) {
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    SdkBackHandler.onBackPressed = null;
+  }
+
+  void init() {
+    SdkBackHandler.onBackPressed = handleBackPress;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          return;
+        }
+        handleBackPress();
+      },
+      child: Scaffold(
+        bottomSheet: Wrap(
+          children: [
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: CustomButton(
+                  onTap: () {
+                    getIt<SdkCallbacks>().onSuccess?.call(
+                      message: "Loan applied successfully",
+                      status: ProfileStatus.PROFILE_COMPLETED.name,
+                    );
+
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  buttonText: Strings.proceed,
+                ),
+              ),
+            ),
+          ],
+        ),
+        body: _bodyWidget(),
+      ),
+    );
+  }
+
+  Widget _bodyWidget() {
     return Stack(
       children: [
         Container(

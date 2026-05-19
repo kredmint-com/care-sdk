@@ -7,6 +7,7 @@ import 'package:loan_sdk_package/app/modules/credit_onboarding/presentation/view
 import 'package:loan_sdk_package/app/modules/credit_onboarding/presentation/views/widgets/onboarding_app_bar.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
 
+import '../../../../../loan_sdk_package.dart';
 import '../../../../../utils/helper/enums.dart';
 import '../../../../../utils/storage/storage_utils.dart';
 import '../../../../../widgets/custom_button.dart';
@@ -46,19 +47,15 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
   void dispose() {
     super.dispose();
     scrollController.dispose();
+    SdkBackHandler.onBackPressed = null;
   }
 
   void init() {
-    Storage.setSdkUser(
-      Storage.getSdkUser()?.copyWith(
-        id: widget.profileId,
-      ),
-    );
-    if(widget.accessToken?.isNotEmpty ?? false){
+    SdkBackHandler.onBackPressed = handleBackPress;
+    Storage.setSdkUser(Storage.getSdkUser()?.copyWith(id: widget.profileId));
+    if (widget.accessToken?.isNotEmpty ?? false) {
       Storage.setSdkUser(
-        Storage.getSdkUser()?.copyWith(
-          accessToken: widget.accessToken,
-        ),
+        Storage.getSdkUser()?.copyWith(accessToken: widget.accessToken),
       );
     }
     debugPrint("Entered init : ${Storage.getSdkUser()?.id}");
@@ -93,6 +90,28 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
     }
   }
 
+  void handleBackPress() {
+    final creditOnboardingBloc = context.read<CreditOnboardingBloc>();
+    CreditCommonMethod.onBackPress(
+      context: context,
+      prevPageId:
+          (creditOnboardingBloc
+                      .state
+                      .onboardingStepsResponse
+                      ?.payload
+                      ?.prePageEnable ??
+                  false)
+              ? (creditOnboardingBloc
+                      .state
+                      .onboardingStepsResponse
+                      ?.payload
+                      ?.prvPageId ??
+                  "")
+              : "",
+      profileId: widget.profileId,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CreditOnboardingBloc, CreditOnboardingState>(
@@ -100,18 +119,7 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
         return Scaffold(
           appBar: CreditOnboardingAppBar(
             title: "",
-            onBackPressed: () {
-              CreditCommonMethod.onBackPress(
-                context: context,
-                prevPageId:
-                    (state.onboardingStepsResponse?.payload?.prePageEnable ??
-                            false)
-                        ? (state.onboardingStepsResponse?.payload?.prvPageId ??
-                            "")
-                        : "",
-                profileId: widget.profileId,
-              );
-            },
+            onBackPressed: handleBackPress,
           ),
           body: bodyWidget(),
           bottomSheet: BlocBuilder<CreditOnboardingBloc, CreditOnboardingState>(
@@ -275,17 +283,7 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
       builder: (context, state) {
         return WillPopScope(
           onWillPop: () async {
-            CreditCommonMethod.onBackPress(
-              context: context,
-              prevPageId:
-                  (state.onboardingStepsResponse?.payload?.prePageEnable ??
-                          false)
-                      ? (state.onboardingStepsResponse?.payload?.prvPageId ??
-                          "")
-                      : "",
-              profileId: widget.profileId,
-            );
-
+            handleBackPress();
             return false;
           },
           child: BlocListener<CreditOnboardingBloc, CreditOnboardingState>(

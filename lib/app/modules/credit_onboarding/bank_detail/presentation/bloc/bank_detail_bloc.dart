@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/bank_detail/presentation/bloc/bank_detail_event.dart';
 import 'package:loan_sdk_package/utils/loading/loading_utils.dart';
 import '../../../domain/credit_onboarding_repository.dart';
@@ -40,9 +41,12 @@ class BankDetailBloc extends Bloc<BankDetailEvent, BankDetailState> {
     );
     LoadingUtils.hideLoader();
     if (response.data != null) {
+      if(response.data?.payload?.message?.isNotEmpty ?? false){
+        Fluttertoast.showToast(msg: response.data?.payload?.message ?? "");
+      }
       emit(
         state.copyWith(
-          bankVerified: (response.data?.payload?.status == "SUCCESS"),
+          bankVerified: (response.data?.payload?.accountStatus == "VALID"),
         ),
       );
     }

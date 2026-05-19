@@ -303,14 +303,26 @@ class AppPages {
         name: Routes.success,
         path: Routes.success,
         pageBuilder: (_, state) {
-          return MaterialPage(child: SuccessView());
+          final args = state.extra as Map<String, dynamic>;
+          return MaterialPage(
+            child: SuccessView(
+              profileId: args["profileId"],
+              prevPageId: args["prevPageId"],
+            ),
+          );
         },
       ),
       GoRoute(
         name: Routes.profileRejected,
         path: Routes.profileRejected,
         pageBuilder: (_, state) {
-          return MaterialPage(child: ProfileRejectedView());
+          final args = state.extra as Map<String, dynamic>;
+          return MaterialPage(
+            child: ProfileRejectedView(
+              profileId: args["profileId"],
+              prevPageId: args["prevPageId"],
+            ),
+          );
         },
       ),
       GoRoute(

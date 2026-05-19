@@ -11,6 +11,7 @@ import 'package:loan_sdk_package/app/modules/credit_onboarding/presentation/bloc
 import 'package:loan_sdk_package/app/themes/styles.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
 
+import '../../../../../../loan_sdk_package.dart';
 import '../../../../../../widgets/custom_button.dart';
 import '../../../../../data/values/strings.dart';
 import '../../../../../route/app_pages.dart';
@@ -50,8 +51,23 @@ class _BankStatementViewState extends State<BankStatementView> {
     init();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    SdkBackHandler.onBackPressed = null;
+  }
+
   void init() {
     generateBankStatement();
+    SdkBackHandler.onBackPressed = handleBackPress;
+  }
+
+  void handleBackPress() {
+    CreditCommonMethod.onBackPress(
+      context: context,
+      prevPageId: widget.prevPageId,
+      profileId: widget.profileId,
+    );
   }
 
   void generateBankStatement() {
@@ -79,16 +95,7 @@ class _BankStatementViewState extends State<BankStatementView> {
       //   title: "",
       //   onBackPressed: onBackPress,
       // ),
-      appBar: CreditOnboardingAppBar(
-        title: "",
-        onBackPressed: () {
-          CreditCommonMethod.onBackPress(
-            context: context,
-            prevPageId: widget.prevPageId,
-            profileId: widget.profileId,
-          );
-        },
-      ),
+      appBar: CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
       bottomSheet: Wrap(
         children: [
           BlocBuilder<BankStatementBloc, BankStatementState>(
@@ -126,11 +133,7 @@ class _BankStatementViewState extends State<BankStatementView> {
   Widget bodyWidget({required BuildContext context}) {
     return WillPopScope(
       onWillPop: () async {
-        CreditCommonMethod.onBackPress(
-          context: context,
-          prevPageId: widget.prevPageId,
-          profileId: widget.profileId,
-        );
+        handleBackPress();
         return false;
       },
       child: BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
