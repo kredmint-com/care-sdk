@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:loan_sdk_package/app/app.dart';
 import 'package:loan_sdk_package/app/bloc/app_bloc.dart';
+import 'package:loan_sdk_package/app/config/release_env.dart';
 import 'package:loan_sdk_package/app/data/models/request/sdk_request.dart';
 import 'package:loan_sdk_package/app/route/app_pages.dart';
 import 'package:loan_sdk_package/utils/helper/enums.dart';
@@ -17,10 +18,19 @@ class LoanSdkPackage {
     Function({required String message, required String status})? onSuccess,
     Function({required String message, required String status})? onFailure,
     Function({required String message, required String status})? onClose,
+    String? environment,
   }) async {
     await GetStorage.init("loan-sdk-storage-box");
 
     await getIt.reset();
+
+    if(environment?.isNotEmpty ?? false) {
+      if (environment == ReleaseEnv.uat.name) {
+        releaseEv = ReleaseEnv.dev;
+      } else if (environment == ReleaseEnv.prod.name) {
+        releaseEv = ReleaseEnv.prod;
+      }
+    }
 
     setup(
       callbacks: SdkCallbacks(

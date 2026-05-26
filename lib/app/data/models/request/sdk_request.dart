@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-SdkRequest sdkRequestFromJson(String str) => SdkRequest.fromJson(json.decode(str));
+SdkRequest sdkRequestFromJson(String str) =>
+    SdkRequest.fromJson(json.decode(str));
 
 String sdkRequestToJson(SdkRequest data) => json.encode(data.toJson());
 
@@ -42,8 +43,14 @@ class SdkRequest {
     anchorId: json["anchorId"],
     channel: json["channel"],
     version: json["version"],
-    userContext: json["userContext"] == null ? null : UserContext.fromJson(json["userContext"]),
-    clientMeta: json["clientMeta"] == null ? null : ClientMeta.fromJson(json["clientMeta"]),
+    userContext:
+        json["userContext"] == null
+            ? null
+            : UserContext.fromJson(json["userContext"]),
+    clientMeta:
+        json["clientMeta"] == null
+            ? null
+            : ClientMeta.fromJson(json["clientMeta"]),
     clientId: json["clientId"],
     clientSecret: json["clientSecret"],
   );
@@ -59,8 +66,8 @@ class SdkRequest {
     "version": version,
     "userContext": userContext?.toJson(),
     "clientMeta": clientMeta?.toJson(),
-    "clientId" : clientId,
-    "clientSecret" : clientSecret,
+    "clientId": clientId,
+    "clientSecret": clientSecret,
   };
 }
 
@@ -68,23 +75,27 @@ class ClientMeta {
   String? productNo;
   String? productName;
   num? sumInsured;
+  num? premium;
 
   ClientMeta({
     this.productNo,
     this.productName,
     this.sumInsured,
+    this.premium,
   });
 
   factory ClientMeta.fromJson(Map<String, dynamic> json) => ClientMeta(
     productNo: json["productNo"],
     productName: json["productName"],
     sumInsured: json["sumInsured"],
+    premium: json["premium"],
   );
 
   Map<String, dynamic> toJson() => {
     "productNo": productNo,
     "productName": productName,
     "sumInsured": sumInsured,
+    "premium": premium,
   };
 }
 
@@ -119,7 +130,8 @@ class UserContext {
     "name": name,
     "gender": gender,
     "email": email,
-    "dob": "${dob!.year.toString().padLeft(4, '0')}-${dob!.month.toString().padLeft(2, '0')}-${dob!.day.toString().padLeft(2, '0')}",
+    "dob":
+        "${dob!.year.toString().padLeft(4, '0')}-${dob!.month.toString().padLeft(2, '0')}-${dob!.day.toString().padLeft(2, '0')}",
     "address": address?.toJson(),
   };
 }

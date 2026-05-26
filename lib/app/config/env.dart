@@ -20,13 +20,14 @@ class Env {
     } else {
       baseUrlMap = {
         "auth": "https://auth-dev.kredmint.in",
-        "master": "https://master-dev.kredmint.in/master",
+        "master": "https://master-dev.kredmint.in",
         "user": "https://user-dev.kredmint.in",
         "lead": "https://lead-dev-v2.kredmint.in",
         "underwriting": "https://underwriting-dev.kredmint.in",
         "account": "https://account-dev.kredmint.in",
         "zappfresh": "https://api.dms.kredmint.in/oms",
         "event": "https://event-dev.kredmint.in",
+        "client": "https://client-dev.kredmint.in/client-integration",
       };
     }
     return baseUrlMap;
