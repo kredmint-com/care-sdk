@@ -1,10 +1,6 @@
-import 'dart:convert';
-
+import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:loan_sdk_package/app/config/env.dart';
 import 'package:loan_sdk_package/app/data/models/dto/response.dart';
 import 'package:loan_sdk_package/app/data/network/network_requester.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/bank_account_detail_response.dart';
