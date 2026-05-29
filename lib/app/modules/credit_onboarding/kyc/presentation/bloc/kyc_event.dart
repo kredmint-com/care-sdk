@@ -31,6 +31,8 @@ class OnVerifyMandateStatus extends KycEvent {
 
 class OnResetESignStatus extends KycEvent {}
 
+class OnResetEMandateStatus extends KycEvent {}
+
 class OnPatchKyc extends KycEvent {
   final String? pageId;
   final String? pageCategory;

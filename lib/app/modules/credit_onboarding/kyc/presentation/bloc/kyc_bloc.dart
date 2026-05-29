@@ -17,6 +17,7 @@ class KycBloc extends Bloc<KycEvent, KycState> {
     on<OnVerifyMandateStatus>(_onVerifyMandateStatus);
     on<OnPatchKyc>(_onPatchKyc);
     on<OnResetESignStatus>(_onResetESignStatus);
+    on<OnResetEMandateStatus>(_onResetEMandateStatus);
     on<OnResetUserProfileStageMapCompleted>(
       _onResetUserProfileStageMapCompleted,
     );
@@ -101,5 +102,9 @@ class KycBloc extends Bloc<KycEvent, KycState> {
 
   void _onResetESignStatus(OnResetESignStatus event, Emitter<KycState> emit) {
     emit(state.copyWith(eSignVerified: false, esignVerifyResponse: null));
+  }
+
+  void _onResetEMandateStatus(OnResetEMandateStatus event, Emitter<KycState> emit) {
+    emit(state.copyWith(eMandateVerified: false, mandateVerifyResponse: null));
   }
 }

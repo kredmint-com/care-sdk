@@ -158,7 +158,7 @@ class _KycViewState extends State<KycView> {
                     mandateVerifyResponse: state.mandateVerifyResponse,
                   ),
                 );
-                context.read<KycBloc>().add(OnResetESignStatus());
+                context.read<KycBloc>().add(OnResetEMandateStatus());
               }
 
               if ((state.userProfileStageMapCompleted) ?? false) {
