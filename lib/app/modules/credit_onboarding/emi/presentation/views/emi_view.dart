@@ -85,14 +85,12 @@ class _EmiViewState extends State<EmiView> {
               builder: (context, state) {
                 num finalAmount = 0;
                 if (state.emiPlanType == EmiPlanType.monthly.name) {
-                  finalAmount =
-                      widget
+                  finalAmount = widget
                           .staticPageRes?[state.selectedEmiPlanIndex ?? 0]
                           ?.emiAmt ??
                       0;
                 } else {
-                  finalAmount =
-                      widget
+                  finalAmount = widget
                           .staticPageRes?[state.selectedEmiPlanIndex ?? 0]
                           ?.weekly
                           ?.emiAmount ??
@@ -101,18 +99,17 @@ class _EmiViewState extends State<EmiView> {
                 return CustomButton(
                   onTap: () {
                     context.read<EmiBloc>().add(
-                      OnPatchEmiPlan(
-                        pageId: widget.pageId,
-                        pageCategory: widget.pageCategory,
-                        tenureId: widget.tenureId,
-                        tenureTypeId: widget.tenureTypeId,
-                        tenureType: state.emiPlanType?.toUpperCase() ?? "",
-                        tenure:
-                            widget
+                          OnPatchEmiPlan(
+                            pageId: widget.pageId,
+                            pageCategory: widget.pageCategory,
+                            tenureId: widget.tenureId,
+                            tenureTypeId: widget.tenureTypeId,
+                            tenureType: state.emiPlanType?.toUpperCase() ?? "",
+                            tenure: widget
                                 .staticPageRes?[state.selectedEmiPlanIndex ?? 0]
                                 ?.tenure,
-                      ),
-                    );
+                          ),
+                        );
                   },
                   buttonText:
                       "${Strings.proceed} ${Strings.withString} ${Strings.rupee}${finalAmount.toString().formatData()}",
@@ -143,14 +140,14 @@ class _EmiViewState extends State<EmiView> {
           listener: (context, state) {
             if ((state.userProfileStageMapCompleted) ?? false) {
               context.read<CreditOnboardingBloc>().add(
-                OnUpdateUserProfileStage(
-                  data: state.userProfileStageMap,
-                  profileId: widget.profileId,
-                ),
-              );
+                    OnUpdateUserProfileStage(
+                      data: state.userProfileStageMap,
+                      profileId: widget.profileId,
+                    ),
+                  );
               context.read<EmiBloc>().add(
-                OnResetUserProfileStageMapCompleted(),
-              );
+                    OnResetUserProfileStageMapCompleted(),
+                  );
             }
           },
           builder: (context, state) {
@@ -178,13 +175,12 @@ class _EmiViewState extends State<EmiView> {
                         StaticPageRes? staticPageRes =
                             widget.staticPageRes?[index];
                         return EmiPlanTile(
-                          amount:
-                              state.emiPlanType == EmiPlanType.weekly.name &&
-                                      state.selectedEmiPlanIndex == index
-                                  ? staticPageRes?.weekly?.emiAmount
-                                          ?.toString() ??
-                                      ""
-                                  : (staticPageRes?.emiAmt?.toString() ?? ""),
+                          amount: state.emiPlanType ==
+                                      EmiPlanType.weekly.name &&
+                                  state.selectedEmiPlanIndex == index
+                              ? staticPageRes?.weekly?.emiAmount?.toString() ??
+                                  ""
+                              : (staticPageRes?.emiAmt?.toString() ?? ""),
                           principalAmount:
                               staticPageRes?.amount?.toString() ?? "",
                           duration: "${staticPageRes?.tenure} ${Strings.month}",
@@ -197,14 +193,14 @@ class _EmiViewState extends State<EmiView> {
                           index: index,
                           onUpdateSelectedEmiIndex: ({required int index}) {
                             context.read<EmiBloc>().add(
-                              OnUpdateSelectedPlanIndex(index: index),
-                            );
+                                  OnUpdateSelectedPlanIndex(index: index),
+                                );
                           },
                           selectedEmiPlanType: state.emiPlanType,
                           onUpdateEmiPlanType: ({required String planType}) {
                             context.read<EmiBloc>().add(
-                              OnUpdateEmiPlanType(planType: planType),
-                            );
+                                  OnUpdateEmiPlanType(planType: planType),
+                                );
                           },
                         );
                       },

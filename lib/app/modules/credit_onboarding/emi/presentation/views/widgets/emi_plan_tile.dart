@@ -58,10 +58,7 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
           color: widget.isSelected ? AppColors.blue4F : AppColors.whiteF7,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color:
-                widget.isSelected
-                    ? AppColors.orangeF9
-                    : AppColors.grey300,
+            color: widget.isSelected ? AppColors.orangeF9 : AppColors.grey300,
             width: 1.3,
           ),
         ),
@@ -96,12 +93,11 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
                         style: Styles.tsBlack3BBold26(),
                       ),
                       TextSpan(
-                        text:
-                            widget.isSelected &&
-                                    widget.selectedEmiPlanType ==
-                                        EmiPlanType.monthly.name
-                                ? " /mo"
-                                : " /wk",
+                        text: widget.isSelected &&
+                                widget.selectedEmiPlanType ==
+                                    EmiPlanType.monthly.name
+                            ? " /mo"
+                            : " /wk",
                         style: Styles.tsGrey66Medium14(),
                       ),
                     ],
@@ -128,7 +124,8 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _bottomItem("Principal", "${Strings.rupee}${widget.principalAmount.formatData()}"),
+                  _bottomItem("Principal",
+                      "${Strings.rupee}${widget.principalAmount.formatData()}"),
                   const Text("+"),
                   _bottomItem(
                     "Interest",
@@ -180,10 +177,9 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
         ),
         child: Text(
           planType.capitalize(),
-          style:
-              isSelected
-                  ? Styles.tsWhiteSemiBold14()
-                  : Styles.tsBlack3BSemiBold14(),
+          style: isSelected
+              ? Styles.tsWhiteSemiBold14()
+              : Styles.tsBlack3BSemiBold14(),
         ),
       ),
     );
@@ -197,24 +193,22 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color:
-              widget.isSelected ? AppColors.orangeF9 : AppColors.grey400,
+          color: widget.isSelected ? AppColors.orangeF9 : AppColors.grey400,
           width: 2,
         ),
       ),
-      child:
-          widget.isSelected
-              ? Center(
-                child: Container(
-                  height: 12,
-                  width: 12,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.orangeF9,
-                  ),
+      child: widget.isSelected
+          ? Center(
+              child: Container(
+                height: 12,
+                width: 12,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.orangeF9,
                 ),
-              )
-              : null,
+              ),
+            )
+          : null,
     );
   }
 

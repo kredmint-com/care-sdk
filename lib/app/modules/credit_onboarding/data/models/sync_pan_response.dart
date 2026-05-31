@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-SyncPanResponse syncPanResponseFromJson(String str) => SyncPanResponse.fromJson(json.decode(str));
+SyncPanResponse syncPanResponseFromJson(String str) =>
+    SyncPanResponse.fromJson(json.decode(str));
 
-String syncPanResponseToJson(SyncPanResponse data) => json.encode(data.toJson());
+String syncPanResponseToJson(SyncPanResponse data) =>
+    json.encode(data.toJson());
 
 class SyncPanResponse {
   Payload? payload;
@@ -23,21 +25,23 @@ class SyncPanResponse {
     this.error,
   });
 
-  factory SyncPanResponse.fromJson(Map<String, dynamic> json) => SyncPanResponse(
-    payload: json["payload"] == null ? null : Payload.fromJson(json["payload"]),
-    sum: json["sum"],
-    timestamp: json["timestamp"],
-    requestId: json["requestId"],
-    error: json["error"],
-  );
+  factory SyncPanResponse.fromJson(Map<String, dynamic> json) =>
+      SyncPanResponse(
+        payload:
+            json["payload"] == null ? null : Payload.fromJson(json["payload"]),
+        sum: json["sum"],
+        timestamp: json["timestamp"],
+        requestId: json["requestId"],
+        error: json["error"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "payload": payload?.toJson(),
-    "sum": sum,
-    "timestamp": timestamp,
-    "requestId": requestId,
-    "error": error,
-  };
+        "payload": payload?.toJson(),
+        "sum": sum,
+        "timestamp": timestamp,
+        "requestId": requestId,
+        "error": error,
+      };
 }
 
 class Payload {
@@ -82,46 +86,47 @@ class Payload {
   });
 
   factory Payload.fromJson(Map<String, dynamic> json) => Payload(
-    status: json["status"],
-    message: json["message"],
-    pan: json["pan"],
-    type: json["type"],
-    gender: json["gender"],
-    email: json["email"],
-    address: json["address"] == null ? null : Address.fromJson(json["address"]),
-    referenceId: json["reference_id"],
-    verificationId: json["verification_id"],
-    nameProvided: json["name_provided"],
-    registeredName: json["registered_name"],
-    namePanCard: json["name_pan_card"],
-    firstName: json["first_name"],
-    lastName: json["last_name"],
-    dateOfBirth: json["date_of_birth"],
-    maskedAadhaarNumber: json["masked_aadhaar_number"],
-    mobileNumber: json["mobile_number"],
-    aadhaarLinked: json["aadhaar_linked"],
-  );
+        status: json["status"],
+        message: json["message"],
+        pan: json["pan"],
+        type: json["type"],
+        gender: json["gender"],
+        email: json["email"],
+        address:
+            json["address"] == null ? null : Address.fromJson(json["address"]),
+        referenceId: json["reference_id"],
+        verificationId: json["verification_id"],
+        nameProvided: json["name_provided"],
+        registeredName: json["registered_name"],
+        namePanCard: json["name_pan_card"],
+        firstName: json["first_name"],
+        lastName: json["last_name"],
+        dateOfBirth: json["date_of_birth"],
+        maskedAadhaarNumber: json["masked_aadhaar_number"],
+        mobileNumber: json["mobile_number"],
+        aadhaarLinked: json["aadhaar_linked"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "pan": pan,
-    "type": type,
-    "gender": gender,
-    "email": email,
-    "address": address?.toJson(),
-    "reference_id": referenceId,
-    "verification_id": verificationId,
-    "name_provided": nameProvided,
-    "registered_name": registeredName,
-    "name_pan_card": namePanCard,
-    "first_name": firstName,
-    "last_name": lastName,
-    "date_of_birth": dateOfBirth,
-    "masked_aadhaar_number": maskedAadhaarNumber,
-    "mobile_number": mobileNumber,
-    "aadhaar_linked": aadhaarLinked,
-  };
+        "status": status,
+        "message": message,
+        "pan": pan,
+        "type": type,
+        "gender": gender,
+        "email": email,
+        "address": address?.toJson(),
+        "reference_id": referenceId,
+        "verification_id": verificationId,
+        "name_provided": nameProvided,
+        "registered_name": registeredName,
+        "name_pan_card": namePanCard,
+        "first_name": firstName,
+        "last_name": lastName,
+        "date_of_birth": dateOfBirth,
+        "masked_aadhaar_number": maskedAadhaarNumber,
+        "mobile_number": mobileNumber,
+        "aadhaar_linked": aadhaarLinked,
+      };
 }
 
 class Address {
@@ -142,20 +147,20 @@ class Address {
   });
 
   factory Address.fromJson(Map<String, dynamic> json) => Address(
-    street: json["street"],
-    city: json["city"],
-    state: json["state"],
-    pincode: json["pincode"],
-    country: json["country"],
-    fullAddress: json["full_address"],
-  );
+        street: json["street"],
+        city: json["city"],
+        state: json["state"],
+        pincode: json["pincode"],
+        country: json["country"],
+        fullAddress: json["full_address"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "street": street,
-    "city": city,
-    "state": state,
-    "pincode": pincode,
-    "country": country,
-    "full_address": fullAddress,
-  };
+        "street": street,
+        "city": city,
+        "state": state,
+        "pincode": pincode,
+        "country": country,
+        "full_address": fullAddress,
+      };
 }

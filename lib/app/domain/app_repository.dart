@@ -4,5 +4,6 @@ import '../data/models/dto/response.dart';
 import '../data/models/response/user_profile_response.dart';
 
 abstract class AppRepository {
-  Future<RepoResponse<UserProfileResponse>> fetchUserProfile({required SdkRequest sdkRequest});
+  Future<RepoResponse<UserProfileResponse>> fetchUserProfile(
+      {required SdkRequest sdkRequest});
 }

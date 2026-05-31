@@ -535,7 +535,8 @@ class Strings {
   static const String selectFoodCategory = "Select Food Category";
   static const String billAlreadyPaid = "Bill already paid";
   static const String congratulations = "Congratulations! 🎉";
-  static const String yourLoanApplicationHasBeenApprovedSuccessfully = "Your loan application has been approved successfully";
+  static const String yourLoanApplicationHasBeenApprovedSuccessfully =
+      "Your loan application has been approved successfully";
   static const String withString = "with";
   static const String month = "Month";
   static const String atTheRate = "@";

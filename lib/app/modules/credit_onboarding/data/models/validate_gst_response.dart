@@ -8,7 +8,7 @@ class ValidateGstResponse {
 
   ValidateGstResponse.fromJson(Map<String, dynamic> json) {
     payload =
-    json['payload'] != null ? Payload.fromJson(json['payload']) : null;
+        json['payload'] != null ? Payload.fromJson(json['payload']) : null;
     sum = json['sum'];
     timestamp = json['timestamp'];
     error = json['error'];
@@ -45,20 +45,20 @@ class Payload {
 
   Payload(
       {this.gstin,
-        this.type,
-        this.valid,
-        this.nameMatched,
-        this.legalName,
-        this.businessType,
-        this.centerJurisdiction,
-        this.stateJurisdiction,
-        this.status,
-        this.gstInStatus,
-        this.dateOfRegistration,
-        this.lastUpdateDate,
-        this.tradeName,
-        this.principalAddress,
-        this.natureOfBusinessActivities});
+      this.type,
+      this.valid,
+      this.nameMatched,
+      this.legalName,
+      this.businessType,
+      this.centerJurisdiction,
+      this.stateJurisdiction,
+      this.status,
+      this.gstInStatus,
+      this.dateOfRegistration,
+      this.lastUpdateDate,
+      this.tradeName,
+      this.principalAddress,
+      this.natureOfBusinessActivities});
 
   Payload.fromJson(Map<String, dynamic> json) {
     gstin = json['gstin'];
@@ -117,14 +117,14 @@ class PrincipalAddress {
 
   PrincipalAddress(
       {this.addressLine1,
-        this.addressLine2,
-        this.addressLine3,
-        this.state,
-        this.city,
-        this.pincode,
-        this.addressType,
-        this.beatType,
-        this.addressLines});
+      this.addressLine2,
+      this.addressLine3,
+      this.state,
+      this.city,
+      this.pincode,
+      this.addressType,
+      this.beatType,
+      this.addressLines});
 
   PrincipalAddress.fromJson(Map<String, dynamic> json) {
     addressLine1 = json['addressLine1'];

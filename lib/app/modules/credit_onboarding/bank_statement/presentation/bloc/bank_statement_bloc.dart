@@ -28,7 +28,8 @@ class BankStatementBloc extends Bloc<BankStatementEvent, BankStatementState> {
     on<OnGenerateBankStatement>(_onGenerateBankStatement);
   }
 
-  void _onGenerateBankStatement(OnGenerateBankStatement event , Emitter<BankStatementState> emit){
+  void _onGenerateBankStatement(
+      OnGenerateBankStatement event, Emitter<BankStatementState> emit) {
     emit(state.copyWith(documentList: event.documentList ?? []));
   }
 
@@ -45,8 +46,8 @@ class BankStatementBloc extends Bloc<BankStatementEvent, BankStatementState> {
     );
     if (result != null && result.files.single.path != null) {
       LoadingUtils.showLoader();
-      final response =
-          await repository.uploadDocument(file: result.files.single, profileId: event.profileId);
+      final response = await repository.uploadDocument(
+          file: result.files.single, profileId: event.profileId);
       LoadingUtils.hideLoader();
       if (response.data != null) {
         Document? document = response.data?.payload;
@@ -68,7 +69,10 @@ class BankStatementBloc extends Bloc<BankStatementEvent, BankStatementState> {
   void _onDocumentDelete(
       OnDocumentDelete event, Emitter<BankStatementState> emit) async {
     LoadingUtils.showLoader();
-    final response = await repository.deleteDocument(id: event.documentId, profileId: event.profileId,);
+    final response = await repository.deleteDocument(
+      id: event.documentId,
+      profileId: event.profileId,
+    );
     LoadingUtils.hideLoader();
     if (response.data != null) {
       List<Document>? documentList = state.documentList ?? [];
@@ -80,7 +84,9 @@ class BankStatementBloc extends Bloc<BankStatementEvent, BankStatementState> {
   void _onFetchBankStatement(
       OnFetchBankStatement event, Emitter<BankStatementState> emit) async {
     LoadingUtils.showLoader();
-    final response = await repository.fetchBankStatement(profileId: event.profileId,);
+    final response = await repository.fetchBankStatement(
+      profileId: event.profileId,
+    );
     LoadingUtils.hideLoader();
     if (response.data != null) {
       emit(

@@ -16,7 +16,6 @@ import 'package:loan_sdk_package/utils/storage/storage_utils.dart';
 import '../../../../../utils/helper/enums.dart';
 import '../../../../../utils/helper/exception_handler.dart';
 import '../../../../data/values/urls.dart';
-import '../models/address_detail_response.dart';
 import '../models/fetch_bank_statement_response.dart';
 import '../models/mandate_verify_response.dart';
 import '../models/onboarding_steps_response.dart';
@@ -177,28 +176,27 @@ class CreditOnboardingRepositoryImpl extends CreditOnboardingRepository {
   }) async {
     final response = await networkRequester.post(
       path: Urls.report(baseUrlType: BaseUrlType.underwriting.name),
-      data:
-          (itr)
-              ? {
+      data: (itr)
+          ? {
+              "type": type,
+              "reportType": reportType,
+              "userId": profileId,
+              "request": {
                 "type": type,
-                "reportType": reportType,
-                "userId": profileId,
-                "request": {
-                  "type": type,
-                  "username": username,
-                  "password": password,
-                },
-              }
-              : {
-                "type": type,
-                "reportType": reportType,
-                "userId": profileId,
-                "request": {
-                  "type": type,
-                  "gstin": [username],
-                  "email": [password],
-                },
+                "username": username,
+                "password": password,
               },
+            }
+          : {
+              "type": type,
+              "reportType": reportType,
+              "userId": profileId,
+              "request": {
+                "type": type,
+                "gstin": [username],
+                "email": [password],
+              },
+            },
     );
     return response is APIException
         ? RepoResponse(error: response)

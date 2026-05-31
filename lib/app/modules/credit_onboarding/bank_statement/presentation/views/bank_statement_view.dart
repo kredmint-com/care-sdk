@@ -63,8 +63,7 @@ class _BankStatementViewState extends State<BankStatementView> {
   }
 
   Future<bool> handleBackPress() async {
-    return await
-    CreditCommonMethod.onBackPress(
+    return await CreditCommonMethod.onBackPress(
       context: context,
       prevPageId: widget.prevPageId,
       profileId: widget.profileId,
@@ -85,8 +84,8 @@ class _BankStatementViewState extends State<BankStatementView> {
       );
     }
     context.read<BankStatementBloc>().add(
-      OnGenerateBankStatement(documentList: documentList),
-    );
+          OnGenerateBankStatement(documentList: documentList),
+        );
   }
 
   @override
@@ -110,11 +109,11 @@ class _BankStatementViewState extends State<BankStatementView> {
                       return CustomButton(
                         onTap: () {
                           context.read<BankStatementBloc>().add(
-                            OnProceedTap(
-                              pageId: widget.pageId,
-                              pageCategory: widget.pageCategory,
-                            ),
-                          );
+                                OnProceedTap(
+                                  pageId: widget.pageId,
+                                  pageCategory: widget.pageCategory,
+                                ),
+                              );
                         },
                         buttonText: Strings.proceed,
                         disabled: (state.documentList?.isEmpty) ?? true,
@@ -159,18 +158,18 @@ class _BankStatementViewState extends State<BankStatementView> {
               debugPrint("Success data : $success");
               if (success.toString() == "true") {
                 context.read<CreditOnboardingBloc>().add(
-                  coe.OnFetchUserProfilePage(profileId: widget.profileId),
-                );
+                      coe.OnFetchUserProfilePage(profileId: widget.profileId),
+                    );
                 context.read<CreditOnboardingBloc>().add(coe.OnReset());
               }
             }
             if (state.userProfileStageMap?.isNotEmpty ?? false) {
               context.read<CreditOnboardingBloc>().add(
-                coe.OnUpdateUserProfileStage(
-                  data: state.userProfileStageMap,
-                  profileId: widget.profileId,
-                ),
-              );
+                    coe.OnUpdateUserProfileStage(
+                      data: state.userProfileStageMap,
+                      profileId: widget.profileId,
+                    ),
+                  );
               context.read<BankStatementBloc>().add(OnReset());
             }
           },
@@ -182,8 +181,7 @@ class _BankStatementViewState extends State<BankStatementView> {
                 HeaderWidget(
                   heading: widget.page?.heading?.title ?? "",
                   subHeading: widget.page?.heading?.subTitle ?? "",
-                  iconUrl:
-                      (widget.page?.heading?.appLogo) ??
+                  iconUrl: (widget.page?.heading?.appLogo) ??
                       ((widget.page?.heading?.pageLogo) ?? ""),
                 ),
                 36.h,
@@ -208,10 +206,10 @@ class _BankStatementViewState extends State<BankStatementView> {
                             groupValue: (state.radioGroupValue ?? ""),
                             onChanged: (val) {
                               context.read<BankStatementBloc>().add(
-                                OnBankStatementMethodChange(
-                                  methodName: Strings.netbanking,
-                                ),
-                              );
+                                    OnBankStatementMethodChange(
+                                      methodName: Strings.netbanking,
+                                    ),
+                                  );
                             },
                           ),
                         ),
@@ -222,19 +220,18 @@ class _BankStatementViewState extends State<BankStatementView> {
                             value: Strings.uploadBankStatement,
                             title: Text(
                               Strings.uploadBankStatement,
-                              style:
-                                  (state.radioGroupValue ==
-                                          Strings.uploadBankStatement)
-                                      ? Styles.tsPrimaryRegular12()
-                                      : Styles.tsGrey86Regular12(),
+                              style: (state.radioGroupValue ==
+                                      Strings.uploadBankStatement)
+                                  ? Styles.tsPrimaryRegular12()
+                                  : Styles.tsGrey86Regular12(),
                             ),
                             groupValue: (state.radioGroupValue ?? ""),
                             onChanged: (val) {
                               context.read<BankStatementBloc>().add(
-                                OnBankStatementMethodChange(
-                                  methodName: Strings.uploadBankStatement,
-                                ),
-                              );
+                                    OnBankStatementMethodChange(
+                                      methodName: Strings.uploadBankStatement,
+                                    ),
+                                  );
                             },
                           ),
                         ),
@@ -248,8 +245,8 @@ class _BankStatementViewState extends State<BankStatementView> {
                     return (state.radioGroupValue == Strings.netbanking)
                         ? NetbankingWidget(profileId: widget.profileId)
                         : UploadBankStatementWidget(
-                          profileId: widget.profileId,
-                        );
+                            profileId: widget.profileId,
+                          );
                   },
                 ),
                 80.h,

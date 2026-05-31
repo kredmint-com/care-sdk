@@ -21,7 +21,9 @@ class LoiBloc extends Bloc<LoiEvent, LoiState> {
 
   void _onPatchLoi(OnPatchLoi event, Emitter<LoiState> emit) async {
     LoadingUtils.showLoader();
-    final response = await repository.patchLoi(profileId: event.profileId,);
+    final response = await repository.patchLoi(
+      profileId: event.profileId,
+    );
     LoadingUtils.hideLoader();
     if (response.data != null) {
       Map<String, dynamic> dataMap = {};

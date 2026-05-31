@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loan_sdk_package/app/themes/styles.dart';
-import 'package:loan_sdk_package/utils/helper/cached_image.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
 
 class HeaderWidget extends StatelessWidget {

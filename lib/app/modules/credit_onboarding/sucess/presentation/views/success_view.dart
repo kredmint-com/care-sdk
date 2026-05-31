@@ -65,9 +65,9 @@ class _SuccessViewState extends State<SuccessView> {
                 child: CustomButton(
                   onTap: () {
                     getIt<SdkCallbacks>().onSuccess?.call(
-                      message: "Loan applied successfully",
-                      status: ProfileStatus.PROFILE_COMPLETED.name,
-                    );
+                          message: "Loan applied successfully",
+                          status: ProfileStatus.PROFILE_COMPLETED.name,
+                        );
 
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -95,7 +95,6 @@ class _SuccessViewState extends State<SuccessView> {
             ),
           ),
         ),
-
         Align(
           alignment: Alignment.topCenter,
           child: Container(
@@ -109,11 +108,9 @@ class _SuccessViewState extends State<SuccessView> {
             ),
           ),
         ),
-
         Column(
           children: [
             const Spacer(),
-
             Container(
               height: 180,
               width: 180,
@@ -127,17 +124,13 @@ class _SuccessViewState extends State<SuccessView> {
                 package: Constants.packageName,
               ),
             ),
-
             30.h,
-
             Text(
               Strings.congratulations,
               style: Styles.tsBlack3BBold26(),
               textAlign: TextAlign.center,
             ),
-
             12.h,
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Text(
@@ -149,7 +142,6 @@ class _SuccessViewState extends State<SuccessView> {
                 ),
               ),
             ),
-
             const Spacer(flex: 2),
           ],
         ),

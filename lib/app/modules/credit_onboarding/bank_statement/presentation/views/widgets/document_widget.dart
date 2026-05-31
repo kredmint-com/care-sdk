@@ -1,4 +1,3 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/upload_document_response.dart';
 import 'package:loan_sdk_package/app/themes/styles.dart';

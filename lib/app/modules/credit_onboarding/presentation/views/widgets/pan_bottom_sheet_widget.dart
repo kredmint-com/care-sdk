@@ -29,23 +29,20 @@ class PanBottomSheetWidget extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 20),
             child: Image.asset(Images.panExit),
           ),
-
           Text(
             Strings.areYouSureYouWantToExit,
             style: Styles.tsBlack3BSemiBold16(),
             textAlign: TextAlign.center,
           ),
           8.h,
-
           Text(
             Strings.dontWorryYourProgressIsSavedAndYoullPickUpWhereYouLeftOff,
             style: Styles.tsBlack3BMedium12(),
             textAlign: TextAlign.center,
           ),
           24.h,
-
           CustomButton(
-            onTap: (){
+            onTap: () {
               context.pop();
             },
             buttonText: Strings.no,
@@ -54,18 +51,15 @@ class PanBottomSheetWidget extends StatelessWidget {
             buttonRadius: BorderRadius.circular(25),
             buttonPadding: EdgeInsets.symmetric(vertical: 10),
           ),
-
           16.h,
-
           CustomButton(
-            onTap: (){},
+            onTap: () {},
             buttonText: Strings.yesIWillDoItLater,
             buttonTextStyle: Styles.tsWhiteMedium14(),
             buttonColor: AppColors.blue24,
             buttonRadius: BorderRadius.circular(25),
             buttonPadding: EdgeInsets.symmetric(vertical: 10),
           ),
-
         ],
       ),
     );

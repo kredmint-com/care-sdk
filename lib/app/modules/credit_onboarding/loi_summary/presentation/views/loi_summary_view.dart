@@ -58,8 +58,7 @@ class _LoiSummaryViewState extends State<LoiSummaryView> {
   }
 
   Future<bool> handleBackPress() async {
-    return
-    CreditCommonMethod.onBackPress(
+    return CreditCommonMethod.onBackPress(
       context: context,
       prevPageId: widget.prevPageId,
       profileId: widget.profileId,
@@ -84,12 +83,12 @@ class _LoiSummaryViewState extends State<LoiSummaryView> {
                   onTap: () {
                     if (state.loiAccepted ?? false) {
                       context.read<LoiBloc>().add(
-                        OnPatchLoi(
-                          pageCategory: PageCategory.LoiSummary.name,
-                          pageId: widget.pageId,
-                          profileId: widget.profileId,
-                        ),
-                      );
+                            OnPatchLoi(
+                              pageCategory: PageCategory.LoiSummary.name,
+                              pageId: widget.pageId,
+                              profileId: widget.profileId,
+                            ),
+                          );
                     }
                   },
                   buttonText: Strings.proceed,
@@ -121,11 +120,11 @@ class _LoiSummaryViewState extends State<LoiSummaryView> {
           listener: (context, state) {
             if (state.userProfileStageMap?.isNotEmpty ?? false) {
               context.read<CreditOnboardingBloc>().add(
-                coe.OnUpdateUserProfileStage(
-                  data: state.userProfileStageMap,
-                  profileId: widget.profileId,
-                ),
-              );
+                    coe.OnUpdateUserProfileStage(
+                      data: state.userProfileStageMap,
+                      profileId: widget.profileId,
+                    ),
+                  );
               context.read<LoiBloc>().add(OnReset());
             }
           },
@@ -137,10 +136,9 @@ class _LoiSummaryViewState extends State<LoiSummaryView> {
                 HeaderWidget(
                   heading: widget.page?.heading?.title ?? "",
                   subHeading: widget.page?.heading?.subTitle ?? "",
-                  iconUrl:
-                      (widget.page?.heading?.appLogo?.isNotEmpty ?? false)
-                          ? (widget.page?.heading?.appLogo ?? "")
-                          : ((widget.page?.heading?.pageLogo) ?? ""),
+                  iconUrl: (widget.page?.heading?.appLogo?.isNotEmpty ?? false)
+                      ? (widget.page?.heading?.appLogo ?? "")
+                      : ((widget.page?.heading?.pageLogo) ?? ""),
                 ),
                 40.h,
                 tileWidget(
@@ -192,7 +190,7 @@ class _LoiSummaryViewState extends State<LoiSummaryView> {
                   title: Strings.repaymentFrequencyInDays,
                   value:
                       widget.loiSummary?.recursivePaymentDuration?.toString() ??
-                      "",
+                          "",
                 ),
                 20.h,
                 Row(
@@ -203,8 +201,8 @@ class _LoiSummaryViewState extends State<LoiSummaryView> {
                           value: state.loiAccepted ?? false,
                           onChanged: (val) {
                             context.read<LoiBloc>().add(
-                              OnAcceptLoi(val: val ?? false),
-                            );
+                                  OnAcceptLoi(val: val ?? false),
+                                );
                           },
                         );
                       },

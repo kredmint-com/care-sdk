@@ -16,6 +16,6 @@ class OnSendMailTap extends GstEvent {
   });
 }
 
-class OnReset extends GstEvent{}
+class OnReset extends GstEvent {}
 
 class OnSubmitButtonClicked extends GstEvent {}

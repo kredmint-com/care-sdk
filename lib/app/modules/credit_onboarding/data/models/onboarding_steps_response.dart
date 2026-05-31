@@ -82,18 +82,15 @@ class Payload {
     prePageEnable = json['prePageEnable'];
     prvPageId = json['prvPageId'];
     prvPageName = json['prvPageName'];
-    loiSummary =
-        json["loiSummary"] != null
-            ? LoiSummary.fromJson(json["loiSummary"])
-            : null;
-    processingFee =
-        json["processingFee"] != null
-            ? ProcessingFeeData.fromJson(json["processingFee"])
-            : null;
-    digioKycResponse =
-        json["digioToken"] != null
-            ? DigioKycResponse.fromJson(json["digioToken"])
-            : null;
+    loiSummary = json["loiSummary"] != null
+        ? LoiSummary.fromJson(json["loiSummary"])
+        : null;
+    processingFee = json["processingFee"] != null
+        ? ProcessingFeeData.fromJson(json["processingFee"])
+        : null;
+    digioKycResponse = json["digioToken"] != null
+        ? DigioKycResponse.fromJson(json["digioToken"])
+        : null;
     pageCategory = json['pageCategory'];
     profileId = json['profileId'];
     product = json['product'];
@@ -557,10 +554,9 @@ class StaticPageRes {
     pan = json['pan'];
     address =
         json['address'] != null ? Address.fromJson(json['address']) : null;
-    permanentAddress =
-        json['permanentAddress'] != null
-            ? Address.fromJson(json['permanentAddress'])
-            : null;
+    permanentAddress = json['permanentAddress'] != null
+        ? Address.fromJson(json['permanentAddress'])
+        : null;
     isSameAsCurrentAddress = json['isSameAsCurrentAddress'];
     url = json["url"];
     userId = json["userId"];
@@ -613,18 +609,18 @@ class Weekly {
   Weekly({this.tenure, this.emiAmount, this.interest, this.totalAmount});
 
   factory Weekly.fromJson(Map<String, dynamic> json) => Weekly(
-    tenure: json["tenure"],
-    emiAmount: json["emiAmount"],
-    interest: json["interest"],
-    totalAmount: json["totalAmount"],
-  );
+        tenure: json["tenure"],
+        emiAmount: json["emiAmount"],
+        interest: json["interest"],
+        totalAmount: json["totalAmount"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "tenure": tenure,
-    "emiAmount": emiAmount,
-    "interest": interest,
-    "totalAmount": totalAmount,
-  };
+        "tenure": tenure,
+        "emiAmount": emiAmount,
+        "interest": interest,
+        "totalAmount": totalAmount,
+      };
 }
 
 class LoiSummary {
@@ -803,10 +799,9 @@ class ProcessingFeeData {
     gst = json['gst'];
     enablePayNow = json['enablePayNow'];
     description = json['description'];
-    pgOrderRequest =
-        json['pgOrderRequest'] != null
-            ? PgOrderRequest.fromJson(json['pgOrderRequest'])
-            : null;
+    pgOrderRequest = json['pgOrderRequest'] != null
+        ? PgOrderRequest.fromJson(json['pgOrderRequest'])
+        : null;
     pgEnable = json['pgEnable'];
     tenure = json["tenure"];
     tenureType = json["tenureType"];
@@ -908,10 +903,9 @@ class DigioKycResponse {
     customerName = json['customer_name'];
     expireInDays = json['expire_in_days'];
     reminderRegistered = json['reminder_registered'];
-    accessToken =
-        json['access_token'] != null
-            ? AccessToken.fromJson(json['access_token'])
-            : null;
+    accessToken = json['access_token'] != null
+        ? AccessToken.fromJson(json['access_token'])
+        : null;
     workflowName = json['workflow_name'];
     autoApproved = json['auto_approved'];
     templateId = json['template_id'];

@@ -18,7 +18,6 @@ class OnContinueTap extends ItrEvent {
   });
 }
 
-class OnReset extends ItrEvent{}
+class OnReset extends ItrEvent {}
 
 class OnUpdateObscureText extends ItrEvent {}
-

@@ -8,7 +8,10 @@ import '../../../../../../themes/styles.dart';
 import '../../bloc/bank_statement_bloc.dart';
 
 class NetbankingWidget extends StatelessWidget {
-  const NetbankingWidget({super.key, required this.profileId,});
+  const NetbankingWidget({
+    super.key,
+    required this.profileId,
+  });
 
   final String profileId;
 
@@ -19,8 +22,8 @@ class NetbankingWidget extends StatelessWidget {
         CustomButton(
           onTap: () async {
             context.read<BankStatementBloc>().add(OnFetchBankStatement(
-              profileId: profileId,
-            ));
+                  profileId: profileId,
+                ));
           },
           buttonText: Strings.fetchBankStatement,
           suffixPadding: 8,

@@ -36,8 +36,8 @@ class _AppState extends State<App> {
     );
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<AppBloc>().add(
-        OnFetchUserProfile(sdkRequest: widget.sdkRequest),
-      );
+            OnFetchUserProfile(sdkRequest: widget.sdkRequest),
+          );
     });
   }
 
@@ -60,48 +60,46 @@ class _AppState extends State<App> {
       },
       builder: (context, state) {
         return Scaffold(
-          body:
-              (state.isLoading ?? false)
-                  ? Center(child: const CircularProgressIndicator())
-                  : GestureDetector(
-                    onTap: () {
-                      if (FocusManager.instance.primaryFocus?.hasFocus ??
-                          false) {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                      }
-                    },
-                    child: SafeArea(
-                      top: false,
-                      bottom: true,
-                      minimum: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).padding.bottom,
-                      ),
-                      child: MaterialApp.router(
-                        builder: (context, child) {
-                          return MediaQuery(
-                            data: MediaQuery.of(
-                              context,
-                            ).copyWith(textScaler: TextScaler.noScaling),
-                            child: child!,
-                          );
-                        },
-                        title: 'Loan sdk',
-                        debugShowCheckedModeBanner: false,
-                        theme: ThemeData(
-                          colorScheme: ColorScheme.fromSeed(
-                            seedColor: AppColors.primaryColor(),
-                          ),
-                          scaffoldBackgroundColor: AppColors.backgroundColor,
-                          bottomSheetTheme: BottomSheetThemeData(
-                            backgroundColor: AppColors.backgroundColor,
-                          ),
-                          useMaterial3: true,
-                          fontFamily: Env.fontFamily,
+          body: (state.isLoading ?? false)
+              ? Center(child: const CircularProgressIndicator())
+              : GestureDetector(
+                  onTap: () {
+                    if (FocusManager.instance.primaryFocus?.hasFocus ?? false) {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    }
+                  },
+                  child: SafeArea(
+                    top: false,
+                    bottom: true,
+                    minimum: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).padding.bottom,
+                    ),
+                    child: MaterialApp.router(
+                      builder: (context, child) {
+                        return MediaQuery(
+                          data: MediaQuery.of(
+                            context,
+                          ).copyWith(textScaler: TextScaler.noScaling),
+                          child: child!,
+                        );
+                      },
+                      title: 'Loan sdk',
+                      debugShowCheckedModeBanner: false,
+                      theme: ThemeData(
+                        colorScheme: ColorScheme.fromSeed(
+                          seedColor: AppColors.primaryColor(),
                         ),
-                        routerConfig: AppPages.router,
+                        scaffoldBackgroundColor: AppColors.backgroundColor,
+                        bottomSheetTheme: BottomSheetThemeData(
+                          backgroundColor: AppColors.backgroundColor,
+                        ),
+                        useMaterial3: true,
+                        fontFamily: Env.fontFamily,
                       ),
+                      routerConfig: AppPages.router,
                     ),
                   ),
+                ),
         );
       },
     );

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../app/data/values/strings.dart';
-import '../../service/analytics_service.dart';
 import '../loading/loading_utils.dart';
 
 class APIException implements Exception {
@@ -29,7 +28,8 @@ class ExceptionHandler {
         String? errorText =
             json.decode(json.encode(error.response?.data))?["error"];
         if ((errorMessage != null || errorText != null) &&
-            (error.response?.statusCode != 401) && showException) {
+            (error.response?.statusCode != 401) &&
+            showException) {
           Fluttertoast.showToast(
             msg: errorMessage ??
                 ((errorText == "invalid_grant")

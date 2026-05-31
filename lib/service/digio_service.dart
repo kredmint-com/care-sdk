@@ -7,7 +7,7 @@ import 'package:kyc_workflow/kyc_workflow.dart';
 import '../utils/loading/loading_utils.dart';
 
 class DigioService {
-   DigioConfig getKycDigioConfig() {
+  DigioConfig getKycDigioConfig() {
     var digioConfig = DigioConfig();
     digioConfig.theme.primaryColor = "#32a83a";
     digioConfig.logo = "https://www.digio.in/images/digio_blue.png";
@@ -23,7 +23,7 @@ class DigioService {
   //   return digioConfig;
   // }
 
-   Future<Map<String, dynamic>> startKyc({
+  Future<Map<String, dynamic>> startKyc({
     required String documentId,
     required String identifier,
     required String tokenId,

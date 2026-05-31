@@ -48,8 +48,9 @@ class _RollingWidgetState extends State<RollingWidget>
 
   @override
   Widget build(BuildContext context) {
-    final startStr =
-        _start.toString().padLeft(widget.discountedPrice.toString().length, '0');
+    final startStr = _start
+        .toString()
+        .padLeft(widget.discountedPrice.toString().length, '0');
     final endStr = widget.discountedPrice.toString();
     //
     // // measure digit height once (for clipping box)

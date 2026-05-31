@@ -36,10 +36,7 @@ import '../../service/navigation_service.dart';
 //   }
 // }
 
-import 'package:flutter/material.dart';
-
 class LoadingUtils {
-
   static OverlayEntry? _overlayEntry;
 
   /// Show loader

@@ -11,7 +11,7 @@ class KycBloc extends Bloc<KycEvent, KycState> {
   final DigioService digioService;
 
   KycBloc({required this.repository, required this.digioService})
-    : super(KycState()) {
+      : super(KycState()) {
     on<OnStartDigioKyc>(_onStartDigioKyc);
     on<OnVerifyEsignStatus>(_onVerifyEsignStatus);
     on<OnVerifyMandateStatus>(_onVerifyMandateStatus);
@@ -75,10 +75,9 @@ class KycBloc extends Bloc<KycEvent, KycState> {
     Map<String, dynamic> userProfileStageMap = {
       "pageId": event.pageId,
       "pageCategory": event.pageCategory,
-      "staticPageRes":
-          event.esignVerifyResponse != null
-              ? event.esignVerifyResponse?.toJson()
-              : event.mandateVerifyResponse?.toJson(),
+      "staticPageRes": event.esignVerifyResponse != null
+          ? event.esignVerifyResponse?.toJson()
+          : event.mandateVerifyResponse?.toJson(),
     };
     emit(
       state.copyWith(
@@ -104,7 +103,8 @@ class KycBloc extends Bloc<KycEvent, KycState> {
     emit(state.copyWith(eSignVerified: false, esignVerifyResponse: null));
   }
 
-  void _onResetEMandateStatus(OnResetEMandateStatus event, Emitter<KycState> emit) {
+  void _onResetEMandateStatus(
+      OnResetEMandateStatus event, Emitter<KycState> emit) {
     emit(state.copyWith(eMandateVerified: false, mandateVerifyResponse: null));
   }
 }

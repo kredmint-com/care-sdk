@@ -7,7 +7,6 @@ import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/valid
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/validate_pan_response.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/verify_esign_response.dart';
 import '../../../data/models/dto/response.dart';
-import '../data/models/address_detail_response.dart';
 import '../data/models/bank_account_detail_response.dart';
 import '../data/models/fetch_bank_statement_response.dart';
 import '../data/models/onboarding_steps_response.dart';

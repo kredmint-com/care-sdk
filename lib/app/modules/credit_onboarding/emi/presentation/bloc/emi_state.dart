@@ -26,7 +26,7 @@ class EmiState {
       finalAmount: finalAmount ?? this.finalAmount,
       userProfileStageMap: userProfileStageMap ?? this.userProfileStageMap,
       userProfileStageMapCompleted:
-      userProfileStageMapCompleted ?? this.userProfileStageMapCompleted,
+          userProfileStageMapCompleted ?? this.userProfileStageMapCompleted,
     );
   }
 }

@@ -64,19 +64,15 @@ class _DownPaymentViewState extends State<DownPaymentView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
-
       bottomSheet: _bottomSheet(),
-
       body: WillPopScope(
         onWillPop: handleBackPress,
         child: MultiBlocListener(
           listeners: [
             /// 🔹 Credit onboarding listener
             BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
-              listenWhen:
-                  (prev, curr) =>
-                      prev.userProfileStageUpdated !=
-                      curr.userProfileStageUpdated,
+              listenWhen: (prev, curr) =>
+                  prev.userProfileStageUpdated != curr.userProfileStageUpdated,
               listener: (context, state) {
                 if (state.userProfileStageUpdated == true) {
                   context.replaceNamed(
@@ -91,18 +87,17 @@ class _DownPaymentViewState extends State<DownPaymentView> {
 
             /// 🔹 Payment success listener
             BlocListener<DownPaymentBloc, DownPaymentState>(
-              listenWhen:
-                  (prev, curr) =>
-                      prev.paymentSuccessfull != curr.paymentSuccessfull,
+              listenWhen: (prev, curr) =>
+                  prev.paymentSuccessfull != curr.paymentSuccessfull,
               listener: (context, state) {
                 if (state.paymentSuccessfull == true) {
                   context.read<DownPaymentBloc>().add(
-                    OnPatchDownPayment(
-                      pageId: widget.pageId,
-                      pageCategory: widget.pageCategory,
-                      paymentPatchResponse: state.paymentPatchResponse,
-                    ),
-                  );
+                        OnPatchDownPayment(
+                          pageId: widget.pageId,
+                          pageCategory: widget.pageCategory,
+                          paymentPatchResponse: state.paymentPatchResponse,
+                        ),
+                      );
 
                   context.read<DownPaymentBloc>().add(OnReset());
                 }
@@ -111,22 +106,21 @@ class _DownPaymentViewState extends State<DownPaymentView> {
 
             /// 🔹 Profile update listener
             BlocListener<DownPaymentBloc, DownPaymentState>(
-              listenWhen:
-                  (prev, curr) =>
-                      prev.userProfileStageMapCompleted !=
-                      curr.userProfileStageMapCompleted,
+              listenWhen: (prev, curr) =>
+                  prev.userProfileStageMapCompleted !=
+                  curr.userProfileStageMapCompleted,
               listener: (context, state) {
                 if (state.userProfileStageMapCompleted == true) {
                   context.read<CreditOnboardingBloc>().add(
-                    coe.OnUpdateUserProfileStage(
-                      data: state.userProfileStageMap,
-                      profileId: widget.profileId,
-                    ),
-                  );
+                        coe.OnUpdateUserProfileStage(
+                          data: state.userProfileStageMap,
+                          profileId: widget.profileId,
+                        ),
+                      );
 
                   context.read<DownPaymentBloc>().add(
-                    OnResetUserProfileStageMapCompleted(),
-                  );
+                        OnResetUserProfileStageMapCompleted(),
+                      );
                 }
               },
             ),
@@ -158,26 +152,20 @@ class _DownPaymentViewState extends State<DownPaymentView> {
                 onTap: () {
                   if (widget.processingFeeData?.pgEnable ?? false) {
                     context.read<DownPaymentBloc>().add(
-                      OnPay(
-                        amount:
-                            widget.processingFeeData?.pgOrderRequest?.amount
-                                ?.toString() ??
-                            "",
-                        lenderId:
-                            widget
-                                .processingFeeData
-                                ?.pgOrderRequest
-                                ?.lenderId ??
-                            "",
-                        profileId: widget.profileId,
-                        paymentType:
-                            widget
-                                .processingFeeData
-                                ?.pgOrderRequest
-                                ?.paymentType ??
-                            "",
-                      ),
-                    );
+                          OnPay(
+                            amount: widget
+                                    .processingFeeData?.pgOrderRequest?.amount
+                                    ?.toString() ??
+                                "",
+                            lenderId: widget.processingFeeData?.pgOrderRequest
+                                    ?.lenderId ??
+                                "",
+                            profileId: widget.profileId,
+                            paymentType: widget.processingFeeData
+                                    ?.pgOrderRequest?.paymentType ??
+                                "",
+                          ),
+                        );
                   }
                 },
                 buttonText:
@@ -200,13 +188,11 @@ class _DownPaymentViewState extends State<DownPaymentView> {
           HeaderWidget(
             heading: widget.page?.heading?.title ?? "",
             subHeading: widget.page?.heading?.subTitle ?? "",
-            iconUrl:
-                (widget.page?.heading?.appLogo?.isNotEmpty ?? false)
-                    ? (widget.page?.heading?.appLogo ?? "")
-                    : ((widget.page?.heading?.pageLogo) ?? ""),
+            iconUrl: (widget.page?.heading?.appLogo?.isNotEmpty ?? false)
+                ? (widget.page?.heading?.appLogo ?? "")
+                : ((widget.page?.heading?.pageLogo) ?? ""),
           ),
           12.h,
-
           _paymentCard(),
         ],
       ),
@@ -277,11 +263,9 @@ class _DownPaymentViewState extends State<DownPaymentView> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 16),
                 Divider(color: Colors.grey.withOpacity(0.3)),
                 const SizedBox(height: 10),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

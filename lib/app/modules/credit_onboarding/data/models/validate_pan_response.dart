@@ -7,18 +7,18 @@ class ValidatePanResponse {
 
   ValidatePanResponse.fromJson(Map<String, dynamic> json) {
     payload =
-    json['payload'] != null ? new Payload.fromJson(json['payload']) : null;
+        json['payload'] != null ? Payload.fromJson(json['payload']) : null;
     sum = json['sum'];
     timestamp = json['timestamp'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.payload != null) {
-      data['payload'] = this.payload!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (payload != null) {
+      data['payload'] = payload!.toJson();
     }
-    data['sum'] = this.sum;
-    data['timestamp'] = this.timestamp;
+    data['sum'] = sum;
+    data['timestamp'] = timestamp;
     return data;
   }
 }
@@ -39,17 +39,17 @@ class Payload {
 
   Payload(
       {this.pan,
-        this.nameMatched,
-        this.entityType,
-        this.status,
-        this.dobProvided,
-        this.dobMatched,
-        this.type,
-        this.referenceId,
-        this.nameProvided,
-        this.valid,
-        this.message,
-        this.aadhaarSeedingStatus});
+      this.nameMatched,
+      this.entityType,
+      this.status,
+      this.dobProvided,
+      this.dobMatched,
+      this.type,
+      this.referenceId,
+      this.nameProvided,
+      this.valid,
+      this.message,
+      this.aadhaarSeedingStatus});
 
   Payload.fromJson(Map<String, dynamic> json) {
     pan = json['pan'];
@@ -67,19 +67,19 @@ class Payload {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['pan'] = this.pan;
-    data['nameMatched'] = this.nameMatched;
-    data['entityType'] = this.entityType;
-    data['status'] = this.status;
-    data['dobProvided'] = this.dobProvided;
-    data['dobMatched'] = this.dobMatched;
-    data['type'] = this.type;
-    data['referenceId'] = this.referenceId;
-    data['nameProvided'] = this.nameProvided;
-    data['valid'] = this.valid;
-    data['message'] = this.message;
-    data['aadhaarSeedingStatus'] = this.aadhaarSeedingStatus;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['pan'] = pan;
+    data['nameMatched'] = nameMatched;
+    data['entityType'] = entityType;
+    data['status'] = status;
+    data['dobProvided'] = dobProvided;
+    data['dobMatched'] = dobMatched;
+    data['type'] = type;
+    data['referenceId'] = referenceId;
+    data['nameProvided'] = nameProvided;
+    data['valid'] = valid;
+    data['message'] = message;
+    data['aadhaarSeedingStatus'] = aadhaarSeedingStatus;
     return data;
   }
 }

@@ -10,7 +10,10 @@ class ListviewShimmer extends StatelessWidget {
       required this.containerWidth,
       // required this.listViewHeight,
       // required this.listViewWidth,
-      this.scrollDirection, required this.containerPadding, this.primaryBorderRadius, this.secondaryBorderRadius});
+      this.scrollDirection,
+      required this.containerPadding,
+      this.primaryBorderRadius,
+      this.secondaryBorderRadius});
 
   final double containerHeight;
   final double containerWidth;
@@ -25,8 +28,7 @@ class ListviewShimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-         borderRadius: BorderRadius.circular(primaryBorderRadius ?? 0)
-      ),
+          borderRadius: BorderRadius.circular(primaryBorderRadius ?? 0)),
       // width: listViewWidth,
       // height: listViewHeight,
       child: ListView.builder(

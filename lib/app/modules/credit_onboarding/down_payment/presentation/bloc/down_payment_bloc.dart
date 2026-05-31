@@ -92,7 +92,7 @@ class DownPaymentBloc extends Bloc<DownPaymentEvent, DownPaymentState> {
             paymentPatchResponse: patchPaymentResponse.data,
           ),
         );
-     }
+      }
     }
   }
 

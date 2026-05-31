@@ -35,40 +35,38 @@ class SdkRequest {
   });
 
   factory SdkRequest.fromJson(Map<String, dynamic> json) => SdkRequest(
-    username: json["username"],
-    source: json["source"],
-    program: json["program"],
-    requestId: json["requestId"],
-    puId: json["puId"],
-    anchorId: json["anchorId"],
-    channel: json["channel"],
-    version: json["version"],
-    userContext:
-        json["userContext"] == null
+        username: json["username"],
+        source: json["source"],
+        program: json["program"],
+        requestId: json["requestId"],
+        puId: json["puId"],
+        anchorId: json["anchorId"],
+        channel: json["channel"],
+        version: json["version"],
+        userContext: json["userContext"] == null
             ? null
             : UserContext.fromJson(json["userContext"]),
-    clientMeta:
-        json["clientMeta"] == null
+        clientMeta: json["clientMeta"] == null
             ? null
             : ClientMeta.fromJson(json["clientMeta"]),
-    clientId: json["clientId"],
-    clientSecret: json["clientSecret"],
-  );
+        clientId: json["clientId"],
+        clientSecret: json["clientSecret"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "username": username,
-    "source": source,
-    "program": program,
-    "requestId": requestId,
-    "puId": puId,
-    "anchorId": anchorId,
-    "channel": channel,
-    "version": version,
-    "userContext": userContext?.toJson(),
-    "clientMeta": clientMeta?.toJson(),
-    "clientId": clientId,
-    "clientSecret": clientSecret,
-  };
+        "username": username,
+        "source": source,
+        "program": program,
+        "requestId": requestId,
+        "puId": puId,
+        "anchorId": anchorId,
+        "channel": channel,
+        "version": version,
+        "userContext": userContext?.toJson(),
+        "clientMeta": clientMeta?.toJson(),
+        "clientId": clientId,
+        "clientSecret": clientSecret,
+      };
 }
 
 class ClientMeta {
@@ -85,18 +83,18 @@ class ClientMeta {
   });
 
   factory ClientMeta.fromJson(Map<String, dynamic> json) => ClientMeta(
-    productNo: json["productNo"],
-    productName: json["productName"],
-    sumInsured: json["sumInsured"],
-    premium: json["premium"],
-  );
+        productNo: json["productNo"],
+        productName: json["productName"],
+        sumInsured: json["sumInsured"],
+        premium: json["premium"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "productNo": productNo,
-    "productName": productName,
-    "sumInsured": sumInsured,
-    "premium": premium,
-  };
+        "productNo": productNo,
+        "productName": productName,
+        "sumInsured": sumInsured,
+        "premium": premium,
+      };
 }
 
 class UserContext {
@@ -117,23 +115,24 @@ class UserContext {
   });
 
   factory UserContext.fromJson(Map<String, dynamic> json) => UserContext(
-    pan: json["pan"],
-    name: json["name"],
-    gender: json["gender"],
-    email: json["email"],
-    dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
-    address: json["address"] == null ? null : Address.fromJson(json["address"]),
-  );
+        pan: json["pan"],
+        name: json["name"],
+        gender: json["gender"],
+        email: json["email"],
+        dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
+        address:
+            json["address"] == null ? null : Address.fromJson(json["address"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "pan": pan,
-    "name": name,
-    "gender": gender,
-    "email": email,
-    "dob":
-        "${dob!.year.toString().padLeft(4, '0')}-${dob!.month.toString().padLeft(2, '0')}-${dob!.day.toString().padLeft(2, '0')}",
-    "address": address?.toJson(),
-  };
+        "pan": pan,
+        "name": name,
+        "gender": gender,
+        "email": email,
+        "dob":
+            "${dob!.year.toString().padLeft(4, '0')}-${dob!.month.toString().padLeft(2, '0')}-${dob!.day.toString().padLeft(2, '0')}",
+        "address": address?.toJson(),
+      };
 }
 
 class Address {
@@ -152,18 +151,18 @@ class Address {
   });
 
   factory Address.fromJson(Map<String, dynamic> json) => Address(
-    addressLine1: json["addressLine1"],
-    addressLine2: json["addressLine2"],
-    city: json["city"],
-    state: json["state"],
-    pincode: json["pincode"],
-  );
+        addressLine1: json["addressLine1"],
+        addressLine2: json["addressLine2"],
+        city: json["city"],
+        state: json["state"],
+        pincode: json["pincode"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "addressLine1": addressLine1,
-    "addressLine2": addressLine2,
-    "city": city,
-    "state": state,
-    "pincode": pincode,
-  };
+        "addressLine1": addressLine1,
+        "addressLine2": addressLine2,
+        "city": city,
+        "state": state,
+        "pincode": pincode,
+      };
 }

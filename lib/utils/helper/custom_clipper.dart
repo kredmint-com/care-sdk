@@ -21,14 +21,14 @@ class CustomShape extends CustomClipper<Path> {
   }
 }
 
-
 @immutable
 class ClipShadowPath extends StatelessWidget {
   final Shadow shadow;
   final CustomClipper<Path> clipper;
   final Widget child;
 
-  const ClipShadowPath({super.key,
+  const ClipShadowPath({
+    super.key,
     required this.shadow,
     required this.clipper,
     required this.child,

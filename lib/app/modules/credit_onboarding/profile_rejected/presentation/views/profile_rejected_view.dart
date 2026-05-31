@@ -64,9 +64,9 @@ class _ProfileRejectedViewState extends State<ProfileRejectedView> {
                 child: CustomButton(
                   onTap: () {
                     getIt<SdkCallbacks>().onFailure?.call(
-                      message: "Loan application failed",
-                      status: ProfileStatus.PROFILE_REJECTED.name,
-                    );
+                          message: "Loan application failed",
+                          status: ProfileStatus.PROFILE_REJECTED.name,
+                        );
 
                     Navigator.of(context, rootNavigator: true).pop();
                   },

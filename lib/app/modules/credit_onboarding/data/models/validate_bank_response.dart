@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-ValidateBankResponse validateBankResponseFromJson(String str) => ValidateBankResponse.fromJson(json.decode(str));
+ValidateBankResponse validateBankResponseFromJson(String str) =>
+    ValidateBankResponse.fromJson(json.decode(str));
 
-String validateBankResponseToJson(ValidateBankResponse data) => json.encode(data.toJson());
+String validateBankResponseToJson(ValidateBankResponse data) =>
+    json.encode(data.toJson());
 
 class ValidateBankResponse {
   Payload? payload;
@@ -23,21 +25,23 @@ class ValidateBankResponse {
     this.error,
   });
 
-  factory ValidateBankResponse.fromJson(Map<String, dynamic> json) => ValidateBankResponse(
-    payload: json["payload"] == null ? null : Payload.fromJson(json["payload"]),
-    sum: json["sum"],
-    timestamp: json["timestamp"],
-    requestId: json["requestId"],
-    error: json["error"],
-  );
+  factory ValidateBankResponse.fromJson(Map<String, dynamic> json) =>
+      ValidateBankResponse(
+        payload:
+            json["payload"] == null ? null : Payload.fromJson(json["payload"]),
+        sum: json["sum"],
+        timestamp: json["timestamp"],
+        requestId: json["requestId"],
+        error: json["error"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "payload": payload?.toJson(),
-    "sum": sum,
-    "timestamp": timestamp,
-    "requestId": requestId,
-    "error": error,
-  };
+        "payload": payload?.toJson(),
+        "sum": sum,
+        "timestamp": timestamp,
+        "requestId": requestId,
+        "error": error,
+      };
 }
 
 class Payload {
@@ -84,46 +88,46 @@ class Payload {
   });
 
   factory Payload.fromJson(Map<String, dynamic> json) => Payload(
-    accountNumber: json["accountNumber"],
-    status: json["status"],
-    subCode: json["subCode"],
-    message: json["message"],
-    accountStatus: json["accountStatus"],
-    accountStatusCode: json["accountStatusCode"],
-    valid: json["valid"],
-    nameMatched: json["nameMatched"],
-    nameProvided: json["nameProvided"],
-    nameAtBank: json["nameAtBank"],
-    refId: json["refId"],
-    bankName: json["bankName"],
-    utr: json["utr"],
-    city: json["city"],
-    branch: json["branch"],
-    micr: json["micr"],
-    ifscProvided: json["ifscProvided"],
-    referenceId: json["referenceId"],
-    documentType: json["documentType"],
-  );
+        accountNumber: json["accountNumber"],
+        status: json["status"],
+        subCode: json["subCode"],
+        message: json["message"],
+        accountStatus: json["accountStatus"],
+        accountStatusCode: json["accountStatusCode"],
+        valid: json["valid"],
+        nameMatched: json["nameMatched"],
+        nameProvided: json["nameProvided"],
+        nameAtBank: json["nameAtBank"],
+        refId: json["refId"],
+        bankName: json["bankName"],
+        utr: json["utr"],
+        city: json["city"],
+        branch: json["branch"],
+        micr: json["micr"],
+        ifscProvided: json["ifscProvided"],
+        referenceId: json["referenceId"],
+        documentType: json["documentType"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "accountNumber": accountNumber,
-    "status": status,
-    "subCode": subCode,
-    "message": message,
-    "accountStatus": accountStatus,
-    "accountStatusCode": accountStatusCode,
-    "valid": valid,
-    "nameMatched": nameMatched,
-    "nameProvided": nameProvided,
-    "nameAtBank": nameAtBank,
-    "refId": refId,
-    "bankName": bankName,
-    "utr": utr,
-    "city": city,
-    "branch": branch,
-    "micr": micr,
-    "ifscProvided": ifscProvided,
-    "referenceId": referenceId,
-    "documentType": documentType,
-  };
+        "accountNumber": accountNumber,
+        "status": status,
+        "subCode": subCode,
+        "message": message,
+        "accountStatus": accountStatus,
+        "accountStatusCode": accountStatusCode,
+        "valid": valid,
+        "nameMatched": nameMatched,
+        "nameProvided": nameProvided,
+        "nameAtBank": nameAtBank,
+        "refId": refId,
+        "bankName": bankName,
+        "utr": utr,
+        "city": city,
+        "branch": branch,
+        "micr": micr,
+        "ifscProvided": ifscProvided,
+        "referenceId": referenceId,
+        "documentType": documentType,
+      };
 }

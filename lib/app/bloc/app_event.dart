@@ -11,6 +11,3 @@ class OnFetchUserProfile extends AppEvent {
 }
 
 class OnResetUserProfile extends AppEvent {}
-
-
-

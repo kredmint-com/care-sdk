@@ -2,21 +2,10 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
-
-// import 'package:flutter_alice/alice.dart';
-import 'package:go_router/go_router.dart';
-import 'package:loan_sdk_package/app/config/app_config.dart';
-import 'package:loan_sdk_package/widgets/common_widget.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import '../../../service/navigation_service.dart';
-import '../../../utils/helper/common_method.dart';
-import '../../../utils/helper/enums.dart';
 import '../../../utils/helper/exception_handler.dart';
 import '../../../utils/storage/storage_utils.dart';
-import '../../config/env.dart';
-import '../../route/app_pages.dart';
 import '../values/constants.dart';
-import '../values/urls.dart';
 
 /// =======================
 /// FAILED REQUEST MODEL
@@ -38,7 +27,7 @@ class NetworkRequester {
 
   /// 🔴 Failed requests handling
   final List<FailedRequest> _failedRequestsQueue = [];
-  bool _isNoInternetDialogShowing = false;
+  final bool _isNoInternetDialogShowing = false;
   bool _isRetrying = false;
 
   /// 🔒 REQUEST QUEUE (NEW)
@@ -432,10 +421,9 @@ class NetworkRequester {
           (contentType?.isNotEmpty ?? false) ? contentType : "application/json",
       "dt": "MOBILE",
       "os": Platform.isAndroid ? "ANDROID" : "IOS",
-      "Authorization":
-      (basicAuthorizationToken?.isNotEmpty ?? false)
-              ? basicAuthorizationToken
-              : "Bearer ${Storage.getSdkUser()?.accessToken ?? ""}",
+      "Authorization": (basicAuthorizationToken?.isNotEmpty ?? false)
+          ? basicAuthorizationToken
+          : "Bearer ${Storage.getSdkUser()?.accessToken ?? ""}",
       "did": deviceId,
       "bn": packageInfo?.buildNumber ?? "",
     };

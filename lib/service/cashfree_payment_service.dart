@@ -44,9 +44,9 @@ class CashfreePaymentService {
         debugPrint("Cashfree error : $orderId");
         completer.complete({
           "message": "failure",
-          "errorMessage" : errorResponse.getMessage(),
-          "errorCode" : errorResponse.getCode(),
-          "errorStatus" : errorResponse.getStatus(),
+          "errorMessage": errorResponse.getMessage(),
+          "errorCode": errorResponse.getCode(),
+          "errorStatus": errorResponse.getStatus(),
         });
       });
       cfPaymentGatewayService.doPayment(cfWebCheckout);

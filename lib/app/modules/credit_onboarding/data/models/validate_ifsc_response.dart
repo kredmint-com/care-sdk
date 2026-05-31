@@ -9,7 +9,7 @@ class ValidateIfscResponse {
 
   ValidateIfscResponse.fromJson(Map<String, dynamic> json) {
     payload =
-    json['payload'] != null ? Payload.fromJson(json['payload']) : null;
+        json['payload'] != null ? Payload.fromJson(json['payload']) : null;
     sum = json['sum'];
     timestamp = json['timestamp'];
     requestId = json['requestId'];
@@ -54,28 +54,28 @@ class Payload {
 
   Payload(
       {this.response,
-        this.type,
-        this.valid,
-        this.status,
-        this.subCode,
-        this.message,
-        this.bank,
-        this.ifsc,
-        this.neft,
-        this.imps,
-        this.rtgs,
-        this.upi,
-        this.ft,
-        this.card,
-        this.micr,
-        this.nbin,
-        this.address,
-        this.city,
-        this.state,
-        this.branch,
-        this.ifscSubcode,
-        this.category,
-        this.swiftCode});
+      this.type,
+      this.valid,
+      this.status,
+      this.subCode,
+      this.message,
+      this.bank,
+      this.ifsc,
+      this.neft,
+      this.imps,
+      this.rtgs,
+      this.upi,
+      this.ft,
+      this.card,
+      this.micr,
+      this.nbin,
+      this.address,
+      this.city,
+      this.state,
+      this.branch,
+      this.ifscSubcode,
+      this.category,
+      this.swiftCode});
 
   Payload.fromJson(Map<String, dynamic> json) {
     response = json['response'];

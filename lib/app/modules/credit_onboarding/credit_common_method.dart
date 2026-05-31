@@ -15,11 +15,11 @@ class CreditCommonMethod {
     debugPrint("onBackPress called : $prevPageId");
     if (prevPageId.isEmpty) {
       getIt<SdkCallbacks>().onClose?.call(
-        message: "Sdk closed",
-        status: SdkStatus.SDK_CLOSED.name,
-      );
+            message: "Sdk closed",
+            status: SdkStatus.SDK_CLOSED.name,
+          );
       Navigator.of(context, rootNavigator: true).pop();
-    }else {
+    } else {
       context.replaceNamed(
         Routes.sdkCreditOnboarding,
         extra: {"profileId": profileId, "prevPageId": prevPageId},

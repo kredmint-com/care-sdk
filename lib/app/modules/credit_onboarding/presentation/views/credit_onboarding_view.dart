@@ -60,11 +60,11 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
     }
     debugPrint("Entered init : ${Storage.getSdkUser()?.id}");
     context.read<CreditOnboardingBloc>().add(
-      OnFetchUserProfilePage(
-        profileId: widget.profileId,
-        pageId: widget.prevPageId,
-      ),
-    );
+          OnFetchUserProfilePage(
+            profileId: widget.profileId,
+            pageId: widget.prevPageId,
+          ),
+        );
   }
 
   void scrollToFirstInvalidField({required List<Fields?> fieldsList}) {
@@ -94,20 +94,13 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
     final creditOnboardingBloc = context.read<CreditOnboardingBloc>();
     return CreditCommonMethod.onBackPress(
       context: context,
-      prevPageId:
-          (creditOnboardingBloc
-                      .state
-                      .onboardingStepsResponse
-                      ?.payload
-                      ?.prePageEnable ??
-                  false)
-              ? (creditOnboardingBloc
-                      .state
-                      .onboardingStepsResponse
-                      ?.payload
-                      ?.prvPageId ??
-                  "")
-              : "",
+      prevPageId: (creditOnboardingBloc
+                  .state.onboardingStepsResponse?.payload?.prePageEnable ??
+              false)
+          ? (creditOnboardingBloc
+                  .state.onboardingStepsResponse?.payload?.prvPageId ??
+              "")
+          : "",
       profileId: widget.profileId,
     );
   }
@@ -132,15 +125,14 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                       right: 16.0,
                       bottom: 16,
                     ),
-                    child: BlocConsumer<
-                      CreditOnboardingBloc,
-                      CreditOnboardingState
-                    >(
+                    child: BlocConsumer<CreditOnboardingBloc,
+                        CreditOnboardingState>(
                       listener: (context, state) async {
                         if (state.userProfileStageUpdated ?? false) {
                           context.read<CreditOnboardingBloc>().add(
-                            OnFetchUserProfilePage(profileId: widget.profileId),
-                          );
+                                OnFetchUserProfilePage(
+                                    profileId: widget.profileId),
+                              );
                           context.read<CreditOnboardingBloc>().add(OnReset());
                         }
                       },
@@ -151,8 +143,8 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                             onTap: () {
                               // debugPrint("button tap 1");
                               context.read<CreditOnboardingBloc>().add(
-                                OnUpdateSubmitStatus(),
-                              );
+                                    OnUpdateSubmitStatus(),
+                                  );
                               bool isFormValid =
                                   formKey.currentState!.validate();
                               if (isFormValid) {
@@ -162,11 +154,9 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                                 Map<String, dynamic> dataMap = {};
                                 Map<String, dynamic> addressBody = {};
                                 String addressFieldId = "";
-                                for (
-                                  int i = 0;
-                                  i < (state.fieldsList?.length ?? 0);
-                                  i++
-                                ) {
+                                for (int i = 0;
+                                    i < (state.fieldsList?.length ?? 0);
+                                    i++) {
                                   if (state.fieldsList?[i]?.type ==
                                           InputType.address.name ||
                                       (state.fieldsList?[i]?.subType ==
@@ -174,19 +164,17 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                                     addressFieldId =
                                         state.fieldsList?[i]?.fieldId ?? "";
                                     addressBody[state.fieldsList?[i]?.subType ??
-                                            ""] =
-                                        state.fieldsList?[i]?.value;
+                                        ""] = state.fieldsList?[i]?.value;
                                     debugPrint(
                                       "Address body data : ${state.fieldsList?[i]?.subType ?? ""}...${state.fieldsList?[i]?.value}",
                                     );
                                   }
                                   if (state.fieldsList?[i]?.type ==
                                       InputType.file.name) {
-                                    bool documentError =
-                                        ((state.fieldsList?[i]?.mandatory ??
-                                                false) &&
-                                            (state.documentList?.isEmpty ??
-                                                true));
+                                    bool documentError = ((state
+                                                .fieldsList?[i]?.mandatory ??
+                                            false) &&
+                                        (state.documentList?.isEmpty ?? true));
                                     if (documentError) {
                                       isFormValid = !documentError;
                                       Fluttertoast.showToast(
@@ -217,12 +205,10 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                                     }
 
                                     fieldData[state.fieldsList?[i]?.fieldId ??
-                                            ""] =
-                                        state.fieldsList?[i]?.value;
+                                        ""] = state.fieldsList?[i]?.value;
                                   } else {
                                     fieldData[state.fieldsList?[i]?.fieldId ??
-                                            ""] =
-                                        state.fieldsList?[i]?.value;
+                                        ""] = state.fieldsList?[i]?.value;
                                   }
                                 }
 
@@ -232,26 +218,24 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
 
                                 dataMap["data"] = fieldData;
 
-                                dataMap["pageId"] =
-                                    state
+                                dataMap["pageId"] = state
                                         .onboardingStepsResponse
                                         ?.payload
                                         ?.pageId ??
                                     "";
 
-                                dataMap["pageCategory"] =
-                                    state
+                                dataMap["pageCategory"] = state
                                         .onboardingStepsResponse
                                         ?.payload
                                         ?.pageCategory ??
                                     "";
                                 if (isFormValid) {
                                   context.read<CreditOnboardingBloc>().add(
-                                    OnUpdateUserProfileStage(
-                                      data: dataMap,
-                                      profileId: widget.profileId,
-                                    ),
-                                  );
+                                        OnUpdateUserProfileStage(
+                                          data: dataMap,
+                                          profileId: widget.profileId,
+                                        ),
+                                      );
                                 }
                               } else {
                                 scrollToFirstInvalidField(
@@ -305,75 +289,56 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                   return (state.formLoading ?? true)
                       ? SizedBox.shrink()
                       : SingleChildScrollView(
-                        controller: scrollController,
-                        padding: EdgeInsets.all(
-                          MediaQuery.of(context).padding.bottom + 16.0,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            HeaderWidget(
-                              heading:
-                                  state
-                                      .onboardingStepsResponse
-                                      ?.payload
-                                      ?.page
-                                      ?.heading
-                                      ?.title ??
-                                  "",
-                              subHeading:
-                                  state
-                                      .onboardingStepsResponse
-                                      ?.payload
-                                      ?.page
-                                      ?.heading
-                                      ?.subTitle ??
-                                  "",
-                              iconUrl:
-                                  (state
-                                              .onboardingStepsResponse
-                                              ?.payload
-                                              ?.page
-                                              ?.heading
-                                              ?.appLogo
-                                              ?.isNotEmpty ??
-                                          false)
-                                      ? (state
-                                              .onboardingStepsResponse
-                                              ?.payload
-                                              ?.page
-                                              ?.heading
-                                              ?.appLogo ??
-                                          "")
-                                      : ((state
-                                              .onboardingStepsResponse
-                                              ?.payload
-                                              ?.page
-                                              ?.heading
-                                              ?.pageLogo) ??
-                                          ""),
-                            ),
-                            12.h,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: List<Widget>.generate(
-                                fieldsList.length,
-                                (index) {
-                                  return CreditOnboardingWidget(
-                                    field: fieldsList[index],
-                                    formKey: formKey,
-                                    submitClicked:
-                                        (state.submitClicked ?? false),
-                                    index: index,
-                                    profileId: widget.profileId,
-                                  );
-                                },
+                          controller: scrollController,
+                          padding: EdgeInsets.all(
+                            MediaQuery.of(context).padding.bottom + 16.0,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              HeaderWidget(
+                                heading: state.onboardingStepsResponse?.payload
+                                        ?.page?.heading?.title ??
+                                    "",
+                                subHeading: state.onboardingStepsResponse
+                                        ?.payload?.page?.heading?.subTitle ??
+                                    "",
+                                iconUrl: (state
+                                            .onboardingStepsResponse
+                                            ?.payload
+                                            ?.page
+                                            ?.heading
+                                            ?.appLogo
+                                            ?.isNotEmpty ??
+                                        false)
+                                    ? (state.onboardingStepsResponse?.payload
+                                            ?.page?.heading?.appLogo ??
+                                        "")
+                                    : ((state.onboardingStepsResponse?.payload
+                                            ?.page?.heading?.pageLogo) ??
+                                        ""),
                               ),
-                            ),
-                            80.h,
-                          ],
-                        ),
-                      );
+                              12.h,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: List<Widget>.generate(
+                                  fieldsList.length,
+                                  (index) {
+                                    return CreditOnboardingWidget(
+                                      field: fieldsList[index],
+                                      formKey: formKey,
+                                      submitClicked:
+                                          (state.submitClicked ?? false),
+                                      index: index,
+                                      profileId: widget.profileId,
+                                    );
+                                  },
+                                ),
+                              ),
+                              80.h,
+                            ],
+                          ),
+                        );
                 },
               ),
             ),

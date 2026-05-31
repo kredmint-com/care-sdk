@@ -20,7 +20,7 @@ class CreditOnboardingBloc
   final CommonMethod commonMethod;
 
   CreditOnboardingBloc({required this.repository, required this.commonMethod})
-    : super(CreditOnboardingState()) {
+      : super(CreditOnboardingState()) {
     on<OnFetchUserProfilePage>(_onFetchUserProfilePage);
     on<OnUpdateSubmitStatus>(_onUpdateSubmitStatus);
     on<OnUpdateField>(_onUpdateField);
@@ -145,10 +145,9 @@ class CreditOnboardingBloc
             "fieldsList?[i]?.value is List<dynamic> : ${fieldsList?[i]?.value is List<dynamic>}",
           );
           if (fieldsList?[i]?.value is List<dynamic>) {
-            documentList =
-                (fieldsList?[i]?.value as List<dynamic>)
-                    .map((ele) => Document.fromJson(ele))
-                    .toList();
+            documentList = (fieldsList?[i]?.value as List<dynamic>)
+                .map((ele) => Document.fromJson(ele))
+                .toList();
           }
         }
       }
@@ -164,10 +163,9 @@ class CreditOnboardingBloc
       );
       navigateUserToParticularStep(
         profileId: event.profileId,
-        prevPageId:
-            (response.data?.payload?.prePageEnable ?? false)
-                ? (response.data?.payload?.prvPageId ?? "")
-                : "",
+        prevPageId: (response.data?.payload?.prePageEnable ?? false)
+            ? (response.data?.payload?.prvPageId ?? "")
+            : "",
         onboardingStepsResponse: response.data,
       );
 
@@ -298,26 +296,17 @@ class CreditOnboardingBloc
             "prevPageId": prevPageId,
             "staticPageRes": onboardingStepsResponse?.payload?.staticPageRes,
             "page": onboardingStepsResponse?.payload?.page,
-            "tenureId":
-                (onboardingStepsResponse?.payload?.page?.fields?.isEmpty ??
-                        true)
-                    ? ""
-                    : onboardingStepsResponse
-                        ?.payload
-                        ?.page
-                        ?.fields
-                        ?.first
-                        .fieldId,
-            "tenureTypeId":
-                ((onboardingStepsResponse?.payload?.page?.fields?.length ??
-                            0) >=
-                        2)
-                    ? (onboardingStepsResponse
-                        ?.payload
-                        ?.page
-                        ?.fields?[1]
-                        .fieldId)
-                    : "",
+            "tenureId": (onboardingStepsResponse
+                        ?.payload?.page?.fields?.isEmpty ??
+                    true)
+                ? ""
+                : onboardingStepsResponse?.payload?.page?.fields?.first.fieldId,
+            "tenureTypeId": ((onboardingStepsResponse
+                            ?.payload?.page?.fields?.length ??
+                        0) >=
+                    2)
+                ? (onboardingStepsResponse?.payload?.page?.fields?[1].fieldId)
+                : "",
           },
         );
       } else if ((onboardingStepsResponse?.payload?.pageCategory ==
@@ -334,15 +323,11 @@ class CreditOnboardingBloc
             "prevPageId": prevPageId,
             "page": onboardingStepsResponse?.payload?.page,
             "digioKycResponse": DigioKycResponse(
-              id:
-                  onboardingStepsResponse
-                      ?.payload
-                      ?.digioKycResponse
-                      ?.entityId ??
+              id: onboardingStepsResponse
+                      ?.payload?.digioKycResponse?.entityId ??
                   "",
               accessToken: AccessToken(
-                id:
-                    onboardingStepsResponse?.payload?.digioKycResponse?.id ??
+                id: onboardingStepsResponse?.payload?.digioKycResponse?.id ??
                     "",
               ),
             ),
@@ -408,15 +393,14 @@ class CreditOnboardingBloc
     fieldList[event.index] = event.field;
     List<Fields>? fields =
         fieldList.where((e) => e != null).cast<Fields>().toList();
-    OnboardingStepsResponse? updatedOnboardingStepsResponse = state
-        .onboardingStepsResponse
-        ?.copyWith(
-          payload: state.onboardingStepsResponse?.payload?.copyWith(
-            page: state.onboardingStepsResponse?.payload?.page?.copyWith(
-              fields: fields,
-            ),
-          ),
-        );
+    OnboardingStepsResponse? updatedOnboardingStepsResponse =
+        state.onboardingStepsResponse?.copyWith(
+      payload: state.onboardingStepsResponse?.payload?.copyWith(
+        page: state.onboardingStepsResponse?.payload?.page?.copyWith(
+          fields: fields,
+        ),
+      ),
+    );
     emit(
       state.copyWith(onboardingStepsResponse: updatedOnboardingStepsResponse),
     );
@@ -482,9 +466,8 @@ class CreditOnboardingBloc
             textEditingController: TextEditingController(
               text: response.data?.payload?.dateOfRegistration ?? "",
             ),
-            readOnly:
-                (response.data?.payload?.dateOfRegistration?.isNotEmpty ??
-                    false),
+            readOnly: (response.data?.payload?.dateOfRegistration?.isNotEmpty ??
+                false),
           );
           fieldsList?[i] = field;
         }
@@ -657,14 +640,13 @@ class CreditOnboardingBloc
 
     debugPrint("Total options before filter: ${allOptions.length}");
 
-    final filtered =
-        event.query.trim().isEmpty
-            ? allOptions
-            : allOptions.where((option) {
-              return (option.name ?? "").toLowerCase().contains(
-                event.query.toLowerCase(),
-              );
-            }).toList();
+    final filtered = event.query.trim().isEmpty
+        ? allOptions
+        : allOptions.where((option) {
+            return (option.name ?? "").toLowerCase().contains(
+                  event.query.toLowerCase(),
+                );
+          }).toList();
 
     debugPrint(
       "Options after filtering for '${event.query}': ${filtered.length}",

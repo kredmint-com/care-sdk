@@ -7,7 +7,7 @@ class PaymentPatchResponse {
 
   PaymentPatchResponse.fromJson(Map<String, dynamic> json) {
     payload =
-    json['payload'] != null ? Payload.fromJson(json['payload']) : null;
+        json['payload'] != null ? Payload.fromJson(json['payload']) : null;
     sum = json['sum'];
     timestamp = json['timestamp'];
   }
@@ -39,17 +39,17 @@ class Payload {
 
   Payload(
       {this.status,
-        this.utr,
-        this.amount,
-        this.modeOfPayment,
-        this.transactionRefId,
-        this.loanAmount,
-        this.interestAmount,
-        this.penalAmount,
-        this.refNo,
-        this.paidAt,
-        this.title,
-        this.subTitle});
+      this.utr,
+      this.amount,
+      this.modeOfPayment,
+      this.transactionRefId,
+      this.loanAmount,
+      this.interestAmount,
+      this.penalAmount,
+      this.refNo,
+      this.paidAt,
+      this.title,
+      this.subTitle});
 
   Payload.fromJson(Map<String, dynamic> json) {
     status = json['status'];

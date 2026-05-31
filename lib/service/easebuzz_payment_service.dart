@@ -13,10 +13,9 @@ class EaseBuzzPaymentService {
   Future<PaymentSdkResponse?> initiatePayment({
     required String accessKey,
   }) async {
-    String payMode =
-        (releaseEv.name == ReleaseEnv.prod.name)
-            ? PaymentEnv.prod.name
-            : PaymentEnv.test.name;
+    String payMode = (releaseEv.name == ReleaseEnv.prod.name)
+        ? PaymentEnv.prod.name
+        : PaymentEnv.test.name;
     PaymentSdkResponse? paymentResponse;
     LoadingUtils.showLoader();
     final response = await easebuzzPlugin.payWithEasebuzz(accessKey, payMode);

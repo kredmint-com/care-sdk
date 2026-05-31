@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-UserProfileResponse userProfileResponseFromJson(String str) => UserProfileResponse.fromJson(json.decode(str));
+UserProfileResponse userProfileResponseFromJson(String str) =>
+    UserProfileResponse.fromJson(json.decode(str));
 
-String userProfileResponseToJson(UserProfileResponse data) => json.encode(data.toJson());
+String userProfileResponseToJson(UserProfileResponse data) =>
+    json.encode(data.toJson());
 
 class UserProfileResponse {
   Payload? payload;
@@ -21,19 +23,21 @@ class UserProfileResponse {
     this.requestId,
   });
 
-  factory UserProfileResponse.fromJson(Map<String, dynamic> json) => UserProfileResponse(
-    payload: json["payload"] == null ? null : Payload.fromJson(json["payload"]),
-    sum: json["sum"],
-    timestamp: json["timestamp"],
-    requestId: json["requestId"],
-  );
+  factory UserProfileResponse.fromJson(Map<String, dynamic> json) =>
+      UserProfileResponse(
+        payload:
+            json["payload"] == null ? null : Payload.fromJson(json["payload"]),
+        sum: json["sum"],
+        timestamp: json["timestamp"],
+        requestId: json["requestId"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "payload": payload?.toJson(),
-    "sum": sum,
-    "timestamp": timestamp,
-    "requestId": requestId,
-  };
+        "payload": payload?.toJson(),
+        "sum": sum,
+        "timestamp": timestamp,
+        "requestId": requestId,
+      };
 }
 
 class Payload {
@@ -68,36 +72,36 @@ class Payload {
   });
 
   factory Payload.fromJson(Map<String, dynamic> json) => Payload(
-    show: json["show"],
-    landingType: json["landingType"],
-    availableCreditLimit: json["availableCreditLimit"],
-    creditLimit: json["creditLimit"],
-    totalOutstanding: json["totalOutstanding"],
-    lockedAmt: json["lockedAmt"],
-    panNumber: json["panNumber"],
-    channel: json["channel"],
-    token: json["token"] == null ? null : Token.fromJson(json["token"]),
-    requestId: json["requestId"],
-    userId: json["userId"],
-    accId: json["accId"],
-    puId: json["puId"],
-  );
+        show: json["show"],
+        landingType: json["landingType"],
+        availableCreditLimit: json["availableCreditLimit"],
+        creditLimit: json["creditLimit"],
+        totalOutstanding: json["totalOutstanding"],
+        lockedAmt: json["lockedAmt"],
+        panNumber: json["panNumber"],
+        channel: json["channel"],
+        token: json["token"] == null ? null : Token.fromJson(json["token"]),
+        requestId: json["requestId"],
+        userId: json["userId"],
+        accId: json["accId"],
+        puId: json["puId"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "show": show,
-    "landingType": landingType,
-    "availableCreditLimit": availableCreditLimit,
-    "creditLimit": creditLimit,
-    "totalOutstanding": totalOutstanding,
-    "lockedAmt": lockedAmt,
-    "panNumber": panNumber,
-    "channel": channel,
-    "token": token?.toJson(),
-    "requestId": requestId,
-    "userId": userId,
-    "accId": accId,
-    "puId": puId,
-  };
+        "show": show,
+        "landingType": landingType,
+        "availableCreditLimit": availableCreditLimit,
+        "creditLimit": creditLimit,
+        "totalOutstanding": totalOutstanding,
+        "lockedAmt": lockedAmt,
+        "panNumber": panNumber,
+        "channel": channel,
+        "token": token?.toJson(),
+        "requestId": requestId,
+        "userId": userId,
+        "accId": accId,
+        "puId": puId,
+      };
 }
 
 class Token {
@@ -122,24 +126,26 @@ class Token {
   });
 
   factory Token.fromJson(Map<String, dynamic> json) => Token(
-    accessToken: json["access_token"],
-    tokenType: json["token_type"],
-    refreshToken: json["refresh_token"],
-    expiresIn: json["expires_in"],
-    scope: json["scope"],
-    id: json["id"],
-    roles: json["roles"] == null ? [] : List<String>.from(json["roles"]!.map((x) => x)),
-    version: json["version"],
-  );
+        accessToken: json["access_token"],
+        tokenType: json["token_type"],
+        refreshToken: json["refresh_token"],
+        expiresIn: json["expires_in"],
+        scope: json["scope"],
+        id: json["id"],
+        roles: json["roles"] == null
+            ? []
+            : List<String>.from(json["roles"]!.map((x) => x)),
+        version: json["version"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "access_token": accessToken,
-    "token_type": tokenType,
-    "refresh_token": refreshToken,
-    "expires_in": expiresIn,
-    "scope": scope,
-    "id": id,
-    "roles": roles == null ? [] : List<dynamic>.from(roles!.map((x) => x)),
-    "version": version,
-  };
+        "access_token": accessToken,
+        "token_type": tokenType,
+        "refresh_token": refreshToken,
+        "expires_in": expiresIn,
+        "scope": scope,
+        "id": id,
+        "roles": roles == null ? [] : List<dynamic>.from(roles!.map((x) => x)),
+        "version": version,
+      };
 }

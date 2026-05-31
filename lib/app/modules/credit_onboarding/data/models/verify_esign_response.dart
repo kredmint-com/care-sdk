@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-EsignVerifyResponse esignVerifyResponseFromJson(String str) => EsignVerifyResponse.fromJson(json.decode(str));
+EsignVerifyResponse esignVerifyResponseFromJson(String str) =>
+    EsignVerifyResponse.fromJson(json.decode(str));
 
-String esignVerifyResponseToJson(EsignVerifyResponse data) => json.encode(data.toJson());
+String esignVerifyResponseToJson(EsignVerifyResponse data) =>
+    json.encode(data.toJson());
 
 class EsignVerifyResponse {
   Payload? payload;
@@ -23,21 +25,23 @@ class EsignVerifyResponse {
     this.error,
   });
 
-  factory EsignVerifyResponse.fromJson(Map<String, dynamic> json) => EsignVerifyResponse(
-    payload: json["payload"] == null ? null : Payload.fromJson(json["payload"]),
-    sum: json["sum"],
-    timestamp: json["timestamp"],
-    requestId: json["requestId"],
-    error: json["error"],
-  );
+  factory EsignVerifyResponse.fromJson(Map<String, dynamic> json) =>
+      EsignVerifyResponse(
+        payload:
+            json["payload"] == null ? null : Payload.fromJson(json["payload"]),
+        sum: json["sum"],
+        timestamp: json["timestamp"],
+        requestId: json["requestId"],
+        error: json["error"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "payload": payload?.toJson(),
-    "sum": sum,
-    "timestamp": timestamp,
-    "requestId": requestId,
-    "error": error,
-  };
+        "payload": payload?.toJson(),
+        "sum": sum,
+        "timestamp": timestamp,
+        "requestId": requestId,
+        "error": error,
+      };
 }
 
 class Payload {
@@ -52,16 +56,18 @@ class Payload {
   });
 
   factory Payload.fromJson(Map<String, dynamic> json) => Payload(
-    status: json["status"],
-    documentId: json["documentId"],
-    digioResponse: json["digioResponse"] == null ? null : DigioResponse.fromJson(json["digioResponse"]),
-  );
+        status: json["status"],
+        documentId: json["documentId"],
+        digioResponse: json["digioResponse"] == null
+            ? null
+            : DigioResponse.fromJson(json["digioResponse"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "documentId": documentId,
-    "digioResponse": digioResponse?.toJson(),
-  };
+        "status": status,
+        "documentId": documentId,
+        "digioResponse": digioResponse?.toJson(),
+      };
 }
 
 class DigioResponse {
@@ -76,14 +82,14 @@ class DigioResponse {
   });
 
   factory DigioResponse.fromJson(Map<String, dynamic> json) => DigioResponse(
-    digioDocId: json["digioDocId"],
-    message: json["message"],
-    txnId: json["txnId"],
-  );
+        digioDocId: json["digioDocId"],
+        message: json["message"],
+        txnId: json["txnId"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "digioDocId": digioDocId,
-    "message": message,
-    "txnId": txnId,
-  };
+        "digioDocId": digioDocId,
+        "message": message,
+        "txnId": txnId,
+      };
 }

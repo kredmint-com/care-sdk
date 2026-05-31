@@ -3,11 +3,15 @@ class LoiResponse {
   num? sum;
   num? timestamp;
 
-  LoiResponse({this.payload, this.sum, this.timestamp,});
+  LoiResponse({
+    this.payload,
+    this.sum,
+    this.timestamp,
+  });
 
   LoiResponse.fromJson(Map<String, dynamic> json) {
     payload =
-    json['payload'] != null ? Payload.fromJson(json['payload']) : null;
+        json['payload'] != null ? Payload.fromJson(json['payload']) : null;
     sum = json['sum'];
     timestamp = json['timestamp'];
   }
@@ -67,48 +71,47 @@ class Payload {
   num? seqPrefixLength;
 
   Payload(
-      {
-        this.id,
-        this.lenderId,
-        this.creationDate,
-        this.lastModifiedDate,
-        this.lastModifiedBy,
-        this.lenderName,
-        this.lenderAddress,
-        this.borrowerName,
-        this.companyName,
-        this.expiryDate,
-        this.loanAmount,
-        this.tenure,
-        this.processingFee,
-        this.interestRate,
-        this.apr,
-        this.penalInterest,
-        this.userId,
-        this.active,
-        this.status,
-        this.recursivePaymentDuration,
-        this.paymentDurationOptions,
-        this.disableAutoDebit,
-        this.dailyDeduction,
-        this.allowedInvoiceTypes,
-        this.durationType,
-        this.programLimit,
-        this.userType,
-        this.liabilityInterestDays,
-        this.subPlan,
-        this.primarySecurity,
-        this.guaranteePersonal,
-        this.securityCheques,
-        this.businessCovenants,
-        this.minAmount,
-        this.stepAmount,
-        this.stepTenure,
-        this.businessType,
-        this.creditType,
-        this.businessCategory,
-        this.anchorName,
-        this.seqPrefixLength});
+      {this.id,
+      this.lenderId,
+      this.creationDate,
+      this.lastModifiedDate,
+      this.lastModifiedBy,
+      this.lenderName,
+      this.lenderAddress,
+      this.borrowerName,
+      this.companyName,
+      this.expiryDate,
+      this.loanAmount,
+      this.tenure,
+      this.processingFee,
+      this.interestRate,
+      this.apr,
+      this.penalInterest,
+      this.userId,
+      this.active,
+      this.status,
+      this.recursivePaymentDuration,
+      this.paymentDurationOptions,
+      this.disableAutoDebit,
+      this.dailyDeduction,
+      this.allowedInvoiceTypes,
+      this.durationType,
+      this.programLimit,
+      this.userType,
+      this.liabilityInterestDays,
+      this.subPlan,
+      this.primarySecurity,
+      this.guaranteePersonal,
+      this.securityCheques,
+      this.businessCovenants,
+      this.minAmount,
+      this.stepAmount,
+      this.stepTenure,
+      this.businessType,
+      this.creditType,
+      this.businessCategory,
+      this.anchorName,
+      this.seqPrefixLength});
 
   Payload.fromJson(Map<String, dynamic> json) {
     id = json['id'];

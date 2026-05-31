@@ -41,7 +41,7 @@ class BankDetailBloc extends Bloc<BankDetailEvent, BankDetailState> {
     );
     LoadingUtils.hideLoader();
     if (response.data != null) {
-      if(response.data?.payload?.message?.isNotEmpty ?? false){
+      if (response.data?.payload?.message?.isNotEmpty ?? false) {
         Fluttertoast.showToast(msg: response.data?.payload?.message ?? "");
       }
       emit(
@@ -130,10 +130,9 @@ class BankDetailBloc extends Bloc<BankDetailEvent, BankDetailState> {
   }
 
   void _onUpdateSubmitStatus(
-      OnUpdateSubmitStatus event,
-      Emitter<BankDetailState> emit,
-      ) async {
+    OnUpdateSubmitStatus event,
+    Emitter<BankDetailState> emit,
+  ) async {
     emit(state.copyWith(submitClicked: true));
   }
-
 }

@@ -66,8 +66,7 @@ class _PromoterViewState extends State<PromoterView> {
   }
 
   Future<bool> handleBackPress() async {
-    return
-    CreditCommonMethod.onBackPress(
+    return CreditCommonMethod.onBackPress(
       context: context,
       prevPageId: widget.prevPageId,
       profileId: widget.profileId,
@@ -120,11 +119,11 @@ class _PromoterViewState extends State<PromoterView> {
                   disabled: (state.promoterList?.isEmpty) ?? true,
                   onTap: () {
                     context.read<PromoterBloc>().add(
-                      OnConfirmPromoters(
-                        pageId: widget.pageId,
-                        pageCategory: widget.pageCategory,
-                      ),
-                    );
+                          OnConfirmPromoters(
+                            pageId: widget.pageId,
+                            pageCategory: widget.pageCategory,
+                          ),
+                        );
                   },
                   buttonText: Strings.proceed,
                 );
@@ -157,14 +156,14 @@ class _PromoterViewState extends State<PromoterView> {
                 "Listener promoter map : ${state.userProfileStageMap}",
               );
               context.read<CreditOnboardingBloc>().add(
-                OnUpdateUserProfileStage(
-                  data: state.userProfileStageMap,
-                  profileId: widget.profileId,
-                ),
-              );
+                    OnUpdateUserProfileStage(
+                      data: state.userProfileStageMap,
+                      profileId: widget.profileId,
+                    ),
+                  );
               context.read<PromoterBloc>().add(
-                OnResetUserProfileStageMapCompleted(),
-              );
+                    OnResetUserProfileStageMapCompleted(),
+                  );
             }
           },
           child: SingleChildScrollView(
@@ -175,10 +174,9 @@ class _PromoterViewState extends State<PromoterView> {
                 HeaderWidget(
                   heading: widget.page?.heading?.title ?? "",
                   subHeading: widget.page?.heading?.subTitle ?? "",
-                  iconUrl:
-                      (widget.page?.heading?.appLogo?.isNotEmpty ?? false)
-                          ? (widget.page?.heading?.appLogo ?? "")
-                          : ((widget.page?.heading?.pageLogo) ?? ""),
+                  iconUrl: (widget.page?.heading?.appLogo?.isNotEmpty ?? false)
+                      ? (widget.page?.heading?.appLogo ?? "")
+                      : ((widget.page?.heading?.pageLogo) ?? ""),
                 ),
                 40.h,
                 BlocBuilder<PromoterBloc, PromoterState>(
@@ -204,30 +202,29 @@ class _PromoterViewState extends State<PromoterView> {
                                   Routes.addPromoter,
                                   extra: {
                                     "promoterData": state.promoterList?[index],
-                                    "appBarTitle":
-                                        widget.pageCategory
-                                                .toLowerCase()
-                                                .contains("promoter")
-                                            ? Strings.coApplicant
-                                            : Strings.director,
+                                    "appBarTitle": widget.pageCategory
+                                            .toLowerCase()
+                                            .contains("promoter")
+                                        ? Strings.coApplicant
+                                        : Strings.director,
                                     "page": widget.page,
                                   },
                                 );
                                 if (promoter != null) {
                                   context.read<PromoterBloc>().add(
-                                    OnUpdatePromoter(
-                                      promoter: [promoter],
-                                      index: index,
-                                    ),
-                                  );
+                                        OnUpdatePromoter(
+                                          promoter: [promoter],
+                                          index: index,
+                                        ),
+                                      );
                                 }
                               } else if (val == "Delete") {
                                 context.read<PromoterBloc>().add(
-                                  OnRemovePromoter(
-                                    promoter: [state.promoterList?[index]],
-                                    index: index,
-                                  ),
-                                );
+                                      OnRemovePromoter(
+                                        promoter: [state.promoterList?[index]],
+                                        index: index,
+                                      ),
+                                    );
                               }
                             },
                           ),
@@ -247,8 +244,8 @@ class _PromoterViewState extends State<PromoterView> {
                             "promoterData": null,
                             "appBarTitle":
                                 widget.pageCategory.toLowerCase().contains(
-                                      "promoter",
-                                    )
+                                          "promoter",
+                                        )
                                     ? Strings.coApplicant
                                     : Strings.director,
                             "mobileNumber":
@@ -260,8 +257,8 @@ class _PromoterViewState extends State<PromoterView> {
                         );
                         if (promoter != null) {
                           context.read<PromoterBloc>().add(
-                            OnAddPromoter(promoter: [promoter]),
-                          );
+                                OnAddPromoter(promoter: [promoter]),
+                              );
                         }
                       },
                       buttonText:

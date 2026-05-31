@@ -13,7 +13,9 @@ extension StringExtensions on String {
 
   bool isValidName() => trim().isNotEmpty;
 
-  String capitalize() =>  (trim().isEmpty) ? this : trim()[0].toUpperCase() + trim().toLowerCase().substring(1);
+  String capitalize() => (trim().isEmpty)
+      ? this
+      : trim()[0].toUpperCase() + trim().toLowerCase().substring(1);
 
   bool isDataNotEmpty() => trim().isNotEmpty;
 
@@ -24,8 +26,7 @@ extension StringExtensions on String {
   bool isValidGST() =>
       Regrex.gstNumberRegrex.hasMatch(trim()) || trim().isEmpty;
 
-  bool isValidIfsc() =>
-      Regrex.ifscRegrex.hasMatch(trim()) || trim().isEmpty;
+  bool isValidIfsc() => Regrex.ifscRegrex.hasMatch(trim()) || trim().isEmpty;
 
   bool isValidAadhaar() =>
       Regrex.aadhaarRegrex.hasMatch(trim()) || trim().isEmpty;
@@ -71,10 +72,10 @@ extension StringExtensions on String {
   String removeUnderscoreAndCapitalize() {
     List<String> refactoredString = [];
     List<String> wordList = [];
-    if(isNotEmpty){
-      wordList= toLowerCase().replaceAll('_', ' ').split(' ');
+    if (isNotEmpty) {
+      wordList = toLowerCase().replaceAll('_', ' ').split(' ');
     }
-    if(wordList.isEmpty){
+    if (wordList.isEmpty) {
       return capitalize();
     }
     for (int i = 0; i < wordList.length; i++) {

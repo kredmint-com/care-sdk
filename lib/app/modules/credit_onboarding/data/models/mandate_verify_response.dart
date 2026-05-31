@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-MandateVerifyResponse mandateVerifyResponseFromJson(String str) => MandateVerifyResponse.fromJson(json.decode(str));
+MandateVerifyResponse mandateVerifyResponseFromJson(String str) =>
+    MandateVerifyResponse.fromJson(json.decode(str));
 
-String mandateVerifyResponseToJson(MandateVerifyResponse data) => json.encode(data.toJson());
+String mandateVerifyResponseToJson(MandateVerifyResponse data) =>
+    json.encode(data.toJson());
 
 class MandateVerifyResponse {
   String? payload;
@@ -23,19 +25,20 @@ class MandateVerifyResponse {
     this.error,
   });
 
-  factory MandateVerifyResponse.fromJson(Map<String, dynamic> json) => MandateVerifyResponse(
-    payload: json["payload"],
-    sum: json["sum"],
-    timestamp: json["timestamp"],
-    requestId: json["requestId"],
-    error: json["error"],
-  );
+  factory MandateVerifyResponse.fromJson(Map<String, dynamic> json) =>
+      MandateVerifyResponse(
+        payload: json["payload"],
+        sum: json["sum"],
+        timestamp: json["timestamp"],
+        requestId: json["requestId"],
+        error: json["error"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "payload": payload,
-    "sum": sum,
-    "timestamp": timestamp,
-    "requestId": requestId,
-    "error": error,
-  };
+        "payload": payload,
+        "sum": sum,
+        "timestamp": timestamp,
+        "requestId": requestId,
+        "error": error,
+      };
 }

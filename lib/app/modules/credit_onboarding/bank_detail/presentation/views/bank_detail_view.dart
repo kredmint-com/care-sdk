@@ -106,12 +106,12 @@ class _PromoterViewState extends State<BankDetailView> {
                 context.read<BankDetailBloc>().add(OnUpdateSubmitStatus());
                 if (_formKey.currentState?.validate() ?? false) {
                   context.read<BankDetailBloc>().add(
-                    OnVerifyBankDetail(
-                      accountNumber: accountController.text.trim(),
-                      ifscCode: ifscController.text.trim(),
-                      fullName: fullNameController.text.trim(),
-                    ),
-                  );
+                        OnVerifyBankDetail(
+                          accountNumber: accountController.text.trim(),
+                          ifscCode: ifscController.text.trim(),
+                          fullName: fullNameController.text.trim(),
+                        ),
+                      );
                 }
               },
               buttonText: Strings.proceed,
@@ -147,35 +147,36 @@ class _PromoterViewState extends State<BankDetailView> {
             }
             if (state.bankVerified ?? false) {
               context.read<BankDetailBloc>().add(
-                OnFetchBankDetail(
-                  accountNumber: accountController.text.trim(),
-                  ifsc: ifscController.text.trim(),
-                  bankName: bankNameController.text.trim(),
-                  accountHolderName: fullNameController.text.trim(),
-                ),
-              );
+                    OnFetchBankDetail(
+                      accountNumber: accountController.text.trim(),
+                      ifsc: ifscController.text.trim(),
+                      bankName: bankNameController.text.trim(),
+                      accountHolderName: fullNameController.text.trim(),
+                    ),
+                  );
               context.read<BankDetailBloc>().add(OnResetBankVerified());
             }
             if (state.bankAccountDetailFetched ?? false) {
               context.read<BankDetailBloc>().add(
-                OnSubmitBankDetail(
-                  pageId: widget.pageId,
-                  pageCategory: widget.pageCategory,
-                  bankAccountDetailResponse: state.bankAccountDetailResponse,
-                ),
-              );
+                    OnSubmitBankDetail(
+                      pageId: widget.pageId,
+                      pageCategory: widget.pageCategory,
+                      bankAccountDetailResponse:
+                          state.bankAccountDetailResponse,
+                    ),
+                  );
               context.read<BankDetailBloc>().add(OnResetBankDetail());
             }
             if ((state.userProfileStageMapCompleted) ?? false) {
               context.read<CreditOnboardingBloc>().add(
-                coe.OnUpdateUserProfileStage(
-                  data: state.userProfileStageMap,
-                  profileId: widget.profileId,
-                ),
-              );
+                    coe.OnUpdateUserProfileStage(
+                      data: state.userProfileStageMap,
+                      profileId: widget.profileId,
+                    ),
+                  );
               context.read<BankDetailBloc>().add(
-                OnResetUserProfileStageMapCompleted(),
-              );
+                    OnResetUserProfileStageMapCompleted(),
+                  );
             }
           },
           builder: (context, state) {

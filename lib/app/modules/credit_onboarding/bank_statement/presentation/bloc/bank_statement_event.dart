@@ -29,7 +29,9 @@ class OnDocumentDelete extends BankStatementEvent {
 class OnFetchBankStatement extends BankStatementEvent {
   final String profileId;
 
-  OnFetchBankStatement({required this.profileId,});
+  OnFetchBankStatement({
+    required this.profileId,
+  });
 }
 
 class OnReset extends BankStatementEvent {}

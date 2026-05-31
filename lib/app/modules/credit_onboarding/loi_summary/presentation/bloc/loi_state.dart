@@ -1,5 +1,3 @@
-import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/loi_response.dart';
-
 class LoiState {
   final bool? loiAccepted;
   final Map<String, dynamic>? userProfileStageMap;

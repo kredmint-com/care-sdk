@@ -55,7 +55,11 @@ class ReviewDetailWidget extends StatelessWidget {
           ),
         ),
         10.w,
-        Expanded(child: Text(text, style: Styles.tsBlackRegular12(),))
+        Expanded(
+            child: Text(
+          text,
+          style: Styles.tsBlackRegular12(),
+        ))
       ],
     );
   }

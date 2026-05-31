@@ -43,7 +43,8 @@ class GstBloc extends Bloc<GstEvent, GstState> {
     emit(state.copyWith(submitClicked: false, dataMap: {}));
   }
 
-  void _onSubmitButtonClicked(OnSubmitButtonClicked event , Emitter<GstState> emit){
+  void _onSubmitButtonClicked(
+      OnSubmitButtonClicked event, Emitter<GstState> emit) {
     emit(state.copyWith(submitClicked: true));
   }
 }

@@ -27,5 +27,4 @@ class BellNotificationStorage {
   }
 
   static void clearRead() => _box.remove(_readNotificationsKey);
-
 }

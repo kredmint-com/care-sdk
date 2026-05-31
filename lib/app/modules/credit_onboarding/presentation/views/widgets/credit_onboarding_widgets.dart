@@ -84,8 +84,8 @@ class _CreditOnboardingWidgetState extends State<CreditOnboardingWidget> {
               onTap: () async {
                 FocusManager.instance.primaryFocus?.unfocus();
                 context.read<CreditOnboardingBloc>().add(
-                  OnPickStatementFile(profileId: widget.profileId),
-                );
+                      OnPickStatementFile(profileId: widget.profileId),
+                    );
               },
               buttonText: Strings.uploadFiles,
               suffixPadding: 8,
@@ -110,12 +110,12 @@ class _CreditOnboardingWidgetState extends State<CreditOnboardingWidget> {
                       onDocumentDelete: () {
                         FocusManager.instance.primaryFocus?.unfocus();
                         context.read<CreditOnboardingBloc>().add(
-                          OnDocumentDelete(
-                            documentId: state.documentList?[index].id ?? "",
-                            index: index,
-                            profileId: widget.profileId,
-                          ),
-                        );
+                              OnDocumentDelete(
+                                documentId: state.documentList?[index].id ?? "",
+                                index: index,
+                                profileId: widget.profileId,
+                              ),
+                            );
                       },
                     );
                   },
@@ -142,8 +142,8 @@ class _CreditOnboardingWidgetState extends State<CreditOnboardingWidget> {
                 Fields? data = widget.field?.copyWith(value: val);
                 debugPrint("check box value : ${data?.value}");
                 context.read<CreditOnboardingBloc>().add(
-                  OnUpdateField(field: data, index: widget.index),
-                );
+                      OnUpdateField(field: data, index: widget.index),
+                    );
               },
               title: Text(
                 widget.field?.label ?? "",

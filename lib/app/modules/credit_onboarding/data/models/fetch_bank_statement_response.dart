@@ -30,7 +30,7 @@ class FetchBankStatementResponse {
 class Payload {
   bool? success;
   String? redirectUrl;
-  Null? errorMsg;
+  Null errorMsg;
   String? refId;
 
   Payload({this.success, this.redirectUrl, this.errorMsg, this.refId});

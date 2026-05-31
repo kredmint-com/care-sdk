@@ -8,12 +8,12 @@ class EmiBloc extends Bloc<EmiEvent, EmiState> {
   final CreditOnboardingRepository repository;
 
   EmiBloc({required this.repository})
-    : super(
-        EmiState(
-          selectedEmiPlanIndex: 0,
-          emiPlanType: EmiPlanType.monthly.name,
-        ),
-      ) {
+      : super(
+          EmiState(
+            selectedEmiPlanIndex: 0,
+            emiPlanType: EmiPlanType.monthly.name,
+          ),
+        ) {
     on<OnUpdateSelectedPlanIndex>(_onUpdateSelectedPlanIndex);
     on<OnUpdateEmiPlanType>(_onUpdateEmiPlanType);
     on<OnPatchEmiPlan>(_onPatchEmiPlan);

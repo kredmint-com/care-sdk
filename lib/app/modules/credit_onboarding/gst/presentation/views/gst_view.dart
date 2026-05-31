@@ -60,8 +60,7 @@ class _GstViewState extends State<GstView> {
   }
 
   Future<bool> handleBackPress() async {
-    return
-    CreditCommonMethod.onBackPress(
+    return CreditCommonMethod.onBackPress(
       context: context,
       prevPageId: widget.prevPageId,
       profileId: widget.profileId,
@@ -80,8 +79,8 @@ class _GstViewState extends State<GstView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:
-      // CommonWidget().customAppBar(title: "", onBackPressed: onBackPress),
-      CreditOnboardingAppBar(onBackPressed: handleBackPress),
+          // CommonWidget().customAppBar(title: "", onBackPressed: onBackPress),
+          CreditOnboardingAppBar(onBackPressed: handleBackPress),
       body: bodyWidget(context: context),
     );
   }
@@ -103,11 +102,11 @@ class _GstViewState extends State<GstView> {
           listener: (context, state) {
             if (state.dataMap?.isNotEmpty ?? false) {
               context.read<CreditOnboardingBloc>().add(
-                coe.OnUpdateUserProfileStage(
-                  data: state.dataMap,
-                  profileId: widget.profileId,
-                ),
-              );
+                    coe.OnUpdateUserProfileStage(
+                      data: state.dataMap,
+                      profileId: widget.profileId,
+                    ),
+                  );
               context.read<GstBloc>().add(OnReset());
             }
           },
@@ -119,10 +118,9 @@ class _GstViewState extends State<GstView> {
                 HeaderWidget(
                   heading: widget.page?.heading?.title ?? "",
                   subHeading: widget.page?.heading?.subTitle ?? "",
-                  iconUrl:
-                      (widget.page?.heading?.appLogo?.isNotEmpty ?? false)
-                          ? (widget.page?.heading?.appLogo ?? "")
-                          : ((widget.page?.heading?.pageLogo) ?? ""),
+                  iconUrl: (widget.page?.heading?.appLogo?.isNotEmpty ?? false)
+                      ? (widget.page?.heading?.appLogo ?? "")
+                      : ((widget.page?.heading?.pageLogo) ?? ""),
                 ),
                 40.h,
                 Text(
@@ -134,10 +132,9 @@ class _GstViewState extends State<GstView> {
                   builder: (context, state) {
                     return Form(
                       key: formKey,
-                      autovalidateMode:
-                          (state.submitClicked ?? false)
-                              ? AutovalidateMode.onUserInteraction
-                              : null,
+                      autovalidateMode: (state.submitClicked ?? false)
+                          ? AutovalidateMode.onUserInteraction
+                          : null,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -185,17 +182,16 @@ class _GstViewState extends State<GstView> {
                         if (formKey.currentState?.validate() ?? false) {
                           FocusManager.instance.primaryFocus?.unfocus();
                           context.read<GstBloc>().add(
-                            OnSendMailTap(
-                              gst:
-                                  widget.gst.isNotEmpty
+                                OnSendMailTap(
+                                  gst: widget.gst.isNotEmpty
                                       ? widget.gst
                                       : gstController.text.trim(),
-                              email: emailController.text.trim(),
-                              pageId: widget.pageId,
-                              pageCategory: widget.pageCategory,
-                              profileId: widget.profileId,
-                            ),
-                          );
+                                  email: emailController.text.trim(),
+                                  pageId: widget.pageId,
+                                  pageCategory: widget.pageCategory,
+                                  profileId: widget.profileId,
+                                ),
+                              );
                         }
                       },
                       buttonText: Strings.sendMail,

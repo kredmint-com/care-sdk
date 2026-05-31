@@ -56,18 +56,17 @@ class _KycViewState extends State<KycView> {
   void init() {
     SdkBackHandler.onBackPressed = handleBackPress;
     context.read<KycBloc>().add(
-      OnStartDigioKyc(
-        documentId: widget.digioKycResponse.id ?? "",
-        identifier: Storage.getSdkUser()?.phoneNumber ?? "",
-        tokenId: widget.digioKycResponse.accessToken?.id ?? "",
-        pageCategory: widget.pageCategory,
-      ),
-    );
+          OnStartDigioKyc(
+            documentId: widget.digioKycResponse.id ?? "",
+            identifier: Storage.getSdkUser()?.phoneNumber ?? "",
+            tokenId: widget.digioKycResponse.accessToken?.id ?? "",
+            pageCategory: widget.pageCategory,
+          ),
+        );
   }
 
   Future<bool> handleBackPress() async {
-    return
-    CreditCommonMethod.onBackPress(
+    return CreditCommonMethod.onBackPress(
       context: context,
       prevPageId: widget.prevPageId,
       profileId: widget.profileId,
@@ -90,13 +89,14 @@ class _KycViewState extends State<KycView> {
               child: CustomButton(
                 onTap: () {
                   context.read<KycBloc>().add(
-                    OnStartDigioKyc(
-                      documentId: widget.digioKycResponse.id ?? "",
-                      identifier: Storage.getSdkUser()?.phoneNumber ?? "",
-                      tokenId: widget.digioKycResponse.accessToken?.id ?? "",
-                      pageCategory: widget.pageCategory,
-                    ),
-                  );
+                        OnStartDigioKyc(
+                          documentId: widget.digioKycResponse.id ?? "",
+                          identifier: Storage.getSdkUser()?.phoneNumber ?? "",
+                          tokenId:
+                              widget.digioKycResponse.accessToken?.id ?? "",
+                          pageCategory: widget.pageCategory,
+                        ),
+                      );
                 },
                 buttonText: Strings.proceed,
               ),
@@ -141,36 +141,36 @@ class _KycViewState extends State<KycView> {
               // }
               if (state.eSignVerified ?? false) {
                 context.read<KycBloc>().add(
-                  OnPatchKyc(
-                    pageId: widget.pageId,
-                    pageCategory: widget.pageCategory,
-                    esignVerifyResponse: state.esignVerifyResponse,
-                  ),
-                );
+                      OnPatchKyc(
+                        pageId: widget.pageId,
+                        pageCategory: widget.pageCategory,
+                        esignVerifyResponse: state.esignVerifyResponse,
+                      ),
+                    );
                 context.read<KycBloc>().add(OnResetESignStatus());
               }
 
               if (state.eMandateVerified ?? false) {
                 context.read<KycBloc>().add(
-                  OnPatchKyc(
-                    pageId: widget.pageId,
-                    pageCategory: widget.pageCategory,
-                    mandateVerifyResponse: state.mandateVerifyResponse,
-                  ),
-                );
+                      OnPatchKyc(
+                        pageId: widget.pageId,
+                        pageCategory: widget.pageCategory,
+                        mandateVerifyResponse: state.mandateVerifyResponse,
+                      ),
+                    );
                 context.read<KycBloc>().add(OnResetEMandateStatus());
               }
 
               if ((state.userProfileStageMapCompleted) ?? false) {
                 context.read<CreditOnboardingBloc>().add(
-                  coe.OnUpdateUserProfileStage(
-                    data: state.userProfileStageMap,
-                    profileId: widget.profileId,
-                  ),
-                );
+                      coe.OnUpdateUserProfileStage(
+                        data: state.userProfileStageMap,
+                        profileId: widget.profileId,
+                      ),
+                    );
                 context.read<KycBloc>().add(
-                  OnResetUserProfileStageMapCompleted(),
-                );
+                      OnResetUserProfileStageMapCompleted(),
+                    );
               }
             },
             child: Padding(

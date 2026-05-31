@@ -110,10 +110,9 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
         textFieldWrapper:
             widget.field?.textEditingController ?? TextEditingController(),
         keyboardType: getTextInputType(inputType: widget.field?.type ?? ""),
-        labelText:
-            (widget.field?.mandatory ?? false)
-                ? "${widget.field?.label ?? ""}*"
-                : widget.field?.label ?? "",
+        labelText: (widget.field?.mandatory ?? false)
+            ? "${widget.field?.label ?? ""}*"
+            : widget.field?.label ?? "",
         hintText: widget.field?.placeholder ?? "",
         validator: (String? value) {
           if ((widget.field?.mandatory ?? false) && (value?.isEmpty ?? false)) {
@@ -133,8 +132,8 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
           debounce = Timer(const Duration(milliseconds: 500), () {
             if (widget.field?.name == "gst") {
               context.read<CreditOnboardingBloc>().add(
-                OnValidateGst(gstin: val),
-              );
+                    OnValidateGst(gstin: val),
+                  );
             }
             // if (widget.field?.subType == "pincode") {
             //   context.read<CreditOnboardingBloc>().add(
@@ -144,62 +143,58 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
             if (widget.field?.name == "pan") {
               if (val.length == 10) {
                 context.read<CreditOnboardingBloc>().add(
-                  OnSyncPan(panNumber: val, fieldIndex: widget.index),
-                );
+                      OnSyncPan(panNumber: val, fieldIndex: widget.index),
+                    );
               }
             }
           });
           Fields? data = widget.field?.copyWith(
-            value:
-                (widget.field?.type == KeyboardType.number.name)
-                    ? (int.tryParse(val) ?? "")
-                    : val,
+            value: (widget.field?.type == KeyboardType.number.name)
+                ? (int.tryParse(val) ?? "")
+                : val,
           );
           context.read<CreditOnboardingBloc>().add(
-            OnUpdateField(field: data, index: widget.index),
-          );
+                OnUpdateField(field: data, index: widget.index),
+              );
           if (widget.submitClicked) {
             widget.formKey.currentState?.validate();
           }
         },
-        readOnly:
-            (inputType == InputType.select) ||
+        readOnly: (inputType == InputType.select) ||
             (inputType == InputType.date) ||
             (widget.field?.name == "name") ||
             (widget.field?.readOnly ?? false),
-        focusNode:
-            (inputType == InputType.select) ||
-                    (inputType == InputType.date) ||
-                    (widget.field?.name == "name")
-                ? AlwaysDisabledFocusNode()
-                : null,
-        suffix:
-            (inputType == InputType.date)
-                ? Icon(Icons.date_range)
-                : ((widget.field?.value?.toString().isNotEmpty ?? false) &&
+        focusNode: (inputType == InputType.select) ||
+                (inputType == InputType.date) ||
+                (widget.field?.name == "name")
+            ? AlwaysDisabledFocusNode()
+            : null,
+        suffix: (inputType == InputType.date)
+            ? Icon(Icons.date_range)
+            : ((widget.field?.value?.toString().isNotEmpty ?? false) &&
                     (inputType == InputType.select) &&
                     (!(widget.field?.readOnly ?? false)))
                 ? IconButton(
-                  onPressed: () {
-                    widget.field?.textEditingController?.text = "";
-                    Fields? data = widget.field?.copyWith(value: "");
-                    context.read<CreditOnboardingBloc>().add(
-                      OnUpdateField(field: data, index: widget.index),
-                    );
-                    if (widget.submitClicked) {
-                      widget.formKey.currentState?.validate();
-                    }
-                  },
-                  icon: Icon(Icons.clear, color: AppColors.greyB5),
-                )
+                    onPressed: () {
+                      widget.field?.textEditingController?.text = "";
+                      Fields? data = widget.field?.copyWith(value: "");
+                      context.read<CreditOnboardingBloc>().add(
+                            OnUpdateField(field: data, index: widget.index),
+                          );
+                      if (widget.submitClicked) {
+                        widget.formKey.currentState?.validate();
+                      }
+                    },
+                    icon: Icon(Icons.clear, color: AppColors.greyB5),
+                  )
                 : null,
         onTap: () async {
           if (!(widget.field?.readOnly ?? false)) {
             if (inputType == InputType.select) {
               FocusManager.instance.primaryFocus?.unfocus();
               context.read<CreditOnboardingBloc>().add(
-                OnResetFieldOptions(index: widget.index),
-              );
+                    OnResetFieldOptions(index: widget.index),
+                  );
               CommonWidget().showSearchableOptionsSheet(
                 heading: widget.field?.label ?? "",
                 context: context,
@@ -207,10 +202,8 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
                 optionsBuilder: (_) {
                   return BlocProvider.value(
                     value: context.read<CreditOnboardingBloc>(),
-                    child: BlocBuilder<
-                      CreditOnboardingBloc,
-                      CreditOnboardingState
-                    >(
+                    child: BlocBuilder<CreditOnboardingBloc,
+                        CreditOnboardingState>(
                       builder: (context, state) {
                         final field = state.fieldsList?[widget.index];
                         final options = List<Option>.from(
@@ -237,19 +230,19 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
                                   value: value,
                                 );
                                 context.read<CreditOnboardingBloc>().add(
-                                  OnUpdateField(
-                                    field: data,
-                                    index: widget.index,
-                                  ),
-                                );
+                                      OnUpdateField(
+                                        field: data,
+                                        index: widget.index,
+                                      ),
+                                    );
                                 if (widget.submitClicked) {
                                   widget.formKey.currentState!.validate();
                                 }
                               },
                             );
                           },
-                          separatorBuilder:
-                              (context, index) => const SizedBox(height: 10),
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 10),
                         );
                       },
                     ),
@@ -257,8 +250,8 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
                 },
                 onSearchChanged: (query) {
                   context.read<CreditOnboardingBloc>().add(
-                    OnFilterFieldOptions(query: query, index: widget.index),
-                  );
+                        OnFilterFieldOptions(query: query, index: widget.index),
+                      );
                 },
               );
             }

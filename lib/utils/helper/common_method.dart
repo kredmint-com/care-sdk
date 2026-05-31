@@ -1,22 +1,14 @@
 import 'dart:async';
-import 'dart:io';
 // import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:device_info_plus/device_info_plus.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 // import 'package:geolocator/geolocator.dart';
 import 'package:loan_sdk_package/utils/helper/string_extension.dart';
 // import 'package:open_file_plus/open_file_plus.dart';
 // import 'package:share_plus/share_plus.dart';
-import '../../app/config/env.dart';
 import '../../app/data/values/urls.dart';
 import '../../app/modules/credit_onboarding/data/models/address_detail_response.dart';
-import '../loading/loading_utils.dart';
-import 'exception_handler.dart';
 
 class CommonMethod {
-
   bool isKeyboardVisible(BuildContext context) {
     return MediaQuery.of(context).viewInsets.bottom > 0;
   }
@@ -230,8 +222,7 @@ class CommonMethod {
     if (originalImageUrl?.split("/").isEmpty ?? true) {
       return originalImageUrl ?? "";
     }
-    return
-         "${Urls.getCompressionUrl(dpr: dpr, height: imageHeight)}${originalImageUrl ?? ""}";
+    return "${Urls.getCompressionUrl(dpr: dpr, height: imageHeight)}${originalImageUrl ?? ""}";
   }
 
   DateTime? parseDate({required String date}) {

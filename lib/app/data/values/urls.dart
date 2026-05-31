@@ -51,12 +51,14 @@ class Urls {
   static String validatePlanV2({
     required String userId,
     required String baseUrlType,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/bbps/user/$userId/plan/validate";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/bbps/user/$userId/plan/validate";
 
   static String validatePlan({
     required String userId,
     required String baseUrlType,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/user/$userId/plan/validate";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/user/$userId/plan/validate";
 
   static String getPaymentAccessKey({required String baseUrlType}) =>
       "${Env.getBaseUrl()[baseUrlType]}/bill/session";
@@ -70,22 +72,26 @@ class Urls {
   static String getPaymentStatus({
     required String mbTxnId,
     required String baseUrlType,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/mobikwik/transaction/status/$mbTxnId";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/mobikwik/transaction/status/$mbTxnId";
 
   static String getOperatorListV2({
     required String subType,
     required String baseUrlType,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/bbps/$subType/operators";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/bbps/$subType/operators";
 
   static String getOperatorList({
     required String subType,
     required String baseUrlType,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/$subType/operators";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/$subType/operators";
 
   static String fetchBill({
     required String userId,
     required String baseUrlType,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/user/$userId/bill/fetch";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/user/$userId/bill/fetch";
 
   static String fetchAccountBill({
     required String userId,
@@ -97,7 +103,8 @@ class Urls {
   static String fetchBillV2({
     required String userId,
     required String baseUrlType,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/bbps/user/$userId/bill/fetch";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/bbps/user/$userId/bill/fetch";
 
   static String user({required String baseUrlType}) =>
       "${Env.getBaseUrl()[baseUrlType]}/user/";
@@ -126,7 +133,8 @@ class Urls {
   static String validateIfsc({
     required String baseUrlType,
     required String ifsc,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/master/kyc/validate/ifsc?ifsc=$ifsc";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/master/kyc/validate/ifsc?ifsc=$ifsc";
 
   static const String getAddressDetail =
       "https://maps.googleapis.com/maps/api/geocode/json";
@@ -161,7 +169,8 @@ class Urls {
   static String historyDetail({
     required String baseUrlType,
     required String id,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/bill/session/id/$id";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/bill/session/id/$id";
 
   static String validatePan({required String baseUrlType}) =>
       "${Env.getBaseUrl()[baseUrlType]}/kyc/validate/pan";
@@ -181,7 +190,8 @@ class Urls {
   static String kredcoinWallet({
     required String baseUrlType,
     required String userId,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/account/kred/coin/user/$userId";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/account/kred/coin/user/$userId";
 
   static String kredcoinHistory({
     required String baseUrlType,
@@ -198,7 +208,8 @@ class Urls {
   static String myCouponDetail({
     required String baseUrlType,
     required String myCouponId,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/user/myCoupon/$myCouponId";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/user/myCoupon/$myCouponId";
 
   static String pgPay({required String baseUrlType}) =>
       "${Env.getBaseUrl()[baseUrlType]}/account/pg/pay";
@@ -213,13 +224,15 @@ class Urls {
     required String baseUrlType,
     required String userId,
     String? query,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/user/myCoupon/search?userId=$userId";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/user/myCoupon/search?userId=$userId";
 
   static String myCouponStats({
     required String baseUrlType,
     required String userId,
     String? query,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/user/myCoupon/stats?userId=$userId";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/user/myCoupon/stats?userId=$userId";
 
   static String getAllCoupons({required String baseUrlType}) =>
       "${Env.getBaseUrl()[baseUrlType]}/coupon/promocode/offers";
@@ -246,7 +259,8 @@ class Urls {
     required String baseUrlType,
     required String profileId,
     String? query,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/account/invoices?userId=$profileId";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/account/invoices?userId=$profileId";
 
   static String getRepaymentList({
     required String baseUrlType,
@@ -259,7 +273,8 @@ class Urls {
     required String baseUrlType,
     required String payId,
     String? query,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/account/loan/$payId/repayments";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/account/loan/$payId/repayments";
 
   static String getSupplierList({
     required String baseUrlType,
@@ -284,7 +299,8 @@ class Urls {
   static String getCreditDrawdown({
     required String baseUrlType,
     required String profileId,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/account/drawdown/user/$profileId";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/account/drawdown/user/$profileId";
 
   static String getKfs({required String baseUrlType, required String userId}) =>
       "${Env.getBaseUrl()[baseUrlType]}/user/kfs?userId=$userId";
@@ -292,7 +308,8 @@ class Urls {
   static String uploadDrawdownInvoice({
     required String baseUrlType,
     required String profileId,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/account/drawdown/user/$profileId";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/account/drawdown/user/$profileId";
 
   static String bill({
     required String baseUrlType,
@@ -315,7 +332,8 @@ class Urls {
   static String getUserCoupons({
     required String baseUrlType,
     required String userId,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/user/$userId/offers";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/user/$userId/offers";
 
   static String settlement({required String baseUrlType}) {
     final baseUrl = Env.getBaseUrl()[baseUrlType];
@@ -350,18 +368,21 @@ class Urls {
   static getRetailerAddress({
     required String baseUrlType,
     required String userId,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/user/$userId/retailer/address/all";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/user/$userId/retailer/address/all";
 
   static getPrimaryRetailerAddress({
     required String baseUrlType,
     required String userId,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/user/$userId/retailer/address";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/user/$userId/retailer/address";
 
   static updateRetailerAddress({
     required String baseUrlType,
     required String userId,
     String? query,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/user/$userId/retailer/address";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/user/$userId/retailer/address";
 
   static getSupplier({required String baseUrlType}) =>
       "${Env.getBaseUrl()[baseUrlType]}/product/category/suppliers";
@@ -369,7 +390,8 @@ class Urls {
   static getSupplierProduct({
     required String baseUrlType,
     required String supplierId,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/product/supplier/$supplierId";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/product/supplier/$supplierId";
 
   static payOrder({required String baseUrlType, String? query}) =>
       "${Env.getBaseUrl()[baseUrlType]}/order/pay";
@@ -380,12 +402,14 @@ class Urls {
   static getOrderStatus({
     required String baseUrlType,
     required String orderId,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/order/$orderId";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/order/$orderId";
 
   static updateOrderStatus({
     required String baseUrlType,
     required String orderId,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/order/$orderId/pay";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/order/$orderId/pay";
 
   static searchProduct({required String baseUrlType}) =>
       "${Env.getBaseUrl()[baseUrlType]}/inventory/search/products";
@@ -402,7 +426,8 @@ class Urls {
   static String applyOrderCoupon({
     required String baseUrlType,
     required String cartId,
-  }) => "${Env.getBaseUrl()[baseUrlType]}/cart/$cartId/apply";
+  }) =>
+      "${Env.getBaseUrl()[baseUrlType]}/cart/$cartId/apply";
 
   static String getCompressionUrl({required int dpr, required String height}) =>
       "https://img.kredmint.in/unsafe/resize:auto:$height/dpr:$dpr/plain/";
@@ -427,6 +452,4 @@ class Urls {
 
   static String syncPan({required String baseUrlType}) =>
       "${Env.getBaseUrl()[baseUrlType]}/master/kyc/sync/pan";
-
-
 }

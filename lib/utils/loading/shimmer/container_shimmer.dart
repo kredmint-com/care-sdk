@@ -7,7 +7,8 @@ class ContainerShimmer extends StatelessWidget {
   const ContainerShimmer({
     super.key,
     required this.containerHeight,
-    required this.containerWidth,  this.borderRadius,
+    required this.containerWidth,
+    this.borderRadius,
   });
 
   final double containerHeight;
@@ -24,9 +25,8 @@ class ContainerShimmer extends StatelessWidget {
           height: containerHeight,
           width: containerWidth,
           decoration: BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(borderRadius ?? 0)
-          ),
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(borderRadius ?? 0)),
         ));
   }
 }

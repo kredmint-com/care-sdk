@@ -24,7 +24,7 @@ class LoanSdkPackage {
 
     await getIt.reset();
 
-    if(environment?.isNotEmpty ?? false) {
+    if (environment?.isNotEmpty ?? false) {
       if (environment == ReleaseEnv.uat.name) {
         releaseEv = ReleaseEnv.dev;
       } else if (environment == ReleaseEnv.prod.name) {
@@ -44,11 +44,10 @@ class LoanSdkPackage {
 
     return await Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
-        builder:
-            (_) => BlocProvider(
-              create: (_) => getIt<AppBloc>(),
-              child: _SdkContainer(sdkRequest: sdkRequest),
-            ),
+        builder: (_) => BlocProvider(
+          create: (_) => getIt<AppBloc>(),
+          child: _SdkContainer(sdkRequest: sdkRequest),
+        ),
       ),
     );
   }
@@ -85,9 +84,9 @@ class _SdkContainer extends StatelessWidget {
         }
 
         getIt<SdkCallbacks>().onClose?.call(
-          message: "Sdk closed",
-          status: SdkStatus.SDK_CLOSED.name,
-        );
+              message: "Sdk closed",
+              status: SdkStatus.SDK_CLOSED.name,
+            );
 
         Navigator.of(context).pop();
       },

@@ -2,15 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loan_sdk_package/app/data/values/strings.dart';
-import 'package:loan_sdk_package/app/themes/app_colors.dart';
-import 'package:loan_sdk_package/app/themes/styles.dart';
-import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/promoter/presentation/bloc/promoter_event.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/promoter/presentation/bloc/promoter_state.dart';
 
 import '../../../../../../utils/helper/common_method.dart';
-import '../../../../../../utils/helper/enums.dart';
 import '../../../../../../utils/loading/loading_utils.dart';
 import '../../../data/models/add_promoter_request.dart';
 import '../../../domain/credit_onboarding_repository.dart';

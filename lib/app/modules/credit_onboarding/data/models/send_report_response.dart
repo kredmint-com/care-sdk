@@ -7,7 +7,7 @@ class SendReportResponse {
 
   SendReportResponse.fromJson(Map<String, dynamic> json) {
     payload =
-    json['payload'] != null ? Payload.fromJson(json['payload']) : null;
+        json['payload'] != null ? Payload.fromJson(json['payload']) : null;
     sum = json['sum'];
     timestamp = json['timestamp'];
   }

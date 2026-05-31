@@ -67,7 +67,6 @@ class InputTextField extends StatelessWidget {
   final TextStyle? labelStyle;
   final TextStyle? textStyle;
 
-
   @override
   Widget build(BuildContext context) {
     return TextFormField(

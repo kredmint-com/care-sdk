@@ -178,13 +178,11 @@ enum AllowedInvoiceTypes { SUPPLIER_INVOICE, DRAWDOWN_REQUEST }
 
 enum BbpsApiVersion { v1, v2 }
 
-enum EmiPlanType {monthly , weekly}
+enum EmiPlanType { monthly, weekly }
 
 enum ProfileStatus {
-   PROFILE_COMPLETED,
-   PROFILE_REJECTED,
+  PROFILE_COMPLETED,
+  PROFILE_REJECTED,
 }
 
-enum SdkStatus {
-  SDK_CLOSED
-}
+enum SdkStatus { SDK_CLOSED }

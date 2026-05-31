@@ -14,7 +14,6 @@ extension DateExtension on DateTime {
   String formatDateWithRegrex({required String regrex}) =>
       DateFormat(regrex).format(this);
 
-  String formatDateWithTime() => DateFormat('dd MMM yyyy \'at\' hh:mm a').format(this);
-
-
+  String formatDateWithTime() =>
+      DateFormat('dd MMM yyyy \'at\' hh:mm a').format(this);
 }

@@ -47,8 +47,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
   }
 
   Future<bool> handleBackPress() async {
-    return
-    CreditCommonMethod.onBackPress(
+    return CreditCommonMethod.onBackPress(
       context: context,
       prevPageId: widget.prevPageId,
       profileId: widget.profileId,

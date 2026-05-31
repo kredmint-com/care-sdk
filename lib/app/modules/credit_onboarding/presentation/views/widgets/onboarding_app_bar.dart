@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:loan_sdk_package/app/data/values/images.dart';
-import '../../../../../../utils/helper/enums.dart';
 import '../../../../../../widgets/common_widget.dart';
 import '../../../../../themes/app_colors.dart';
-import 'onboarding_bottomsheet_widget.dart';
 
 class CreditOnboardingAppBar extends StatelessWidget
     implements PreferredSizeWidget {

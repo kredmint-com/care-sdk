@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loan_sdk_package/app/data/values/strings.dart';
-import 'package:loan_sdk_package/app/themes/app_colors.dart';
 import 'package:loan_sdk_package/app/themes/styles.dart';
 import 'package:loan_sdk_package/utils/helper/date_extension.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
@@ -15,9 +14,6 @@ import '../../../../../../utils/helper/enums.dart';
 import '../../../../../../widgets/common_widget.dart';
 import '../../../../../../widgets/custom_button.dart';
 import '../../../../../../widgets/input_text_field.dart';
-import '../../../../../data/values/images.dart';
-import '../../../../../data/values/strings.dart';
-import '../../../../../themes/app_colors.dart';
 import '../../../data/models/add_promoter_request.dart';
 import '../../../data/models/onboarding_steps_response.dart';
 import '../../../presentation/views/widgets/credit_onboarding_widgets.dart';
@@ -274,9 +270,9 @@ class _AddPromoterViewState extends State<AddPromoterView> {
     ];
 
     for (final key in fieldKeys) {
-      final fieldState = key?.currentState;
+      final fieldState = key.currentState;
       if (fieldState != null && fieldState.hasError) {
-        final context = key?.currentContext;
+        final context = key.currentContext;
         if (context != null) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Scrollable.ensureVisible(
@@ -558,7 +554,7 @@ class _AddPromoterViewState extends State<AddPromoterView> {
                       {"key": "Female", "value": "Female"},
                       {"key": "Other", "value": "Other"},
                     ],
-                    onTap: ({required String key, required String value}){
+                    onTap: ({required String key, required String value}) {
                       context.pop();
                       genderController.text = key;
                       // widget.field?.textEditingController?.text = val;
