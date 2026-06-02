@@ -246,10 +246,10 @@ LoanSdkPackage.open(
       "productNo": "PRD001",
       "productName": "Sample Product",
       "sumInsured": 50
-    }
+    },
+   "clientId": clientId,
+   "clientSecret": clientSecret,
   }),
-  clientId: clientId,
-  clientSecret: clientSecret,
 
   onClose: ({
     required String message,
