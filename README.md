@@ -220,7 +220,7 @@ LoanSdkPackage.open(
   context: context,
   environment: environment,
   sdkRequest: SdkRequest.fromJson({
-    "username": "9876543210",
+    "username": phone number,
     "source": "MOS",
     "program": program,
     "requestId": "REQ123456789",
@@ -233,7 +233,7 @@ LoanSdkPackage.open(
       "name": "John Doe",
       "gender": "Male",
       "email": "john.doe@example.com",
-      "dob": "01-01-1995",
+      "dob": "1997-05-08",
       "address": {
         "addressLine1": "Sector 16A",
         "addressLine2": "Near Metro Station",
