@@ -250,14 +250,14 @@ class _DownPaymentViewState extends State<DownPaymentView> {
                     _amountColumn(
                       title: Strings.payNow,
                       amount:
-                          "${Strings.rupee}${widget.processingFeeData?.pgOrderRequest?.amount?.toString().formatData() ?? ""}",
+                          "${Strings.rupee}${widget.processingFeeData?.pgOrderRequest?.amount?.toString() ?? ""}",
                       subtitle: Strings.downPayment,
                     ),
                     Text("+", style: Styles.tsGrey4ABold20()),
                     _amountColumn(
                       title: Strings.emi,
                       amount:
-                          "${Strings.rupee}${widget.processingFeeData?.pgOrderRequest?.amount?.toString().formatData() ?? ""}",
+                          "${Strings.rupee}${widget.processingFeeData?.emiAmt?.toString() ?? ""}",
                       subtitle:
                           "${Strings.multiply}${widget.processingFeeData?.tenure} ${(widget.processingFeeData?.tenureType?.toLowerCase() == EmiPlanType.monthly.name) ? Strings.months : Strings.weeks}",
                     ),

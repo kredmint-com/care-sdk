@@ -770,6 +770,7 @@ class ProcessingFeeData {
   num? totalPayable;
   num? gstAmount;
   num? gst;
+  num? emiAmt;
   bool? enablePayNow;
   String? description;
   PgOrderRequest? pgOrderRequest;
@@ -783,6 +784,7 @@ class ProcessingFeeData {
     this.totalPayable,
     this.gstAmount,
     this.gst,
+    this.emiAmt,
     this.enablePayNow,
     this.description,
     this.pgOrderRequest,
@@ -797,6 +799,7 @@ class ProcessingFeeData {
     totalPayable = json['totalPayable'];
     gstAmount = json['gstAmount'];
     gst = json['gst'];
+    emiAmt = json["emiAmt"];
     enablePayNow = json['enablePayNow'];
     description = json['description'];
     pgOrderRequest = json['pgOrderRequest'] != null
@@ -814,6 +817,7 @@ class ProcessingFeeData {
     data['totalPayable'] = totalPayable;
     data['gstAmount'] = gstAmount;
     data['gst'] = gst;
+    data["emiAmt"] = emiAmt;
     data['enablePayNow'] = enablePayNow;
     data['description'] = description;
     if (pgOrderRequest != null) {

@@ -141,9 +141,6 @@ class CreditOnboardingBloc
             ].whereType<Fields>(),
           );
         } else if (fieldsList?[i]?.type == InputType.file.name) {
-          debugPrint(
-            "fieldsList?[i]?.value is List<dynamic> : ${fieldsList?[i]?.value is List<dynamic>}",
-          );
           if (fieldsList?[i]?.value is List<dynamic>) {
             documentList = (fieldsList?[i]?.value as List<dynamic>)
                 .map((ele) => Document.fromJson(ele))
