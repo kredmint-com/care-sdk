@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'add_promoter_request.dart';
 
 class OnboardingStepsResponse {
-  Payload? payload;
+  OnboardingStepsPayload? payload;
   num? sum;
   num? timestamp;
 
@@ -11,7 +11,7 @@ class OnboardingStepsResponse {
 
   OnboardingStepsResponse.fromJson(Map<String, dynamic> json) {
     payload =
-        json['payload'] != null ? Payload.fromJson(json['payload']) : null;
+        json['payload'] != null ? OnboardingStepsPayload.fromJson(json['payload']) : null;
     sum = json['sum'];
     timestamp = json['timestamp'];
   }
@@ -27,7 +27,7 @@ class OnboardingStepsResponse {
   }
 
   OnboardingStepsResponse copyWith({
-    Payload? payload,
+    OnboardingStepsPayload? payload,
     num? sum,
     num? timestamp,
   }) {
@@ -39,7 +39,7 @@ class OnboardingStepsResponse {
   }
 }
 
-class Payload {
+class OnboardingStepsPayload {
   StepsPage? page;
   String? pageId;
   bool? confirm;
@@ -56,7 +56,7 @@ class Payload {
   List<StaticPageRes>? staticPageRes;
   Meta? meta;
 
-  Payload({
+  OnboardingStepsPayload({
     this.page,
     this.pageId,
     this.confirm,
@@ -74,7 +74,7 @@ class Payload {
     this.meta,
   });
 
-  Payload.fromJson(Map<String, dynamic> json) {
+  OnboardingStepsPayload.fromJson(Map<String, dynamic> json) {
     page = json['page'] != null ? StepsPage.fromJson(json['page']) : null;
     pageId = json['pageId'];
     confirm = json['confirm'];
@@ -139,7 +139,7 @@ class Payload {
     return data;
   }
 
-  Payload copyWith({
+  OnboardingStepsPayload copyWith({
     StepsPage? page,
     String? pageId,
     bool? confirm,
@@ -151,7 +151,7 @@ class Payload {
     String? profileId,
     String? product,
   }) {
-    return Payload(
+    return OnboardingStepsPayload(
       page: page ?? this.page,
       pageId: pageId ?? this.pageId,
       confirm: confirm ?? this.confirm,

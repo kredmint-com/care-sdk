@@ -62,7 +62,6 @@ class CreditOnboardingRepositoryImpl extends CreditOnboardingRepository {
       query: {"userProfileId": profileId},
       data: data,
     );
-    // debugPrint("Data payload : ${json.encode(data)}");
     return response is APIException
         ? RepoResponse(error: response)
         : RepoResponse(data: true);

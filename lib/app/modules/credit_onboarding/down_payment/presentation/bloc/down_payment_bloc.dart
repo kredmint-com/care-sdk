@@ -43,56 +43,64 @@ class DownPaymentBloc extends Bloc<DownPaymentEvent, DownPaymentState> {
   }
 
   void _onPay(OnPay event, Emitter<DownPaymentState> emit) async {
-    LoadingUtils.showLoader();
-    final response = await repository.pay(
-      amount: event.amount,
-      lenderId: event.lenderId,
-      profileId: event.profileId,
-      paymentType: event.paymentType,
-    );
-    LoadingUtils.hideLoader();
-    if (response.data != null) {
-      if (response.data?.payload?.pgName == Pg.CASH_FREE.name) {
-        await cashfreePaymentService.initiatePayment(
-          orderId: (response.data?.payload?.orderId ?? ""),
-          paymentSessionId: (response.data?.payload?.pgSessionId ?? ""),
-        );
-      } else if ((response.data?.payload?.pgName == Pg.Razorpay.name) ||
-          (response.data?.payload?.pgName == Pg.ORA.name)) {
-        Map<String, dynamic> options = {
-          "key": response.data?.payload?.key ?? "",
-          "amount": ((response.data?.payload?.orderAmount ?? 0) * 100),
-          "name": response.data?.payload?.meta?.name ?? 'Kredmint',
-          "description": response.data?.payload?.meta?.description ?? 'Payment',
-          "image":
-              'https://kredmint-public.s3.ap-south-1.amazonaws.com/kredmint-logo.png',
-          "order_id": response.data?.payload?.pgSessionId ?? "",
-          "prefill": {
-            "name": response.data?.payload?.name ?? "",
-            "email": '',
-            "contact": Storage.getSdkUser()?.id ?? "",
-          },
-        };
-        await razorpayPaymentService.initiatePayment(options: options);
-      } else if ((response.data?.payload?.pgName == Pg.EaseBuzz.name) ||
-          (response.data?.payload?.pgName == Pg.ZEAL.name)) {
-        await easeBuzzPaymentService.initiatePayment(
-          accessKey: response.data?.payload?.pgSessionId ?? "",
-        );
-      }
-      final patchPaymentResponse = await repository.patchPayment(
-        orderId: (response.data?.payload?.orderId ?? ""),
-        pgName: (response.data?.payload?.pgName ?? ""),
+    try {
+      LoadingUtils.showLoader();
+      final response = await repository.pay(
+        amount: event.amount,
+        lenderId: event.lenderId,
+        profileId: event.profileId,
+        paymentType: event.paymentType,
       );
-      if (patchPaymentResponse.data?.payload?.status ==
-          PaymentStatus.SUCCESS.name) {
-        emit(
-          state.copyWith(
-            paymentSuccessfull: true,
-            paymentPatchResponse: patchPaymentResponse.data,
-          ),
+      if (response.data != null) {
+        if (response.data?.payload?.pgName == Pg.CASH_FREE.name) {
+          await cashfreePaymentService.initiatePayment(
+            orderId: (response.data?.payload?.orderId ?? ""),
+            paymentSessionId: (response.data?.payload?.pgSessionId ?? ""),
+          );
+        } else if ((response.data?.payload?.pgName == Pg.Razorpay.name) ||
+            (response.data?.payload?.pgName == Pg.ORA.name)) {
+          Map<String, dynamic> options = {
+            "key": response.data?.payload?.key ?? "",
+            "amount": ((response.data?.payload?.orderAmount ?? 0) * 100),
+            "name": response.data?.payload?.meta?.name ?? 'Kredmint',
+            "description": response.data?.payload?.meta?.description ??
+                'Payment',
+            "image":
+            'https://kredmint-public.s3.ap-south-1.amazonaws.com/kredmint-logo.png',
+            "order_id": response.data?.payload?.pgSessionId ?? "",
+            "prefill": {
+              "name": response.data?.payload?.name ?? "",
+              "email": '',
+              "contact": Storage
+                  .getSdkUser()
+                  ?.id ?? "",
+            },
+          };
+          await razorpayPaymentService.initiatePayment(options: options);
+        } else if ((response.data?.payload?.pgName == Pg.EaseBuzz.name) ||
+            (response.data?.payload?.pgName == Pg.ZEAL.name)) {
+          await easeBuzzPaymentService.initiatePayment(
+            accessKey: response.data?.payload?.pgSessionId ?? "",
+          );
+        }
+        LoadingUtils.showLoader();
+        final patchPaymentResponse = await repository.patchPayment(
+          orderId: (response.data?.payload?.orderId ?? ""),
+          pgName: (response.data?.payload?.pgName ?? ""),
         );
+        LoadingUtils.hideLoader();
+        if (patchPaymentResponse.data?.payload?.status ==
+            PaymentStatus.SUCCESS.name) {
+          emit(
+            state.copyWith(
+              paymentSuccessfull: true,
+              paymentPatchResponse: patchPaymentResponse.data,
+            ),
+          );
+        }
       }
+    }finally{
+      LoadingUtils.hideLoader();
     }
   }
 

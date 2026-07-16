@@ -11,6 +11,7 @@ import '../../../../../loan_sdk_package.dart';
 import '../../../../../utils/helper/enums.dart';
 import '../../../../../utils/storage/storage_utils.dart';
 import '../../../../../widgets/custom_button.dart';
+import '../../../../route/app_pages.dart';
 import '../../credit_common_method.dart';
 import '../../data/models/onboarding_steps_response.dart';
 import '../bloc/credit_onboarding_bloc.dart';
@@ -138,7 +139,7 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                       },
                       builder: (context, state) {
                         return Visibility(
-                          visible: (!(state.formLoading ?? false)),
+                          visible: true, //(!(state.formLoading ?? false)),
                           child: CustomButton(
                             onTap: () {
                               // debugPrint("button tap 1");
@@ -147,6 +148,11 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                                   );
                               bool isFormValid =
                                   formKey.currentState!.validate();
+                              if (!(state.isPanValid ?? true)) {
+                                Fluttertoast.showToast(
+                                    msg: ErrorMessages.invalidPan);
+                                return;
+                              }
                               if (isFormValid) {
                                 FocusManager.instance.primaryFocus?.unfocus();
 
@@ -267,78 +273,254 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
       builder: (context, state) {
         return WillPopScope(
           onWillPop: handleBackPress,
-          child: BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
-            listener: (context, state) async {
-              if ((state.submitClicked ?? false) &&
-                  ((state.fieldAutoPopulated) ?? false)) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  formKey.currentState?.validate();
-                });
-              }
-            },
+          child: MultiBlocListener(
+            listeners: [
+              BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
+                listener: (context, state) async {
+                  if ((state.submitClicked ?? false) &&
+                      ((state.fieldAutoPopulated) ?? false)) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      formKey.currentState?.validate();
+                    });
+                  }
+                },
+              ),
+              BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
+                listenWhen: (previous, current) =>
+                    previous.navigate != current.navigate &&
+                    current.navigate == true,
+                listener: (context, state) {
+                  final OnboardingStepsPayload? payload =
+                      state.onboardingStepsResponse?.payload;
+                  final String prevPageId = (payload?.prePageEnable ?? false)
+                        ? (payload?.prvPageId ?? "")
+                        : "";
+                  if (payload == null) return;
+
+                  if (payload.pageCategory == PageCategory.BankStatement.name) {
+                    AppPages.router.pushNamed(
+                      Routes.bankStatement,
+                      extra: {
+                        "pageId": payload.pageId ?? "",
+                        "pageCategory": payload.pageCategory ?? "",
+                        "profileId": widget.profileId,
+                        "prevPageId": prevPageId,
+                        "staticPageRes": payload.staticPageRes,
+                        "page": payload.page,
+                      },
+                    );
+                  } else if (payload.pageCategory?.contains(
+                        PageCategory.Promoter.name,
+                      ) ??
+                      false) {
+                    AppPages.router.pushNamed(
+                      Routes.promoter,
+                      extra: {
+                        "pageId": payload.pageId ?? "",
+                        "pageCategory": payload.pageCategory ?? "",
+                        "profileId": widget.profileId,
+                        "prevPageId": prevPageId,
+                        "staticPageRes": payload.staticPageRes,
+                        "mobileNumber": payload.meta?.mobile ?? "",
+                        "page": payload.page,
+                      },
+                    );
+                  } else if (payload.pageCategory == PageCategory.Gst.name) {
+                    AppPages.router.pushNamed(
+                      Routes.gst,
+                      extra: {
+                        "pageId": payload.pageId ?? "",
+                        "pageCategory": payload.pageCategory ?? "",
+                        "profileId": widget.profileId,
+                        "gst": payload.meta?.gst ?? "",
+                        "prevPageId": prevPageId,
+                        "page": payload.page,
+                      },
+                    );
+                  } else if (payload.pageCategory == PageCategory.Review.name) {
+                    AppPages.router.pushNamed(
+                      Routes.review,
+                      extra: {
+                        "profileId": widget.profileId,
+                        "prevPageId": prevPageId,
+                        "page": payload.page,
+                      },
+                    );
+                  } else if (payload.pageCategory == PageCategory.Itr.name) {
+                    AppPages.router.pushNamed(
+                      Routes.itr,
+                      extra: {
+                        "profileId": widget.profileId,
+                        "pan": payload.meta?.pan ?? "",
+                        "prevPageId": prevPageId,
+                        "pageId": payload.pageId ?? "",
+                        "pageCategory": payload.pageCategory ?? "",
+                        "page": payload.page,
+                      },
+                    );
+                  } else if (payload.pageCategory ==
+                      PageCategory.LoiSummary.name) {
+                    AppPages.router.pushNamed(
+                      Routes.loiSummary,
+                      extra: {
+                        "profileId": widget.profileId,
+                        "prevPageId": prevPageId,
+                        "loiSummary": payload.loiSummary,
+                        "pageId": payload.pageId,
+                        "page": payload.page,
+                      },
+                    );
+                  } else if (payload.pageCategory ==
+                      PageCategory.ProcessingFee.name) {
+                    AppPages.router.pushNamed(
+                      Routes.processingFee,
+                      extra: {
+                        "profileId": widget.profileId,
+                        "prevPageId": prevPageId,
+                        "processingFee": payload.processingFee,
+                        "page": payload.page,
+                      },
+                    );
+                  } else if (payload.pageCategory ==
+                      PageCategory.EmiPlans.name) {
+                    AppPages.router.pushNamed(
+                      Routes.emi,
+                      extra: {
+                        "pageId": payload.pageId ?? "",
+                        "pageCategory": payload.pageCategory ?? "",
+                        "profileId": widget.profileId,
+                        "prevPageId": prevPageId,
+                        "staticPageRes": payload.staticPageRes,
+                        "page": payload.page,
+                        "tenureId": (payload.page?.fields?.isEmpty ?? true)
+                            ? ""
+                            : payload.page?.fields?.first.fieldId,
+                        "tenureTypeId":
+                            ((payload.page?.fields?.length ?? 0) >= 2)
+                                ? (payload.page?.fields?[1].fieldId)
+                                : "",
+                      },
+                    );
+                  } else if ((payload.pageCategory ==
+                          PageCategory.KfsEsignUrl.name) ||
+                      (payload.pageCategory ==
+                          PageCategory.MandateSignUrl.name)) {
+                    AppPages.router.pushNamed(
+                      Routes.kycDetail,
+                      extra: {
+                        "pageId": payload.pageId ?? "",
+                        "pageCategory": payload.pageCategory ?? "",
+                        "profileId": widget.profileId,
+                        "prevPageId": prevPageId,
+                        "page": payload.page,
+                        "allowSkip": payload.allowSkip ?? false,
+                        "digioKycResponse": DigioKycResponse(
+                          id: payload.digioKycResponse?.entityId ?? "",
+                          accessToken: AccessToken(
+                            id: payload.digioKycResponse?.id ?? "",
+                          ),
+                        ),
+                      },
+                    );
+                  } else if (payload.pageCategory ==
+                      PageCategory.BankDetail.name) {
+                    AppPages.router.pushNamed(
+                      Routes.bankDetail,
+                      extra: {
+                        "pageId": payload.pageId ?? "",
+                        "pageCategory": payload.pageCategory ?? "",
+                        "profileId": widget.profileId,
+                        "prevPageId": prevPageId,
+                        "staticPageRes": payload.staticPageRes,
+                        "page": payload.page,
+                      },
+                    );
+                  } else if (payload.pageCategory ==
+                      PageCategory.Success.name) {
+                    AppPages.router.pushNamed(
+                      Routes.success,
+                      extra: {
+                        "profileId": widget.profileId,
+                        "prevPageId": prevPageId,
+                      },
+                    );
+                  } else if (payload.pageCategory ==
+                      PageCategory.ProfileRejected.name) {
+                    AppPages.router.pushNamed(
+                      Routes.profileRejected,
+                      extra: {
+                        "profileId": widget.profileId,
+                        "prevPageId": prevPageId,
+                      },
+                    );
+                  } else if (payload.pageCategory ==
+                      PageCategory.DownPayment.name) {
+                    AppPages.router.pushNamed(
+                      Routes.downPayment,
+                      extra: {
+                        "pageId": payload.pageId ?? "",
+                        "pageCategory": payload.pageCategory ?? "",
+                        "profileId": widget.profileId,
+                        "prevPageId": prevPageId,
+                        "page": payload.page,
+                        "processingFeeData": payload.processingFee,
+                      },
+                    );
+                  }
+                  context.read<CreditOnboardingBloc>().add(OnResetNavigation());
+                },
+              )
+            ],
             child: Form(
               key: formKey,
               child: BlocBuilder<CreditOnboardingBloc, CreditOnboardingState>(
-                // buildWhen: (previous, current) {
-                //   return previous.onboardingStepsResponse !=
-                //       current.onboardingStepsResponse;
-                // },
                 builder: (context, state) {
-                  debugPrint("Bloc builder updated");
                   final List<Fields?> fieldsList = state.fieldsList ?? [];
-                  return (state.formLoading ?? true)
-                      ? SizedBox.shrink()
-                      : SingleChildScrollView(
-                          controller: scrollController,
-                          padding: EdgeInsets.all(
-                            MediaQuery.of(context).padding.bottom + 16.0,
+                  return SingleChildScrollView(
+                    controller: scrollController,
+                    padding: EdgeInsets.all(
+                      MediaQuery.of(context).padding.bottom + 16.0,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        HeaderWidget(
+                          heading: state.onboardingStepsResponse?.payload?.page
+                                  ?.heading?.title ??
+                              "",
+                          subHeading: state.onboardingStepsResponse?.payload
+                                  ?.page?.heading?.subTitle ??
+                              "",
+                          iconUrl: (state.onboardingStepsResponse?.payload?.page
+                                      ?.heading?.appLogo?.isNotEmpty ??
+                                  false)
+                              ? (state.onboardingStepsResponse?.payload?.page
+                                      ?.heading?.appLogo ??
+                                  "")
+                              : ((state.onboardingStepsResponse?.payload?.page
+                                      ?.heading?.pageLogo) ??
+                                  ""),
+                        ),
+                        12.h,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: List<Widget>.generate(
+                            fieldsList.length,
+                            (index) {
+                              return CreditOnboardingWidget(
+                                field: fieldsList[index],
+                                formKey: formKey,
+                                submitClicked: (state.submitClicked ?? false),
+                                index: index,
+                                profileId: widget.profileId,
+                              );
+                            },
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              HeaderWidget(
-                                heading: state.onboardingStepsResponse?.payload
-                                        ?.page?.heading?.title ??
-                                    "",
-                                subHeading: state.onboardingStepsResponse
-                                        ?.payload?.page?.heading?.subTitle ??
-                                    "",
-                                iconUrl: (state
-                                            .onboardingStepsResponse
-                                            ?.payload
-                                            ?.page
-                                            ?.heading
-                                            ?.appLogo
-                                            ?.isNotEmpty ??
-                                        false)
-                                    ? (state.onboardingStepsResponse?.payload
-                                            ?.page?.heading?.appLogo ??
-                                        "")
-                                    : ((state.onboardingStepsResponse?.payload
-                                            ?.page?.heading?.pageLogo) ??
-                                        ""),
-                              ),
-                              12.h,
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: List<Widget>.generate(
-                                  fieldsList.length,
-                                  (index) {
-                                    return CreditOnboardingWidget(
-                                      field: fieldsList[index],
-                                      formKey: formKey,
-                                      submitClicked:
-                                          (state.submitClicked ?? false),
-                                      index: index,
-                                      profileId: widget.profileId,
-                                    );
-                                  },
-                                ),
-                              ),
-                              80.h,
-                            ],
-                          ),
-                        );
+                        ),
+                        80.h,
+                      ],
+                    ),
+                  );
                 },
               ),
             ),

@@ -105,6 +105,7 @@ class _PromoterViewState extends State<BankDetailView> {
               onTap: () {
                 context.read<BankDetailBloc>().add(OnUpdateSubmitStatus());
                 if (_formKey.currentState?.validate() ?? false) {
+                  FocusManager.instance.primaryFocus?.unfocus();
                   context.read<BankDetailBloc>().add(
                         OnVerifyBankDetail(
                           accountNumber: accountController.text.trim(),
@@ -126,62 +127,101 @@ class _PromoterViewState extends State<BankDetailView> {
   Widget bodyWidget({required BuildContext context}) {
     return WillPopScope(
       onWillPop: handleBackPress,
-      child: BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
-        listener: (context, state) {
-          if ((state.userProfileStageUpdated) ?? false) {
-            context.replaceNamed(
-              Routes.sdkCreditOnboarding,
-              extra: {"profileId": widget.profileId},
-            );
-            context.read<CreditOnboardingBloc>().add(coe.OnReset());
-          }
-        },
-        child: BlocConsumer<BankDetailBloc, BankDetailState>(
-          listener: (context, state) {
-            if (state.bankName?.isNotEmpty ?? false) {
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
+            listenWhen: (previous, current) =>
+            previous.userProfileStageUpdated !=
+                current.userProfileStageUpdated &&
+                current.userProfileStageUpdated == true,
+            listener: (context, state) {
+              context.replaceNamed(
+                Routes.sdkCreditOnboarding,
+                extra: {"profileId": widget.profileId},
+              );
+
+              context.read<CreditOnboardingBloc>().add(coe.OnReset());
+            },
+          ),
+
+          BlocListener<BankDetailBloc, BankDetailState>(
+            listenWhen: (previous, current) =>
+            previous.bankName != current.bankName &&
+                (current.bankName?.isNotEmpty ?? false),
+            listener: (context, state) {
               bankNameController.text = state.bankName ?? "";
-              if (state.submitClicked ?? false) {
+
+              if (state.submitClicked == true) {
                 _formKey.currentState?.validate();
               }
+
               context.read<BankDetailBloc>().add(OnResetBankName());
-            }
-            if (state.bankVerified ?? false) {
+            },
+          ),
+
+          BlocListener<BankDetailBloc, BankDetailState>(
+            listenWhen: (previous, current) =>
+            previous.bankVerified != current.bankVerified &&
+                current.bankVerified == true,
+            listener: (context, state) {
               context.read<BankDetailBloc>().add(
-                    OnFetchBankDetail(
-                      accountNumber: accountController.text.trim(),
-                      ifsc: ifscController.text.trim(),
-                      bankName: bankNameController.text.trim(),
-                      accountHolderName: fullNameController.text.trim(),
-                    ),
-                  );
+                OnFetchBankDetail(
+                  accountNumber: accountController.text.trim(),
+                  ifsc: ifscController.text.trim(),
+                  bankName: bankNameController.text.trim(),
+                  accountHolderName: fullNameController.text.trim(),
+                ),
+              );
+
               context.read<BankDetailBloc>().add(OnResetBankVerified());
-            }
-            if (state.bankAccountDetailFetched ?? false) {
+            },
+          ),
+
+          BlocListener<BankDetailBloc, BankDetailState>(
+            listenWhen: (previous, current) =>
+            previous.bankAccountDetailFetched !=
+                current.bankAccountDetailFetched &&
+                current.bankAccountDetailFetched == true,
+            listener: (context, state) {
               context.read<BankDetailBloc>().add(
-                    OnSubmitBankDetail(
-                      pageId: widget.pageId,
-                      pageCategory: widget.pageCategory,
-                      bankAccountDetailResponse:
-                          state.bankAccountDetailResponse,
-                    ),
-                  );
+                OnSubmitBankDetail(
+                  pageId: widget.pageId,
+                  pageCategory: widget.pageCategory,
+                  bankAccountDetailResponse:
+                  state.bankAccountDetailResponse,
+                ),
+              );
+
               context.read<BankDetailBloc>().add(OnResetBankDetail());
-            }
-            if ((state.userProfileStageMapCompleted) ?? false) {
+            },
+          ),
+
+          BlocListener<BankDetailBloc, BankDetailState>(
+            listenWhen: (previous, current) =>
+            previous.userProfileStageMapCompleted !=
+                current.userProfileStageMapCompleted &&
+                current.userProfileStageMapCompleted == true,
+            listener: (context, state) {
               context.read<CreditOnboardingBloc>().add(
-                    coe.OnUpdateUserProfileStage(
-                      data: state.userProfileStageMap,
-                      profileId: widget.profileId,
-                    ),
-                  );
+                coe.OnUpdateUserProfileStage(
+                  data: state.userProfileStageMap,
+                  profileId: widget.profileId,
+                ),
+              );
+
               context.read<BankDetailBloc>().add(
-                    OnResetUserProfileStageMapCompleted(),
-                  );
-            }
-          },
+                OnResetUserProfileStageMapCompleted(),
+              );
+            },
+          ),
+        ],
+        child: BlocBuilder<BankDetailBloc, BankDetailState>(
           builder: (context, state) {
             return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+              padding: const EdgeInsets.symmetric(
+                vertical: 24,
+                horizontal: 16,
+              ),
               child: Form(
                 key: _formKey,
                 child: Column(

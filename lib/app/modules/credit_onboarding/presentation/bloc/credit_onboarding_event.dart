@@ -78,3 +78,5 @@ class OnResetFieldOptions extends CreditOnboardingEvent {
 
   OnResetFieldOptions({required this.index});
 }
+
+class OnResetNavigation extends CreditOnboardingEvent {}

@@ -167,6 +167,7 @@ class _EmiViewState extends State<EmiView> {
                   12.h,
                   Expanded(
                     child: ListView.separated(
+                      padding: EdgeInsetsGeometry.only(bottom: 100),
                       itemCount: widget.staticPageRes?.length ?? 0,
                       separatorBuilder: (context, index) {
                         return 8.h;

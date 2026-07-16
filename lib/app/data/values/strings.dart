@@ -598,6 +598,7 @@ class ErrorMessages {
 
   static const String ifscRequired = "IFSC code is required";
   static const String ifscInvalid = "Invalid IFSC code";
+  static const String invalidPan = "Invalid PAN";
 
   static const String bankNameRequired = "Bank name is required";
   static const String fullNameRequired = "Full name is required";

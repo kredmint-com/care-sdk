@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loan_sdk_package/app/config/release_env.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/onboarding_steps_response.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/kyc/presentation/bloc/kyc_bloc.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/kyc/presentation/bloc/kyc_state.dart';
 import 'package:loan_sdk_package/utils/storage/storage_utils.dart';
 import 'package:loan_sdk_package/widgets/custom_button.dart';
-
 import '../../../../../../loan_sdk_package.dart';
 import '../../../../../data/values/strings.dart';
 import '../../../../../route/app_pages.dart';
@@ -27,6 +27,7 @@ class KycView extends StatefulWidget {
     required this.pageCategory,
     required this.pageId,
     required this.page,
+    required this.allowSkip,
   });
 
   final DigioKycResponse digioKycResponse;
@@ -35,6 +36,7 @@ class KycView extends StatefulWidget {
   final String pageCategory;
   final String pageId;
   final StepsPage? page;
+  final bool allowSkip;
 
   @override
   State<KycView> createState() => _KycViewState();
@@ -44,17 +46,22 @@ class _KycViewState extends State<KycView> {
   @override
   void initState() {
     super.initState();
+    debugPrint("KycView initState ${identityHashCode(this)}");
     init();
   }
 
   @override
   void dispose() {
     super.dispose();
+    debugPrint("KycView dispose ${identityHashCode(this)}");
     SdkBackHandler.onBackPressed = null;
   }
 
   void init() {
     SdkBackHandler.onBackPressed = handleBackPress;
+    if (widget.allowSkip) {
+      return;
+    }
     context.read<KycBloc>().add(
           OnStartDigioKyc(
             documentId: widget.digioKycResponse.id ?? "",
@@ -84,8 +91,34 @@ class _KycViewState extends State<KycView> {
         ),
         bottomSheet: Wrap(
           children: [
+            if (widget.allowSkip) ...[
+              Center(
+                child: TextButton(
+                  onPressed: () {
+                    context.read<CreditOnboardingBloc>().add(
+                          coe.OnUpdateUserProfileStage(
+                            data: {
+                              "pageId": widget.pageId,
+                              "pageCategory": widget.pageCategory,
+                              "skipPage": true,
+                            },
+                            profileId: widget.profileId,
+                          ),
+                        );
+                  },
+                  child: Text(
+                    Strings.skip,
+                    style: TextStyle(decoration: TextDecoration.underline),
+                  ),
+                ),
+              )
+            ],
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsetsGeometry.only(
+                left: 20,
+                right: 20,
+                bottom: 20,
+              ),
               child: CustomButton(
                 onTap: () {
                   context.read<KycBloc>().add(
@@ -103,91 +136,98 @@ class _KycViewState extends State<KycView> {
             ),
           ],
         ),
-        body: BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
-          listener: (context, state) {
-            if ((state.userProfileStageUpdated) ?? false) {
-              context.replaceNamed(
-                Routes.sdkCreditOnboarding,
-                extra: {"profileId": widget.profileId},
-              );
-              context.read<CreditOnboardingBloc>().add(coe.OnReset());
-            }
-          },
-          child: BlocListener<KycBloc, KycState>(
-            listener: (c, state) {
-              // if ((state.digioResponse?["code"] == 1001) ||
-              //     (state.digioResponse?["message"]?.toLowerCase().contains(
-              //       "success",
-              //     ))) {
-              //   if (widget.pageCategory == PageCategory.MandateSignUrl.name) {
-              //     context.read<KycBloc>().add(
-              //       OnVerifyMandateStatus(
-              //         digioDocId: widget.digioKycResponse.id ?? "",
-              //       ),
-              //     );
-              //   } else {
-              //     context.read<KycBloc>().add(
-              //       OnVerifyEsignStatus(
-              //         digioDocId: widget.digioKycResponse.id ?? "",
-              //       ),
-              //     );
-              //   }
-              //   context.read<KycBloc>().add(OnResetDigioResponse());
-              // }
-              // if ((state.digioResponse?["code"] == -1000)) {
-              //   debugPrint("Entered this code: ${state.digioResponse?["code"]}");
-              //  AppPages.router.pop();
-              //   context.read<KycBloc>().add(OnResetDigioResponse());
-              // }
-              if (state.eSignVerified ?? false) {
-                context.read<KycBloc>().add(
-                      OnPatchKyc(
-                        pageId: widget.pageId,
-                        pageCategory: widget.pageCategory,
-                        esignVerifyResponse: state.esignVerifyResponse,
-                      ),
-                    );
-                context.read<KycBloc>().add(OnResetESignStatus());
-              }
+        body: MultiBlocListener(
+          listeners: [
+            BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
+              listenWhen: (previous, current) =>
+              previous.userProfileStageUpdated !=
+                  current.userProfileStageUpdated &&
+                  current.userProfileStageUpdated == true,
+              listener: (context, state) {
+                context.replaceNamed(
+                  Routes.sdkCreditOnboarding,
+                  extra: {"profileId": widget.profileId},
+                );
 
-              if (state.eMandateVerified ?? false) {
-                context.read<KycBloc>().add(
-                      OnPatchKyc(
-                        pageId: widget.pageId,
-                        pageCategory: widget.pageCategory,
-                        mandateVerifyResponse: state.mandateVerifyResponse,
-                      ),
-                    );
-                context.read<KycBloc>().add(OnResetEMandateStatus());
-              }
+                context.read<CreditOnboardingBloc>().add(coe.OnReset());
+              },
+            ),
 
-              if ((state.userProfileStageMapCompleted) ?? false) {
-                context.read<CreditOnboardingBloc>().add(
-                      coe.OnUpdateUserProfileStage(
-                        data: state.userProfileStageMap,
-                        profileId: widget.profileId,
-                      ),
-                    );
+            BlocListener<KycBloc, KycState>(
+              listenWhen: (previous, current) =>
+              previous.eSignVerified != current.eSignVerified &&
+                  current.eSignVerified == true,
+              listener: (context, state) {
+                debugPrint("E Sign Verified");
+
                 context.read<KycBloc>().add(
-                      OnResetUserProfileStageMapCompleted(),
-                    );
-              }
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  HeaderWidget(
-                    heading: widget.page?.heading?.title ?? "",
-                    subHeading: widget.page?.heading?.subTitle ?? "",
-                    iconUrl:
-                        (widget.page?.heading?.appLogo?.isNotEmpty ?? false)
-                            ? (widget.page?.heading?.appLogo ?? "")
-                            : ((widget.page?.heading?.pageLogo) ?? ""),
+                  OnPatchKyc(
+                    pageId: widget.pageId,
+                    pageCategory: widget.pageCategory,
+                    esignVerifyResponse: state.esignVerifyResponse,
                   ),
-                ],
-              ),
+                );
+
+                context.read<KycBloc>().add(OnResetESignStatus());
+              },
+            ),
+
+            BlocListener<KycBloc, KycState>(
+              listenWhen: (previous, current) =>
+              previous.eMandateVerified != current.eMandateVerified &&
+                  current.eMandateVerified == true,
+              listener: (context, state) {
+                debugPrint("E Mandate Verified");
+
+                context.read<KycBloc>().add(
+                  OnPatchKyc(
+                    pageId: widget.pageId,
+                    pageCategory: widget.pageCategory,
+                    mandateVerifyResponse: state.mandateVerifyResponse,
+                  ),
+                );
+
+                context.read<KycBloc>().add(OnResetEMandateStatus());
+              },
+            ),
+
+            BlocListener<KycBloc, KycState>(
+              listenWhen: (previous, current) =>
+              previous.userProfileStageMapCompleted !=
+                  current.userProfileStageMapCompleted &&
+                  current.userProfileStageMapCompleted == true,
+              listener: (context, state) {
+                debugPrint("Updating User Profile Stage");
+
+                context.read<CreditOnboardingBloc>().add(
+                  coe.OnUpdateUserProfileStage(
+                    data: state.userProfileStageMap,
+                    profileId: widget.profileId,
+                  ),
+                );
+
+                context.read<KycBloc>().add(
+                  OnResetUserProfileStageMapCompleted(),
+                );
+              },
+            ),
+          ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 24,
+              horizontal: 16,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                HeaderWidget(
+                  heading: widget.page?.heading?.title ?? "",
+                  subHeading: widget.page?.heading?.subTitle ?? "",
+                  iconUrl: (widget.page?.heading?.appLogo?.isNotEmpty ?? false)
+                      ? (widget.page?.heading?.appLogo ?? "")
+                      : (widget.page?.heading?.pageLogo ?? ""),
+                ),
+              ],
             ),
           ),
         ),

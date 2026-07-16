@@ -10,6 +10,8 @@ class CreditOnboardingState {
   final bool? stepFound;
   final bool? fieldAutoPopulated;
   final List<Document>? documentList;
+  final bool? isPanValid;
+  final bool? navigate;
 
   // final bool? businessPanFetched;
   // final bool? businessNameFetched;
@@ -25,6 +27,8 @@ class CreditOnboardingState {
     this.stepFound,
     this.fieldAutoPopulated,
     this.documentList,
+    this.isPanValid,
+    this.navigate,
     // this.businessNameFetched,
     // this.businessPanFetched,
     // this.businessTypeFetched,
@@ -40,6 +44,8 @@ class CreditOnboardingState {
     bool? stepFound,
     bool? fieldAutoPopulated,
     List<Document>? documentList,
+    bool? isPanValid,
+    bool? navigate,
     // bool? businessPanFetched,
     // bool? businessNameFetched,
     // bool? businessTypeFetched,
@@ -47,15 +53,17 @@ class CreditOnboardingState {
   }) {
     return CreditOnboardingState(
       onboardingStepsResponse:
-          onboardingStepsResponse ?? this.onboardingStepsResponse,
+      onboardingStepsResponse ?? this.onboardingStepsResponse,
       formLoading: formLoading ?? this.formLoading,
       submitClicked: submitClicked ?? this.submitClicked,
       fieldsList: fieldsList ?? this.fieldsList,
       userProfileStageUpdated:
-          userProfileStageUpdated ?? this.userProfileStageUpdated,
+      userProfileStageUpdated ?? this.userProfileStageUpdated,
       stepFound: stepFound ?? this.stepFound,
       fieldAutoPopulated: fieldAutoPopulated ?? this.fieldAutoPopulated,
       documentList: documentList ?? this.documentList,
+      isPanValid: isPanValid ?? this.isPanValid,
+      navigate: navigate ?? this.navigate,
       // businessPanFetched: businessPanFetched ?? this.businessPanFetched,
       // businessNameFetched: businessNameFetched ?? this.businessNameFetched,
       // businessTypeFetched: businessTypeFetched ?? this.businessTypeFetched,

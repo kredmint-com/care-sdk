@@ -98,16 +98,16 @@ class ClientMeta {
 }
 
 class UserContext {
-  String? pan;
-  String? name;
+  String? pancard;
+  String? fullName;
   String? gender;
   String? email;
   DateTime? dob;
   Address? address;
 
   UserContext({
-    this.pan,
-    this.name,
+    this.pancard,
+    this.fullName,
     this.gender,
     this.email,
     this.dob,
@@ -115,8 +115,8 @@ class UserContext {
   });
 
   factory UserContext.fromJson(Map<String, dynamic> json) => UserContext(
-        pan: json["pan"],
-        name: json["name"],
+        pancard: json["pancard"],
+        fullName: json["fullName"],
         gender: json["gender"],
         email: json["email"],
         dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
@@ -125,8 +125,8 @@ class UserContext {
       );
 
   Map<String, dynamic> toJson() => {
-        "pan": pan,
-        "name": name,
+        "pancard": pancard,
+        "fullName": fullName,
         "gender": gender,
         "email": email,
         "dob":

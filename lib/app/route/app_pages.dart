@@ -267,6 +267,7 @@ class AppPages {
                 pageCategory: args["pageCategory"],
                 pageId: args["pageId"],
                 page: args["page"],
+                allowSkip: args["allowSkip"],
               ),
             ),
           );

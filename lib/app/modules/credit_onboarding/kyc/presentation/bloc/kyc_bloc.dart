@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/domain/credit_onboarding_repository.dart';
 import 'package:loan_sdk_package/service/digio_service.dart';
 import 'package:loan_sdk_package/utils/helper/enums.dart';
+import 'package:loan_sdk_package/utils/loading/loading_utils.dart';
 
 import 'kyc_event.dart';
 import 'kyc_state.dart';
@@ -24,6 +26,7 @@ class KycBloc extends Bloc<KycEvent, KycState> {
   }
 
   void _onStartDigioKyc(OnStartDigioKyc event, Emitter<KycState> emit) async {
+    debugPrint("OnStartDigioKyc");
     final response = await digioService.startKyc(
       documentId: event.documentId,
       identifier: event.identifier,
@@ -31,6 +34,7 @@ class KycBloc extends Bloc<KycEvent, KycState> {
     );
     if ((response["code"] == 1001) ||
         (response["message"].toLowerCase().contains("success"))) {
+      debugPrint("Adding OnVerifyEsignStatus");
       if (event.pageCategory == PageCategory.MandateSignUrl.name) {
         add(OnVerifyMandateStatus(digioDocId: event.documentId));
       } else {
@@ -43,10 +47,14 @@ class KycBloc extends Bloc<KycEvent, KycState> {
     OnVerifyEsignStatus event,
     Emitter<KycState> emit,
   ) async {
+    debugPrint("_onVerifyEsignStatus started");
+    LoadingUtils.showLoader();
     final response = await repository.verifyEsignStatus(
       digioDocId: event.digioDocId,
     );
+    LoadingUtils.hideLoader();
     if (response.data != null) {
+      debugPrint("Emitting eSignVerified");
       emit(
         state.copyWith(eSignVerified: true, esignVerifyResponse: response.data),
       );
@@ -63,7 +71,7 @@ class KycBloc extends Bloc<KycEvent, KycState> {
     if (response.data != null) {
       emit(
         state.copyWith(
-          eSignVerified: true,
+          eMandateVerified: true,
           mandateVerifyResponse: response.data,
         ),
       );
@@ -71,7 +79,7 @@ class KycBloc extends Bloc<KycEvent, KycState> {
   }
 
   void _onPatchKyc(OnPatchKyc event, Emitter<KycState> emit) async {
-    emit(state.copyWith(userProfileStageMapCompleted: false));
+    // emit(state.copyWith(userProfileStageMapCompleted: false));
     Map<String, dynamic> userProfileStageMap = {
       "pageId": event.pageId,
       "pageCategory": event.pageCategory,

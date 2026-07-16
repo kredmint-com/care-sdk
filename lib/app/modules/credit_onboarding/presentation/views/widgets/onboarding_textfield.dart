@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loan_sdk_package/utils/helper/date_extension.dart';
 
 import '../../../../../../utils/helper/enums.dart';
 import '../../../../../../widgets/common_widget.dart';
@@ -51,9 +52,16 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
   }
 
   void init() async {
-    widget.field?.textEditingController?.text =
-        widget.field?.value?.toString() ?? "";
     inputType = getInputType(val: widget.field?.type ?? "");
+    if (inputType == InputType.date) {
+      widget.field?.textEditingController?.text =
+          DateTime.tryParse(widget.field?.value?.toString() ?? "")
+                  ?.formatInYYYYMMD() ??
+              "";
+    } else {
+      widget.field?.textEditingController?.text =
+          widget.field?.value?.toString() ?? "";
+    }
   }
 
   InputType? getInputType({required String val}) {
@@ -84,18 +92,23 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
   }
 
   List<TextInputFormatter> getInputFormatters({required Fields? field}) {
-    final inputType = getTextInputType(inputType: field?.type ?? "");
+    // final inputType = getTextInputType(inputType: field?.type ?? "");
     final name = widget.field?.name;
 
-    if (inputType == TextInputType.number) {
-      if (name == "pinCode") {
+    // if (inputType == TextInputType.number) {
+      if (name == "pincode") {
         return [
           FilteringTextInputFormatter.digitsOnly,
           LengthLimitingTextInputFormatter(6),
         ];
       }
+      if (name == "pan") {
+        return [
+          LengthLimitingTextInputFormatter(10),
+        ];
+      }
       return [FilteringTextInputFormatter.digitsOnly];
-    }
+    // }
 
     return [];
   }
@@ -142,6 +155,7 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
             // }
             if (widget.field?.name == "pan") {
               if (val.length == 10) {
+                FocusManager.instance.primaryFocus?.unfocus();
                 context.read<CreditOnboardingBloc>().add(
                       OnSyncPan(panNumber: val, fieldIndex: widget.index),
                     );
