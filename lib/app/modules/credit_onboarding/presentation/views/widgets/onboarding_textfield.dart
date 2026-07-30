@@ -184,7 +184,7 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
             ? AlwaysDisabledFocusNode()
             : null,
         suffix: (inputType == InputType.date)
-            ? Icon(Icons.date_range)
+            ? Icon(Icons.date_range,color: AppColors.primaryColor(),)
             : ((widget.field?.value?.toString().isNotEmpty ?? false) &&
                     (inputType == InputType.select) &&
                     (!(widget.field?.readOnly ?? false)))

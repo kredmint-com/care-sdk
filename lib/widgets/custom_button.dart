@@ -67,7 +67,7 @@ class CustomButton extends StatelessWidget {
                   ),
             color: disabled
                 ? AppColors.greyE6
-                : buttonColor ?? AppColors.primaryColor(),
+                : buttonColor ?? AppColors.yellowFA,
           ),
           // alignment: Alignment.center,
           child: loading
@@ -94,11 +94,11 @@ class CustomButton extends StatelessWidget {
                               padding:
                                   EdgeInsets.symmetric(horizontal: textPadding),
                               child: Text(
-                                buttonText ?? "",
+                                buttonText?.toUpperCase() ?? "",
                                 style: disabled
                                     ? Styles.tsGrey62Medium12()
                                     : (buttonTextStyle ??
-                                        Styles.tsWhiteMedium14()),
+                                        Styles.tsBlack3BMedium14()),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),

@@ -25,12 +25,12 @@ class HeaderWidget extends StatelessWidget {
             children: [
               Text(
                 heading,
-                style: Styles.tsBlack3BMedium16(),
+                style: Styles.tsBlue12Medium16(),
               ),
-              2.h,
+              4.h,
               Text(
                 subHeading,
-                style: Styles.tsGrey86Regular12(),
+                style: Styles.tsBlue12Regular10(),
               ),
             ],
           ),

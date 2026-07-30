@@ -55,11 +55,11 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: widget.isSelected ? AppColors.blue4F : AppColors.whiteF7,
-          borderRadius: BorderRadius.circular(18),
+          color:  AppColors.white,
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: widget.isSelected ? AppColors.orangeF9 : AppColors.grey300,
-            width: 1.3,
+            color: widget.isSelected ? AppColors.primaryColor() : AppColors.greyE1,
+            width: widget.isSelected ? 2 : 1,
           ),
         ),
         child: Column(
@@ -118,9 +118,7 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
             ),
 
             if (widget.isSelected && widget.showBreakdown) ...[
-              12.h,
-              Divider(color: AppColors.grey300),
-              8.h,
+              Divider(color: AppColors.greyE1,height: 16,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -150,8 +148,9 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
     return Container(
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
-        color: AppColors.grey200,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(30),
+        border: Border.all(color: AppColors.greyE1)
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -172,7 +171,7 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.orangeF9 : AppColors.transparent,
+          color: isSelected ? AppColors.primaryColor() : AppColors.transparent,
           borderRadius: BorderRadius.circular(30),
         ),
         child: Text(
@@ -193,7 +192,7 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color: widget.isSelected ? AppColors.orangeF9 : AppColors.grey400,
+          color: widget.isSelected ? AppColors.primaryColor() : AppColors.grey400,
           width: 2,
         ),
       ),
@@ -204,7 +203,7 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
                 width: 12,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.orangeF9,
+                  color: AppColors.primaryColor(),
                 ),
               ),
             )

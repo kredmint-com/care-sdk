@@ -1455,4 +1455,28 @@ class Styles {
         fontWeight: FontWeight.w400,
         fontFamily: fontFamily,
       );
+
+  static tsBlue12Medium14({String? fontFamily}) => TextStyle(
+    color: AppColors.blue12,
+    fontWeight: FontWeight.w500,
+    fontSize: 14.0,
+    fontFamily: fontFamily,
+  );
+
+    static tsBlue12Medium16({String? fontFamily}) => TextStyle(
+    color: AppColors.blue12,
+    fontWeight: FontWeight.w500,
+    fontSize: 16.0,
+    fontFamily: fontFamily,
+  );
+
+  static tsBlue12Regular10({String? fontFamily}) => TextStyle(
+    color: AppColors.blue12,
+    fontSize: 10,
+    fontWeight: FontWeight.w400,
+    fontFamily: fontFamily,
+  );
+
+
+
 }

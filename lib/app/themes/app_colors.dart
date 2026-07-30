@@ -4,7 +4,7 @@ class AppColors {
   AppColors._();
 
   // static Color primaryColor() => blue24;
-  static Color primaryColor() => blue477;
+  static Color primaryColor() => blue12;
   static const Color backgroundColor = Color(0xFFF7F7F7);
   static const Color white = Colors.white;
   static Color whiteOpacity50 = Colors.white.withOpacity(0.5);
@@ -186,4 +186,8 @@ class AppColors {
   static Color grey400 = Colors.grey.shade400;
   static Color grey300 = Colors.grey.shade300;
   static Color grey200 = Colors.grey.shade200;
+  static const Color yellowFA = Color(0xFFFADF00);
+  static const Color blue12 = Color(0xFF1268B1);
+  static const Color greyE1 = Color(0xFFE1E7EF);
+
 }

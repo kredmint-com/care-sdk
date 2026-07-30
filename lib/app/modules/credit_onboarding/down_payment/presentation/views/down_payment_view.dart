@@ -5,6 +5,7 @@ import 'package:loan_sdk_package/app/modules/credit_onboarding/down_payment/pres
 import 'package:loan_sdk_package/app/modules/credit_onboarding/down_payment/presentation/bloc/down_payment_event.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/down_payment/presentation/bloc/down_payment_state.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/presentation/bloc/credit_onboarding_state.dart';
+import 'package:loan_sdk_package/app/themes/app_colors.dart';
 import 'package:loan_sdk_package/app/themes/styles.dart';
 import 'package:loan_sdk_package/utils/helper/enums.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
@@ -63,6 +64,7 @@ class _DownPaymentViewState extends State<DownPaymentView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
       bottomSheet: _bottomSheet(),
       body: WillPopScope(
@@ -144,11 +146,15 @@ class _DownPaymentViewState extends State<DownPaymentView> {
   Widget _bottomSheet() {
     return Wrap(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: BlocBuilder<DownPaymentBloc, DownPaymentState>(
-            builder: (context, state) {
-              return CustomButton(
+        BlocBuilder<DownPaymentBloc, DownPaymentState>(
+          builder: (context, state) {
+            return Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                border: Border(top: BorderSide(color: AppColors.greyE1)),
+              ),
+              child: CustomButton(
                 onTap: () {
                   if (widget.processingFeeData?.pgEnable ?? false) {
                     context.read<DownPaymentBloc>().add(
@@ -170,9 +176,9 @@ class _DownPaymentViewState extends State<DownPaymentView> {
                 },
                 buttonText:
                     "${Strings.proceed} with ${Strings.rupee}${widget.processingFeeData?.pgOrderRequest?.amount?.toString().formatData() ?? ""}",
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ],
     );
@@ -192,7 +198,7 @@ class _DownPaymentViewState extends State<DownPaymentView> {
                 ? (widget.page?.heading?.appLogo ?? "")
                 : ((widget.page?.heading?.pageLogo) ?? ""),
           ),
-          12.h,
+          20.h,
           _paymentCard(),
         ],
       ),
@@ -205,14 +211,15 @@ class _DownPaymentViewState extends State<DownPaymentView> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.greyE1)
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Colors.black.withOpacity(0.04),
+        //     blurRadius: 10,
+        //     offset: const Offset(0, 4),
+        //   ),
+        // ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
