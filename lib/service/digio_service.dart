@@ -12,7 +12,7 @@ class DigioService {
     var digioConfig = DigioConfig();
     digioConfig.theme.primaryColor = "#1268b1";
     digioConfig.logo =
-        "https://www.careinsurance.com/images/care_health_insurance_logo.svg";
+        "https://www.digio.in/images/digio_blue.png";
     digioConfig.environment = Environment.PRODUCTION;
     return digioConfig;
   }
