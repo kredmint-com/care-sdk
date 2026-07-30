@@ -1,4 +1,5 @@
 import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:kyc_workflow/digio_config.dart';
 import 'package:kyc_workflow/environment.dart';
@@ -9,19 +10,12 @@ import '../utils/loading/loading_utils.dart';
 class DigioService {
   DigioConfig getKycDigioConfig() {
     var digioConfig = DigioConfig();
-    digioConfig.theme.primaryColor = "#32a83a";
-    digioConfig.logo = "https://www.digio.in/images/digio_blue.png";
+    digioConfig.theme.primaryColor = "#1268b1";
+    digioConfig.logo =
+        "https://www.careinsurance.com/images/care_health_insurance_logo.svg";
     digioConfig.environment = Environment.PRODUCTION;
     return digioConfig;
   }
-
-  // static e_sign.DigioConfig getESignDigioConfig() {
-  //   var digioConfig = e_sign.DigioConfig();
-  //   digioConfig.theme.primaryColor = "#32a83a";
-  //   digioConfig.logo = "https://www.digio.in/images/digio_blue.png";
-  //   digioConfig.environment = e_sign_environment.Environment.PRODUCTION;
-  //   return digioConfig;
-  // }
 
   Future<Map<String, dynamic>> startKyc({
     required String documentId,
@@ -31,7 +25,6 @@ class DigioService {
     HashMap<String, String> additionalData = HashMap<String, String>();
     additionalData["dg_disable_upi_collect_flow"] =
         "false"; // optional for mandate
-
     DigioConfig digioConfig = getKycDigioConfig();
 
     KycWorkflow kycWorkflowPlugin = KycWorkflow(digioConfig);

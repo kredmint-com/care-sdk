@@ -64,7 +64,6 @@ class _SdkContainer extends StatelessWidget {
       canPop: false,
       onPopInvoked: (didPop) async {
         if (didPop) return;
-        debugPrint("On back pressed called : ${SdkBackHandler.onBackPressed}");
 
         /// FIRST GIVE CURRENT SCREEN CHANCE
         if (SdkBackHandler.onBackPressed != null) {
