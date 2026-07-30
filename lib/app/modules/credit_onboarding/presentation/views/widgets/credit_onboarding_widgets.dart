@@ -89,7 +89,7 @@ class _CreditOnboardingWidgetState extends State<CreditOnboardingWidget> {
               },
               buttonText: Strings.uploadFiles,
               suffixPadding: 8,
-              suffixWidget: Icon(Icons.upload, color: AppColors.blue24),
+              suffixWidget: Icon(Icons.upload, color: AppColors.primaryColor()),
               buttonColor: AppColors.white,
               borderColor: AppColors.blue24,
               buttonRadius: BorderRadius.circular(8),
@@ -138,6 +138,7 @@ class _CreditOnboardingWidgetState extends State<CreditOnboardingWidget> {
               dense: true,
               visualDensity: VisualDensity.compact,
               value: widget.field?.value ?? false,
+              activeColor: AppColors.primaryColor(),
               onChanged: (val) {
                 Fields? data = widget.field?.copyWith(value: val);
                 debugPrint("check box value : ${data?.value}");

@@ -6,6 +6,7 @@ import 'package:loan_sdk_package/app/modules/credit_onboarding/emi/presentation/
 import 'package:loan_sdk_package/app/modules/credit_onboarding/emi/presentation/bloc/emi_state.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/emi/presentation/views/widgets/emi_plan_tile.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/presentation/bloc/credit_onboarding_event.dart';
+import 'package:loan_sdk_package/app/themes/app_colors.dart';
 import 'package:loan_sdk_package/utils/helper/enums.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
 import 'package:loan_sdk_package/utils/helper/string_extension.dart';
@@ -76,27 +77,32 @@ class _EmiViewState extends State<EmiView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
       bottomSheet: Wrap(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: BlocBuilder<EmiBloc, EmiState>(
-              builder: (context, state) {
-                num finalAmount = 0;
-                if (state.emiPlanType == EmiPlanType.monthly.name) {
-                  finalAmount = widget
-                          .staticPageRes?[state.selectedEmiPlanIndex ?? 0]
-                          ?.emiAmt ??
-                      0;
-                } else {
-                  finalAmount = widget
-                          .staticPageRes?[state.selectedEmiPlanIndex ?? 0]
-                          ?.weekly
-                          ?.emiAmount ??
-                      0;
-                }
-                return CustomButton(
+          BlocBuilder<EmiBloc, EmiState>(
+            builder: (context, state) {
+              num finalAmount = 0;
+              if (state.emiPlanType == EmiPlanType.monthly.name) {
+                finalAmount = widget
+                        .staticPageRes?[state.selectedEmiPlanIndex ?? 0]
+                        ?.emiAmt ??
+                    0;
+              } else {
+                finalAmount = widget
+                        .staticPageRes?[state.selectedEmiPlanIndex ?? 0]
+                        ?.weekly
+                        ?.emiAmount ??
+                    0;
+              }
+              return Container(
+                padding: const EdgeInsets.all(20.0),
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  border: Border(top: BorderSide(color: AppColors.greyE1)),
+                ),
+                child: CustomButton(
                   onTap: () {
                     context.read<EmiBloc>().add(
                           OnPatchEmiPlan(
@@ -113,9 +119,9 @@ class _EmiViewState extends State<EmiView> {
                   },
                   buttonText:
                       "${Strings.proceed} ${Strings.withString} ${Strings.rupee}${finalAmount.toString().formatData()}",
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -170,7 +176,7 @@ class _EmiViewState extends State<EmiView> {
                       padding: EdgeInsetsGeometry.only(bottom: 100),
                       itemCount: widget.staticPageRes?.length ?? 0,
                       separatorBuilder: (context, index) {
-                        return 8.h;
+                        return 10.h;
                       },
                       itemBuilder: (context, index) {
                         StaticPageRes? staticPageRes =

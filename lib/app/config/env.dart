@@ -42,5 +42,5 @@ class Env {
     return "Basic $encoded";
   }
 
-  static const String fontFamily = "PlusJakartaSans";
+  static const String fontFamily = "Poppins";
 }

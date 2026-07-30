@@ -96,17 +96,17 @@ class NetworkRequester {
 
     _dio.interceptors.clear();
 
-    _dio.interceptors.add(
-      LogInterceptor(
-        request: true,
-        requestBody: true,
-        requestHeader: true,
-        responseBody: true,
-        responseHeader: true,
-        error: true,
-        logPrint: _printLog,
-      ),
-    );
+    // _dio.interceptors.add(
+    //   LogInterceptor(
+    //     request: true,
+    //     requestBody: true,
+    //     requestHeader: true,
+    //     responseBody: true,
+    //     responseHeader: true,
+    //     error: true,
+    //     logPrint: _printLog,
+    //   ),
+    // );
 
     // if (AppConfig.enableAlice) {
     //   _dio.interceptors.add(Constants.alice.getDioInterceptor());

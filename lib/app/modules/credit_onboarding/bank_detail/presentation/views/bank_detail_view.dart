@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loan_sdk_package/app/data/values/strings.dart';
+import 'package:loan_sdk_package/app/themes/app_colors.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
 import 'package:loan_sdk_package/widgets/input_text_field.dart';
 
@@ -96,12 +97,16 @@ class _PromoterViewState extends State<BankDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
-      bottomSheet: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: BlocBuilder<BankDetailBloc, BankDetailState>(
-          builder: (context, state) {
-            return CustomButton(
+      bottomSheet: BlocBuilder<BankDetailBloc, BankDetailState>(
+        builder: (context, state) {
+          return Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+                color: AppColors.white,
+                border: Border(top: BorderSide(color: AppColors.greyE1))),
+            child: CustomButton(
               onTap: () {
                 context.read<BankDetailBloc>().add(OnUpdateSubmitStatus());
                 if (_formKey.currentState?.validate() ?? false) {
@@ -116,9 +121,9 @@ class _PromoterViewState extends State<BankDetailView> {
                 }
               },
               buttonText: Strings.proceed,
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
       body: bodyWidget(context: context),
     );

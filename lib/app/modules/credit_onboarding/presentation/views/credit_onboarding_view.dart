@@ -5,6 +5,7 @@ import 'package:loan_sdk_package/app/data/values/strings.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/presentation/views/widgets/credit_onboarding_widgets.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/presentation/views/widgets/header_widget.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/presentation/views/widgets/onboarding_app_bar.dart';
+import 'package:loan_sdk_package/app/themes/app_colors.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
 
 import '../../../../../loan_sdk_package.dart';
@@ -111,6 +112,7 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
     return BlocBuilder<CreditOnboardingBloc, CreditOnboardingState>(
       builder: (context, state) {
         return Scaffold(
+          backgroundColor: AppColors.white,
           appBar: CreditOnboardingAppBar(
             title: "",
             onBackPressed: handleBackPress,
@@ -120,26 +122,25 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
             builder: (context, state) {
               return Wrap(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 16.0,
-                      right: 16.0,
-                      bottom: 16,
-                    ),
-                    child: BlocConsumer<CreditOnboardingBloc,
-                        CreditOnboardingState>(
-                      listener: (context, state) async {
-                        if (state.userProfileStageUpdated ?? false) {
-                          context.read<CreditOnboardingBloc>().add(
-                                OnFetchUserProfilePage(
-                                    profileId: widget.profileId),
-                              );
-                          context.read<CreditOnboardingBloc>().add(OnReset());
-                        }
-                      },
-                      builder: (context, state) {
-                        return Visibility(
-                          visible: true, //(!(state.formLoading ?? false)),
+                  BlocConsumer<CreditOnboardingBloc,
+                      CreditOnboardingState>(
+                    listener: (context, state) async {
+                      if (state.userProfileStageUpdated ?? false) {
+                        context.read<CreditOnboardingBloc>().add(
+                              OnFetchUserProfilePage(
+                                  profileId: widget.profileId),
+                            );
+                        context.read<CreditOnboardingBloc>().add(OnReset());
+                      }
+                    },
+                    builder: (context, state) {
+                      return Visibility(
+                        visible: true, //(!(state.formLoading ?? false)),
+                        child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                                color: AppColors.white,
+                                border: Border(top: BorderSide(color: AppColors.greyE1)),),
                           child: CustomButton(
                             onTap: () {
                               // debugPrint("button tap 1");
@@ -250,14 +251,11 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                               }
                             },
                             buttonText: Strings.proceed,
-                            buttonRadius: const BorderRadius.all(
-                              Radius.circular(30),
-                            ),
                             // buttonColor: AppColors.blue24,
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
                 ],
               );
