@@ -132,10 +132,15 @@ class Strings {
   static const String paymentSummary = "Payment summary";
   static const String securedByBharatConnect = "Secured by Bharat Connect";
   static const String moreDetails = "More details";
+  static const String modeOfPayment = "Mode of Payment";
   static const String paidOn = "Paid on";
+  static const String paidAt = "Paid at";
   static const String serviceId = "Service Id";
   static const String paymentType = "Payment type";
   static const String upiTransactionId = "UPI transaction ID";
+  static const String transactionDetails = "Transaction Details";
+  static const String transactionReferenceId = "Transaction Reference ID";
+  static const String referenceNumber = "Reference Number";
   static const String paymentMethod = "Payment Method";
   static const String bbpsRefId = "BBPS ref ID";
   static const String mobileNumber = "Mobile number";
@@ -166,6 +171,7 @@ class Strings {
   static const String billDueOn = "Bill due on";
   static const String dueOn = "Due on";
   static const String payNow = "Pay now";
+  static const String paymentSchedule = "Payment schedule";
   static const String amountCannotBeLessThan = "Amount cannot be less than";
   static const String appVersion = "App Version";
   static const String logout = "Logout";
@@ -479,6 +485,7 @@ class Strings {
   static const String paidTheBillOfAmount = "Paid the bill of amount";
   static const String rechargeFailed = "Recharge failed";
   static const String dueToday = "Due today";
+  static const String today = "today";
   static const String discount = "Discount";
   static const String enterAmount = "Enter Amount";
   static const String enterCouponCode = "Enter coupon code";
@@ -555,6 +562,7 @@ class Strings {
   static const multiply = "x";
   static const months = "Months";
   static const weeks = "Weeks";
+  static const autoDebitMonthly = "Auto-debit monthly";
 }
 
 class ErrorMessages {

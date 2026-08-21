@@ -98,6 +98,13 @@ class Styles {
         fontFamily: fontFamily,
       );
 
+    static tsPrimarySemiBold14({String? fontFamily}) => TextStyle(
+        color: AppColors.primaryColor(),
+        fontWeight: FontWeight.w600,
+        fontSize: 14.0,
+        fontFamily: fontFamily,
+      );
+
   static tsBlack3BSemiBold10({String? fontFamily}) => TextStyle(
         color: AppColors.black3B,
         fontWeight: FontWeight.w600,
@@ -784,6 +791,13 @@ class Styles {
         color: AppColors.grey4A,
         fontWeight: FontWeight.w600,
         fontSize: 12.0,
+        fontFamily: fontFamily,
+      );
+
+    static tsGrey4ASemiBold14({String? fontFamily}) => TextStyle(
+        color: AppColors.grey4A,
+        fontWeight: FontWeight.w600,
+        fontSize: 14.0,
         fontFamily: fontFamily,
       );
 

@@ -92,12 +92,16 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
                         text: "${Strings.rupee}${widget.amount.formatData()}",
                         style: Styles.tsBlack3BBold26(),
                       ),
+                      // TextSpan(
+                      //   text: widget.isSelected &&
+                      //           widget.selectedEmiPlanType ==
+                      //               EmiPlanType.monthly.name
+                      //       ? " /mo"
+                      //       : " /wk",
+                      //   style: Styles.tsGrey66Medium14(),
+                      // ),
                       TextSpan(
-                        text: widget.isSelected &&
-                                widget.selectedEmiPlanType ==
-                                    EmiPlanType.monthly.name
-                            ? " /mo"
-                            : " /wk",
+                        text: " /mo",
                         style: Styles.tsGrey66Medium14(),
                       ),
                     ],
@@ -156,7 +160,7 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
         mainAxisSize: MainAxisSize.min,
         children: [
           _toggleItem(EmiPlanType.monthly.name, true),
-          _toggleItem(EmiPlanType.weekly.name, false),
+          // _toggleItem(EmiPlanType.weekly.name, false),
         ],
       ),
     );
@@ -165,9 +169,9 @@ class _EmiPlanTileState extends State<EmiPlanTile> {
   Widget _toggleItem(String planType, bool value) {
     bool isSelected = widget.selectedEmiPlanType == planType;
     return GestureDetector(
-      onTap: () {
-        context.read<EmiBloc>().add(OnUpdateEmiPlanType(planType: planType));
-      },
+      // onTap: () {
+      //   context.read<EmiBloc>().add(OnUpdateEmiPlanType(planType: planType));
+      // },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
         decoration: BoxDecoration(

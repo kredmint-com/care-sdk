@@ -309,6 +309,8 @@ class AppPages {
             child: SuccessView(
               profileId: args["profileId"],
               prevPageId: args["prevPageId"],
+              paymentDetails: args["paymentDetails"],
+              isFinalStep: args["isFinalStep"] as bool? ?? true,
             ),
           );
         },
