@@ -163,6 +163,7 @@ class _CreditOnboardingWidgetState extends State<CreditOnboardingWidget> {
         field: widget.field,
         formKey: widget.formKey,
         submitClicked: widget.submitClicked,
+        editable: widget.field?.editable ?? true,
       ),
     );
   }

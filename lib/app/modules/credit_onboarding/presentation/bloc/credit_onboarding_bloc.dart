@@ -11,7 +11,6 @@ import 'package:loan_sdk_package/utils/helper/common_method.dart';
 import 'package:loan_sdk_package/utils/loading/loading_utils.dart';
 
 import '../../../../../utils/helper/enums.dart';
-import '../../../../route/app_pages.dart';
 import '../../data/models/upload_document_response.dart';
 
 class CreditOnboardingBloc
@@ -149,6 +148,12 @@ class CreditOnboardingBloc
                 .map((ele) => Document.fromJson(ele))
                 .toList();
           }
+        } else if (fieldsList?[i]?.name == "pan") {
+          if (fieldsList?[i]?.value?.length == 10) {
+            add(
+              OnSyncPan(panNumber: fieldsList?[i]?.value, fieldIndex: i),
+            );
+          }
         }
       }
       emit(
@@ -176,6 +181,7 @@ class CreditOnboardingBloc
     //   debugPrint("Exception : __onFetchUserProfilePage $e");
     // }
   }
+
   //
   // void navigateUserToParticularStep({
   //   required String profileId,
@@ -558,7 +564,7 @@ class CreditOnboardingBloc
           fieldsList?[i] = field;
         }
         if ((response.data?.payload?.address?.pincode != 0) &&
-            (state.fieldsList?[i]?.name == "pinCode")) {
+            (state.fieldsList?[i]?.name == "pincode")) {
           Fields? field = state.fieldsList?[i]?.copyWith(
             value: response.data?.payload?.address?.pincode ?? "",
             textEditingController: TextEditingController(

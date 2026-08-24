@@ -562,7 +562,7 @@ class Strings {
   static const multiply = "x";
   static const months = "Months";
   static const weeks = "Weeks";
-  static const autoDebitMonthly = "Auto-debit monthly";
+  static const emiMonthly = "Emi monthly";
 }
 
 class ErrorMessages {

@@ -16,6 +16,8 @@ class Storage {
       _box.read(StorageKeys.sdkUserModel) == null
           ? null
           : SdkUserModel.fromJson(_box.read(StorageKeys.sdkUserModel));
+
+  static void clearStorage() => _box.erase();
 }
 
 class StorageKeys {

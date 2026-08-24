@@ -1,5 +1,5 @@
 class PaymentPatchResponse {
-  Payload? payload;
+  PatchPaymentPayload? payload;
   num? sum;
   num? timestamp;
 
@@ -7,7 +7,7 @@ class PaymentPatchResponse {
 
   PaymentPatchResponse.fromJson(Map<String, dynamic> json) {
     payload =
-        json['payload'] != null ? Payload.fromJson(json['payload']) : null;
+        json['payload'] != null ? PatchPaymentPayload.fromJson(json['payload']) : null;
     sum = json['sum'];
     timestamp = json['timestamp'];
   }
@@ -23,7 +23,7 @@ class PaymentPatchResponse {
   }
 }
 
-class Payload {
+class PatchPaymentPayload {
   String? status;
   String? utr;
   num? amount;
@@ -37,7 +37,7 @@ class Payload {
   String? title;
   String? subTitle;
 
-  Payload(
+  PatchPaymentPayload(
       {this.status,
       this.utr,
       this.amount,
@@ -51,7 +51,7 @@ class Payload {
       this.title,
       this.subTitle});
 
-  Payload.fromJson(Map<String, dynamic> json) {
+  PatchPaymentPayload.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     utr = json['utr'];
     amount = json['amount'];

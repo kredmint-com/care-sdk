@@ -5,6 +5,7 @@ import 'package:loan_sdk_package/app/domain/app_repository.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/bank_detail/presentation/bloc/bank_detail_bloc.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/down_payment/presentation/bloc/down_payment_bloc.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/emi/presentation/bloc/emi_bloc.dart';
+import 'package:loan_sdk_package/app/modules/credit_onboarding/success/presentation/bloc/success_bloc.dart';
 import 'package:loan_sdk_package/service/cashfree_payment_service.dart';
 import 'package:loan_sdk_package/service/digio_service.dart';
 import 'package:loan_sdk_package/service/easebuzz_payment_service.dart';
@@ -83,6 +84,13 @@ void setup({SdkCallbacks? callbacks}) {
       cashfreePaymentService: getIt<CashfreePaymentService>(),
       easeBuzzPaymentService: getIt<EaseBuzzPaymentService>(),
       razorpayPaymentService: getIt<RazorpayPaymentService>(),
+    ),
+  );
+
+  ///Success
+  getIt.registerFactory(
+    () => SuccessBloc(
+      repository: getIt<CreditOnboardingRepository>(),
     ),
   );
 }

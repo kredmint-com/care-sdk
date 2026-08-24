@@ -301,7 +301,7 @@ class Fields {
   bool? checkboxValue;
   GlobalKey<FormFieldState<String>>? fieldKey;
   dynamic value;
-  bool? readOnly;
+  // bool? readOnly;
   bool? hidden;
 
   Fields({
@@ -327,7 +327,7 @@ class Fields {
     this.textEditingController,
     this.checkboxValue,
     this.value,
-    this.readOnly,
+    // this.readOnly,
     this.fieldKey,
     this.hidden,
   });
@@ -362,7 +362,7 @@ class Fields {
     value = json['value'];
     subType = "";
     fieldKey = GlobalKey();
-    readOnly = false;
+    // readOnly = false;
     hidden = json['hidden'];
   }
 
@@ -389,7 +389,7 @@ class Fields {
     data['globalField'] = globalField;
     data["value"] = value;
     data["subType"] = subType;
-    data["readOnly"] = readOnly;
+    // data["readOnly"] = readOnly;
     data['hidden'] = hidden;
     return data;
   }
@@ -443,7 +443,7 @@ class Fields {
           textEditingController ?? this.textEditingController,
       checkboxValue: checkboxValue ?? this.checkboxValue,
       value: value ?? this.value,
-      readOnly: readOnly ?? this.readOnly,
+      // readOnly: readOnly ?? this.readOnly,
       fieldKey: fieldKey ?? this.fieldKey,
       filteredOption: filteredOption ?? this.filteredOption,
     );

@@ -7,6 +7,7 @@ import 'package:loan_sdk_package/app/config/release_env.dart';
 import 'package:loan_sdk_package/app/data/models/request/sdk_request.dart';
 import 'package:loan_sdk_package/app/route/app_pages.dart';
 import 'package:loan_sdk_package/utils/helper/enums.dart';
+import 'package:loan_sdk_package/utils/storage/storage_utils.dart';
 
 import 'app/data/models/dto/sdk_callback.dart';
 import 'injection_container.dart';
@@ -21,6 +22,8 @@ class LoanSdkPackage {
     String? environment,
   }) async {
     await GetStorage.init("loan-sdk-storage-box");
+
+    Storage.clearStorage();
 
     await getIt.reset();
 

@@ -7,7 +7,8 @@ import 'package:loan_sdk_package/app/modules/credit_onboarding/down_payment/pres
 import 'package:loan_sdk_package/app/modules/credit_onboarding/down_payment/presentation/views/down_payment_view.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/emi/presentation/bloc/emi_bloc.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/emi/presentation/views/emi_view.dart';
-import 'package:loan_sdk_package/app/modules/credit_onboarding/sucess/presentation/views/success_view.dart';
+import 'package:loan_sdk_package/app/modules/credit_onboarding/success/presentation/bloc/success_bloc.dart';
+import 'package:loan_sdk_package/app/modules/credit_onboarding/success/presentation/views/success_view.dart';
 
 import '../../injection_container.dart';
 import '../../service/navigation_service.dart';
@@ -228,27 +229,6 @@ class AppPages {
           );
         },
       ),
-      // GoRoute(
-      //   name: Routes.processingFee,
-      //   path: Routes.processingFee,
-      //   pageBuilder: (_, state) {
-      //     final args = state.extra as Map<String, dynamic>;
-      //     return MaterialPage(
-      //       child: MultiBlocProvider(
-      //         providers: [
-      //           BlocProvider.value(value: getIt<CreditOnboardingBloc>()),
-      //           BlocProvider(create: (context) => getIt<ProcessingFeeBloc>()),
-      //         ],
-      //         child: ProcessingFeeView(
-      //           profileId: args["profileId"],
-      //           prevPageId: args["prevPageId"],
-      //           processingFee: args["processingFee"],
-      //           page: args["page"],
-      //         ),
-      //       ),
-      //     );
-      //   },
-      // ),
       GoRoute(
         name: Routes.kycDetail,
         path: Routes.kycDetail,
@@ -304,13 +284,21 @@ class AppPages {
         name: Routes.success,
         path: Routes.success,
         pageBuilder: (_, state) {
-          final args = state.extra as Map<String, dynamic>;
+          final args = state.extra as Map<String, dynamic>?;
           return MaterialPage(
-            child: SuccessView(
-              profileId: args["profileId"],
-              prevPageId: args["prevPageId"],
-              paymentDetails: args["paymentDetails"],
-              isFinalStep: args["isFinalStep"] as bool? ?? true,
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider.value(value: getIt<CreditOnboardingBloc>()),
+                BlocProvider(create: (context) => getIt<SuccessBloc>()),
+              ],
+              child: SuccessView(
+                pageId: args?["pageId"],
+                profileId: args?["profileId"],
+                pageCategory: args?["pageCategory"],
+                prevPageId: args?["prevPageId"],
+                paymentDetails: args?["paymentDetails"],
+                isFinalStep: args?["isFinalStep"] ?? true,
+              ),
             ),
           );
         },

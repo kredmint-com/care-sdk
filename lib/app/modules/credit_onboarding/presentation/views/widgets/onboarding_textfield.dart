@@ -24,12 +24,14 @@ class OnboardingTextfield extends StatefulWidget {
     required this.submitClicked,
     required this.index,
     required this.formKey,
+    required this.editable,
   });
 
   final Fields? field;
   final bool submitClicked;
   final int index;
   final GlobalKey<FormState> formKey;
+  final bool editable;
 
   @override
   State<OnboardingTextfield> createState() => _OnboardingTextfieldState();
@@ -177,7 +179,7 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
         readOnly: (inputType == InputType.select) ||
             (inputType == InputType.date) ||
             (widget.field?.name == "name") ||
-            (widget.field?.readOnly ?? false),
+            !(widget.field?.editable ?? true),
         focusNode: (inputType == InputType.select) ||
                 (inputType == InputType.date) ||
                 (widget.field?.name == "name")
@@ -187,7 +189,7 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
             ? Icon(Icons.date_range,color: AppColors.primaryColor(),)
             : ((widget.field?.value?.toString().isNotEmpty ?? false) &&
                     (inputType == InputType.select) &&
-                    (!(widget.field?.readOnly ?? false)))
+                    (!(widget.field?.editable ?? true)))
                 ? IconButton(
                     onPressed: () {
                       widget.field?.textEditingController?.text = "";
@@ -203,7 +205,7 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
                   )
                 : null,
         onTap: () async {
-          if (!(widget.field?.readOnly ?? false)) {
+          if (!(widget.field?.editable ?? false)) {
             if (inputType == InputType.select) {
               FocusManager.instance.primaryFocus?.unfocus();
               context.read<CreditOnboardingBloc>().add(

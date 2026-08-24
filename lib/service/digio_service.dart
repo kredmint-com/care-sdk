@@ -50,15 +50,4 @@ class DigioService {
     return digioResult;
   }
 
-// static void startEsign({
-//   required String documentId,
-//   required String identifier,
-//   required String tokenId,
-// }) async {
-//   e_sign.DigioConfig digioConfig = getESignDigioConfig();
-//   final esignPlugin = EsignPlugin(digioConfig);
-//   final esignResult =
-//       await esignPlugin.start(documentId, identifier, tokenId, null);
-//   debugPrint('esignResult : $esignResult');
-// }
 }

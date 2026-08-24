@@ -134,125 +134,122 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                       }
                     },
                     builder: (context, state) {
-                      return Visibility(
-                        visible: true, //(!(state.formLoading ?? false)),
-                        child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                                color: AppColors.white,
-                                border: Border(top: BorderSide(color: AppColors.greyE1)),),
-                          child: CustomButton(
-                            onTap: () {
-                              // debugPrint("button tap 1");
-                              context.read<CreditOnboardingBloc>().add(
-                                    OnUpdateSubmitStatus(),
-                                  );
-                              bool isFormValid =
-                                  formKey.currentState!.validate();
-                              if (!(state.isPanValid ?? true)) {
-                                Fluttertoast.showToast(
-                                    msg: ErrorMessages.invalidPan);
-                                return;
-                              }
-                              if (isFormValid) {
-                                FocusManager.instance.primaryFocus?.unfocus();
+                      return Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          border: Border(top: BorderSide(color: AppColors.greyE1)),),
+                        child: CustomButton(
+                          onTap: () {
+                            // debugPrint("button tap 1");
+                            context.read<CreditOnboardingBloc>().add(
+                              OnUpdateSubmitStatus(),
+                            );
+                            bool isFormValid =
+                            formKey.currentState!.validate();
+                            if (!(state.isPanValid ?? true)) {
+                              Fluttertoast.showToast(
+                                  msg: ErrorMessages.invalidPan);
+                              return;
+                            }
+                            if (isFormValid) {
+                              FocusManager.instance.primaryFocus?.unfocus();
 
-                                Map<String, dynamic> fieldData = {};
-                                Map<String, dynamic> dataMap = {};
-                                Map<String, dynamic> addressBody = {};
-                                String addressFieldId = "";
-                                for (int i = 0;
-                                    i < (state.fieldsList?.length ?? 0);
-                                    i++) {
-                                  if (state.fieldsList?[i]?.type ==
-                                          InputType.address.name ||
-                                      (state.fieldsList?[i]?.subType ==
-                                          "pincode")) {
-                                    addressFieldId =
-                                        state.fieldsList?[i]?.fieldId ?? "";
-                                    addressBody[state.fieldsList?[i]?.subType ??
-                                        ""] = state.fieldsList?[i]?.value;
-                                    debugPrint(
-                                      "Address body data : ${state.fieldsList?[i]?.subType ?? ""}...${state.fieldsList?[i]?.value}",
+                              Map<String, dynamic> fieldData = {};
+                              Map<String, dynamic> dataMap = {};
+                              Map<String, dynamic> addressBody = {};
+                              String addressFieldId = "";
+                              for (int i = 0;
+                              i < (state.fieldsList?.length ?? 0);
+                              i++) {
+                                if (state.fieldsList?[i]?.type ==
+                                    InputType.address.name ||
+                                    (state.fieldsList?[i]?.subType ==
+                                        "pincode")) {
+                                  addressFieldId =
+                                      state.fieldsList?[i]?.fieldId ?? "";
+                                  addressBody[state.fieldsList?[i]?.subType ??
+                                      ""] = state.fieldsList?[i]?.value;
+                                  debugPrint(
+                                    "Address body data : ${state.fieldsList?[i]?.subType ?? ""}...${state.fieldsList?[i]?.value}",
+                                  );
+                                }
+                                if (state.fieldsList?[i]?.type ==
+                                    InputType.file.name) {
+                                  bool documentError = ((state
+                                      .fieldsList?[i]?.mandatory ??
+                                      false) &&
+                                      (state.documentList?.isEmpty ?? true));
+                                  if (documentError) {
+                                    isFormValid = !documentError;
+                                    Fluttertoast.showToast(
+                                      msg:
+                                      "${state.fieldsList?[i]?.name ?? ""} is required",
                                     );
                                   }
-                                  if (state.fieldsList?[i]?.type ==
-                                      InputType.file.name) {
-                                    bool documentError = ((state
-                                                .fieldsList?[i]?.mandatory ??
-                                            false) &&
-                                        (state.documentList?.isEmpty ?? true));
-                                    if (documentError) {
-                                      isFormValid = !documentError;
-                                      Fluttertoast.showToast(
-                                        msg:
-                                            "${state.fieldsList?[i]?.name ?? ""} is required",
-                                      );
-                                    }
 
-                                    fieldData[state.fieldsList?[i]?.fieldId ??
-                                            ""] =
-                                        state.documentList
-                                            ?.map((doc) => doc.toJson())
-                                            .toList();
+                                  fieldData[state.fieldsList?[i]?.fieldId ??
+                                      ""] =
+                                      state.documentList
+                                          ?.map((doc) => doc.toJson())
+                                          .toList();
+                                }
+                                if (state.fieldsList?[i]?.type ==
+                                    InputType.checkbox.name) {
+                                  bool error =
+                                  ((state.fieldsList?[i]?.mandatory ??
+                                      false) &&
+                                      !(state.fieldsList?[i]?.value ??
+                                          false));
+                                  if (error) {
+                                    isFormValid = !error;
+                                    Fluttertoast.showToast(
+                                      msg:
+                                      "${state.fieldsList?[i]?.name ?? ""} is required",
+                                    );
                                   }
-                                  if (state.fieldsList?[i]?.type ==
-                                      InputType.checkbox.name) {
-                                    bool error =
-                                        ((state.fieldsList?[i]?.mandatory ??
-                                                false) &&
-                                            !(state.fieldsList?[i]?.value ??
-                                                false));
-                                    if (error) {
-                                      isFormValid = !error;
-                                      Fluttertoast.showToast(
-                                        msg:
-                                            "${state.fieldsList?[i]?.name ?? ""} is required",
-                                      );
-                                    }
 
-                                    fieldData[state.fieldsList?[i]?.fieldId ??
-                                        ""] = state.fieldsList?[i]?.value;
-                                  } else {
-                                    fieldData[state.fieldsList?[i]?.fieldId ??
-                                        ""] = state.fieldsList?[i]?.value;
-                                  }
+                                  fieldData[state.fieldsList?[i]?.fieldId ??
+                                      ""] = state.fieldsList?[i]?.value;
+                                } else {
+                                  fieldData[state.fieldsList?[i]?.fieldId ??
+                                      ""] = state.fieldsList?[i]?.value;
                                 }
+                              }
 
-                                if (addressFieldId.isNotEmpty) {
-                                  fieldData[addressFieldId] = addressBody;
-                                }
+                              if (addressFieldId.isNotEmpty) {
+                                fieldData[addressFieldId] = addressBody;
+                              }
 
-                                dataMap["data"] = fieldData;
+                              dataMap["data"] = fieldData;
 
-                                dataMap["pageId"] = state
-                                        .onboardingStepsResponse
-                                        ?.payload
-                                        ?.pageId ??
-                                    "";
+                              dataMap["pageId"] = state
+                                  .onboardingStepsResponse
+                                  ?.payload
+                                  ?.pageId ??
+                                  "";
 
-                                dataMap["pageCategory"] = state
-                                        .onboardingStepsResponse
-                                        ?.payload
-                                        ?.pageCategory ??
-                                    "";
-                                if (isFormValid) {
-                                  context.read<CreditOnboardingBloc>().add(
-                                        OnUpdateUserProfileStage(
-                                          data: dataMap,
-                                          profileId: widget.profileId,
-                                        ),
-                                      );
-                                }
-                              } else {
-                                scrollToFirstInvalidField(
-                                  fieldsList: state.fieldsList ?? [],
+                              dataMap["pageCategory"] = state
+                                  .onboardingStepsResponse
+                                  ?.payload
+                                  ?.pageCategory ??
+                                  "";
+                              if (isFormValid) {
+                                context.read<CreditOnboardingBloc>().add(
+                                  OnUpdateUserProfileStage(
+                                    data: dataMap,
+                                    profileId: widget.profileId,
+                                  ),
                                 );
                               }
-                            },
-                            buttonText: Strings.proceed,
-                            // buttonColor: AppColors.blue24,
-                          ),
+                            } else {
+                              scrollToFirstInvalidField(
+                                fieldsList: state.fieldsList ?? [],
+                              );
+                            }
+                          },
+                          buttonText: Strings.proceed,
+                          // buttonColor: AppColors.blue24,
                         ),
                       );
                     },
@@ -438,6 +435,8 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                     AppPages.router.pushNamed(
                       Routes.success,
                       extra: {
+                        "pageId": payload.pageId ?? "",
+                        "pageCategory": payload.pageCategory ?? "",
                         "profileId": widget.profileId,
                         "prevPageId": prevPageId,
                         "isFinalStep": true,
