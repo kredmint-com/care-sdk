@@ -16,7 +16,7 @@ class LoanSdkPackage {
   static Future<dynamic> open({
     required BuildContext context,
     required SdkRequest sdkRequest,
-    Function({required String message, required String status})? onSuccess,
+    Function({required String message, required String status, required String invoiceNo})? onSuccess,
     Function({required String message, required String status})? onFailure,
     Function({required String message, required String status})? onClose,
     String? environment,

@@ -440,6 +440,7 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                         "profileId": widget.profileId,
                         "prevPageId": prevPageId,
                         "isFinalStep": true,
+                        "staticPageRes": payload.staticPageRes,
                       },
                     );
                   } else if (payload.pageCategory ==

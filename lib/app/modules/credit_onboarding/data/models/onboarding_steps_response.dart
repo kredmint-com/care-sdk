@@ -518,6 +518,7 @@ class StaticPageRes {
   num? totalAmount;
   num? amount;
   Weekly? weekly;
+  String? invoiceId;
 
   StaticPageRes({
     this.id,
@@ -542,6 +543,7 @@ class StaticPageRes {
     this.totalAmount,
     this.amount,
     this.weekly,
+    this.invoiceId,
   });
 
   StaticPageRes.fromJson(Map<String, dynamic> json) {
@@ -570,6 +572,7 @@ class StaticPageRes {
     totalAmount = json["totalAmount"];
     amount = json["amount"];
     weekly = json["weekly"] == null ? null : Weekly.fromJson(json["weekly"]);
+    invoiceId = json["invoiceId"];
   }
 
   Map<String, dynamic> toJson() {
@@ -596,6 +599,7 @@ class StaticPageRes {
     if (weekly != null) {
       data["weekly"] = weekly!.toJson();
     }
+    data["invoiceId"] = invoiceId;
     return data;
   }
 }

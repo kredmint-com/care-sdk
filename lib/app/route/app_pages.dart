@@ -298,6 +298,7 @@ class AppPages {
                 prevPageId: args?["prevPageId"],
                 paymentDetails: args?["paymentDetails"],
                 isFinalStep: args?["isFinalStep"] ?? true,
+                staticPageRes : args?["staticPageRes"],
               ),
             ),
           );

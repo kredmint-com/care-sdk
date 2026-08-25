@@ -1,5 +1,5 @@
 class SdkCallbacks {
-  final Function({required String message, required String status})? onSuccess;
+  final Function({required String message, required String status, required String invoiceNo})? onSuccess;
   final Function({required String message, required String status})? onFailure;
   final Function({required String message, required String status})? onClose;
 

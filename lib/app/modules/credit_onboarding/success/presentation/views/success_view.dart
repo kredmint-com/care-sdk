@@ -24,6 +24,7 @@ import '../../../../../data/values/constants.dart';
 import '../../../../../route/app_pages.dart';
 import '../../../../../themes/styles.dart';
 import '../../../credit_common_method.dart';
+import '../../../data/models/onboarding_steps_response.dart';
 import '../../../presentation/bloc/credit_onboarding_bloc.dart';
 import '../../../presentation/bloc/credit_onboarding_event.dart' as coe;
 import '../../../presentation/bloc/credit_onboarding_state.dart';
@@ -37,6 +38,7 @@ class SuccessView extends StatefulWidget {
     this.isFinalStep = true,
     required this.pageId,
     required this.pageCategory,
+    this.staticPageRes,
   });
 
   final String profileId;
@@ -45,6 +47,7 @@ class SuccessView extends StatefulWidget {
   final bool isFinalStep;
   final String? pageId;
   final String? pageCategory;
+  final List<StaticPageRes?>? staticPageRes;
 
   @override
   State<SuccessView> createState() => _SuccessViewState();
@@ -73,16 +76,16 @@ class _SuccessViewState extends State<SuccessView> {
 
   void init() {
     SdkBackHandler.onBackPressed = handleBackPress;
-    if(widget.isFinalStep) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.read<SuccessBloc>().add(
-          OnSuccess(
-            pageId: widget.pageId,
-            pageCategory: widget.pageCategory,
-          ),
-        );
-      });
-    }
+    // if (widget.isFinalStep) {
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     context.read<SuccessBloc>().add(
+    //           OnSuccess(
+    //             pageId: widget.pageId,
+    //             pageCategory: widget.pageCategory,
+    //           ),
+    //         );
+    //   });
+    // }
   }
 
   void _onProceed() {
@@ -90,6 +93,9 @@ class _SuccessViewState extends State<SuccessView> {
       getIt<SdkCallbacks>().onSuccess?.call(
             message: "Loan applied successfully",
             status: ProfileStatus.PROFILE_COMPLETED.name,
+        invoiceNo: (widget.staticPageRes?.isEmpty ?? true)
+                ? ""
+                : widget.staticPageRes?.first?.invoiceId ?? "",
           );
       Navigator.of(context, rootNavigator: true).pop();
     } else {
