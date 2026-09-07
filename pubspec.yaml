@@ -1,6 +1,6 @@
 name: loan_sdk_package
 description: Flutter loan SDK
-version: 1.0.8
+version: 1.0.9
 homepage: https://github.com/kredmint-com/care-sdk
 repository: https://github.com/kredmint-com/care-sdk
 
@@ -34,7 +34,9 @@ dependencies:
   razorpay_flutter: ^1.4.0
   flutter_cashfree_pg_sdk: ^2.2.6+44
   http_parser: ^4.1.2
-#  flutter_alice: ^2.0.1
+  flutter_alice:
+  overlay_support: ^2.1.0
+  pinput: ^6.0.2
 
 dev_dependencies:
   flutter_test:

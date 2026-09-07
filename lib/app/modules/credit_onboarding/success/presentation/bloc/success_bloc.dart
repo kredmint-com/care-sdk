@@ -6,11 +6,15 @@ import 'package:loan_sdk_package/app/modules/credit_onboarding/success/presentat
 class SuccessBloc extends Bloc<SuccessEvent, SuccessState> {
   final CreditOnboardingRepository repository;
 
-  SuccessBloc({required this.repository}) : super(SuccessState()) {
+  SuccessBloc({required this.repository})
+      : super(SuccessState(
+          remainingSeconds: 3,
+        )) {
     on<OnSuccess>(_onSuccess);
     on<OnResetUserProfileStageMapCompleted>(
       _onResetUserProfileStageMapCompleted,
     );
+    on<OnTimerCountChange>(_onTimerCountChange);
   }
 
   void _onSuccess(OnSuccess event, Emitter<SuccessState> emit) {
@@ -35,6 +39,17 @@ class SuccessBloc extends Bloc<SuccessEvent, SuccessState> {
       state.copyWith(
         userProfileStageMapCompleted: false,
         userProfileStageMap: {},
+      ),
+    );
+  }
+
+  void _onTimerCountChange(
+    OnTimerCountChange event,
+    Emitter<SuccessState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        remainingSeconds: event.count,
       ),
     );
   }

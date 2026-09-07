@@ -106,10 +106,12 @@ enum PageCategory {
   EmiPlans,
   KfsEsignUrl,
   MandateSignUrl,
+  CKycDetail,
   Success,
   BankDetail,
   ProfileRejected,
-  DownPayment
+  DownPayment,
+  KycDetail
 }
 
 enum AddressType { current, permanent }

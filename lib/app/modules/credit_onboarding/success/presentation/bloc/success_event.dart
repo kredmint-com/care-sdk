@@ -12,5 +12,11 @@ class OnSuccess extends SuccessEvent {
 
 class OnResetUserProfileStageMapCompleted extends SuccessEvent {}
 
+class OnTimerCountChange extends SuccessEvent {
+  final int count;
+
+  OnTimerCountChange({required this.count});
+}
+
 
 

@@ -1,5 +1,6 @@
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/verify_esign_response.dart';
 
+import '../../../data/models/digio_workflow_response.dart';
 import '../../../data/models/mandate_verify_response.dart';
 
 class KycState {
@@ -10,6 +11,10 @@ class KycState {
   final EsignVerifyResponse? esignVerifyResponse;
   final bool? eMandateVerified;
   final MandateVerifyResponse? mandateVerifyResponse;
+  final bool? workflowVerified;
+  final DigioWorkflowResponse? digioWorkflowResponse;
+
+  // final MandateVerifyResponse? mandateVerifyResponse;
   final Map<String, dynamic>? digioResponse;
 
   KycState({
@@ -20,6 +25,8 @@ class KycState {
     this.esignVerifyResponse,
     this.eMandateVerified,
     this.mandateVerifyResponse,
+    this.workflowVerified,
+    this.digioWorkflowResponse,
     this.digioResponse,
   });
 
@@ -32,6 +39,8 @@ class KycState {
     bool? eMandateVerified,
     MandateVerifyResponse? mandateVerifyResponse,
     Map<String, dynamic>? digioResponse,
+    DigioWorkflowResponse? digioWorkflowResponse,
+    bool? workflowVerified,
   }) {
     return KycState(
       paymentSuccessfull: paymentSuccessfull ?? this.paymentSuccessfull,
@@ -44,6 +53,9 @@ class KycState {
       mandateVerifyResponse:
           mandateVerifyResponse ?? this.mandateVerifyResponse,
       digioResponse: digioResponse ?? this.digioResponse,
+      digioWorkflowResponse:
+          digioWorkflowResponse ?? this.digioWorkflowResponse,
+      workflowVerified: workflowVerified ?? this.workflowVerified,
     );
   }
 }

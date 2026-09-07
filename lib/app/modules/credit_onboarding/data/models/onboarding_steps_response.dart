@@ -10,8 +10,9 @@ class OnboardingStepsResponse {
   OnboardingStepsResponse({this.payload, this.sum, this.timestamp});
 
   OnboardingStepsResponse.fromJson(Map<String, dynamic> json) {
-    payload =
-        json['payload'] != null ? OnboardingStepsPayload.fromJson(json['payload']) : null;
+    payload = json['payload'] != null
+        ? OnboardingStepsPayload.fromJson(json['payload'])
+        : null;
     sum = json['sum'];
     timestamp = json['timestamp'];
   }
@@ -301,6 +302,8 @@ class Fields {
   bool? checkboxValue;
   GlobalKey<FormFieldState<String>>? fieldKey;
   dynamic value;
+  dynamic backendFieldValue;
+
   // bool? readOnly;
   bool? hidden;
 
@@ -330,6 +333,7 @@ class Fields {
     // this.readOnly,
     this.fieldKey,
     this.hidden,
+    this.backendFieldValue,
   });
 
   Fields.fromJson(Map<String, dynamic> json) {
@@ -360,6 +364,7 @@ class Fields {
     textEditingController = TextEditingController();
     checkboxValue = false;
     value = json['value'];
+    backendFieldValue = json['value'];
     subType = "";
     fieldKey = GlobalKey();
     // readOnly = false;
@@ -388,6 +393,7 @@ class Fields {
     data['underwritingField'] = underwritingField;
     data['globalField'] = globalField;
     data["value"] = value;
+    data["backendFieldValue"] = backendFieldValue;
     data["subType"] = subType;
     // data["readOnly"] = readOnly;
     data['hidden'] = hidden;
@@ -417,6 +423,7 @@ class Fields {
     TextEditingController? textEditingController,
     bool? checkboxValue,
     dynamic value,
+    dynamic backendFieldValue,
     bool? readOnly,
     GlobalKey<FormFieldState<String>>? fieldKey,
   }) {
@@ -443,6 +450,7 @@ class Fields {
           textEditingController ?? this.textEditingController,
       checkboxValue: checkboxValue ?? this.checkboxValue,
       value: value ?? this.value,
+      backendFieldValue: backendFieldValue ?? this.backendFieldValue,
       // readOnly: readOnly ?? this.readOnly,
       fieldKey: fieldKey ?? this.fieldKey,
       filteredOption: filteredOption ?? this.filteredOption,
@@ -519,6 +527,10 @@ class StaticPageRes {
   num? amount;
   Weekly? weekly;
   String? invoiceId;
+  String? promoterName;
+  String? promoterPan;
+  bool? ckycFailed;
+  DigioKycInitResponse? digioKycInitResponse;
 
   StaticPageRes({
     this.id,
@@ -544,6 +556,10 @@ class StaticPageRes {
     this.amount,
     this.weekly,
     this.invoiceId,
+    this.promoterName,
+    this.promoterPan,
+    this.ckycFailed,
+    this.digioKycInitResponse,
   });
 
   StaticPageRes.fromJson(Map<String, dynamic> json) {
@@ -573,6 +589,12 @@ class StaticPageRes {
     amount = json["amount"];
     weekly = json["weekly"] == null ? null : Weekly.fromJson(json["weekly"]);
     invoiceId = json["invoiceId"];
+    promoterName = json["promoterName"];
+    promoterPan = json["promoterPan"];
+    ckycFailed = json["ckycFailed"];
+    digioKycInitResponse = json["digioKycInitResponse"] != null
+        ? DigioKycInitResponse.fromJson(json["digioKycInitResponse"])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -600,6 +622,12 @@ class StaticPageRes {
       data["weekly"] = weekly!.toJson();
     }
     data["invoiceId"] = invoiceId;
+    data["promoterName"] = promoterName;
+    data["promoterPan"] = promoterPan;
+    data["ckycFailed"] = ckycFailed;
+    if (digioKycInitResponse != null) {
+      data["digioKycInitResponse"] = digioKycInitResponse!.toJson();
+    }
     return data;
   }
 }
@@ -779,7 +807,7 @@ class ProcessingFeeData {
   String? description;
   PgOrderRequest? pgOrderRequest;
   bool? pgEnable;
-  int? tenure;
+  num? tenure;
   String? tenureType;
 
   ProcessingFeeData({
@@ -962,6 +990,75 @@ class AccessToken {
     data['entity_id'] = entityId;
     data['valid_till'] = validTill;
     data['created_at'] = createdAt;
+    return data;
+  }
+}
+
+class DigioKycInitResponse {
+  String? id;
+  String? status;
+  String? createdAt;
+  String? customerIdentifier;
+  String? referenceId;
+  String? transactionId;
+  String? customerName;
+  num? expireInDays;
+  bool? reminderRegistered;
+  AccessToken? accessToken;
+  String? workflowName;
+  bool? autoApproved;
+  String? templateId;
+
+  DigioKycInitResponse(
+      {this.id,
+      this.status,
+      this.createdAt,
+      this.customerIdentifier,
+      this.referenceId,
+      this.transactionId,
+      this.customerName,
+      this.expireInDays,
+      this.reminderRegistered,
+      this.accessToken,
+      this.workflowName,
+      this.autoApproved,
+      this.templateId});
+
+  DigioKycInitResponse.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    customerIdentifier = json['customer_identifier'];
+    referenceId = json['reference_id'];
+    transactionId = json['transaction_id'];
+    customerName = json['customer_name'];
+    expireInDays = json['expire_in_days'];
+    reminderRegistered = json['reminder_registered'];
+    accessToken = json['access_token'] != null
+        ? AccessToken.fromJson(json['access_token'])
+        : null;
+    workflowName = json['workflow_name'];
+    autoApproved = json['auto_approved'];
+    templateId = json['template_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['status'] = status;
+    data['created_at'] = createdAt;
+    data['customer_identifier'] = customerIdentifier;
+    data['reference_id'] = referenceId;
+    data['transaction_id'] = transactionId;
+    data['customer_name'] = customerName;
+    data['expire_in_days'] = expireInDays;
+    data['reminder_registered'] = reminderRegistered;
+    if (accessToken != null) {
+      data['access_token'] = accessToken!.toJson();
+    }
+    data['workflow_name'] = workflowName;
+    data['auto_approved'] = autoApproved;
+    data['template_id'] = templateId;
     return data;
   }
 }

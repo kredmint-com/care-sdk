@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
 // import 'package:flutter_alice/alice.dart';
+import 'package:flutter_alice/alice.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../../../service/navigation_service.dart';
 import '../../../utils/helper/exception_handler.dart';
@@ -35,6 +36,9 @@ class NetworkRequester {
 
   /// 🔒 REQUEST QUEUE (NEW)
   Future<void> _lastQueuedTask = Future.value();
+
+  final alice = Alice(navigatorKey: NavigationService.navigatorKey);
+
 
   // Alice? alice;
 
@@ -99,20 +103,20 @@ class NetworkRequester {
 
     _dio.interceptors.clear();
 
-    // _dio.interceptors.add(
-    //   LogInterceptor(
-    //     request: true,
-    //     requestBody: true,
-    //     requestHeader: true,
-    //     responseBody: true,
-    //     responseHeader: true,
-    //     error: true,
-    //     logPrint: _printLog,
-    //   ),
-    // );
+    _dio.interceptors.add(
+      LogInterceptor(
+        request: true,
+        requestBody: true,
+        requestHeader: true,
+        responseBody: true,
+        responseHeader: true,
+        error: true,
+        logPrint: _printLog,
+      ),
+    );
 
     // if (AppConfig.enableAlice) {
-    //   _dio.interceptors.add(Constants.alice.getDioInterceptor());
+      _dio.interceptors.add(alice.getDioInterceptor());
     // }
 
     _dio.interceptors.add(

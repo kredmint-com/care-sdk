@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:loan_sdk_package/app/config/release_env.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/onboarding_steps_response.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/kyc/presentation/bloc/kyc_bloc.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/kyc/presentation/bloc/kyc_state.dart';
 import 'package:loan_sdk_package/utils/storage/storage_utils.dart';
 import 'package:loan_sdk_package/widgets/custom_button.dart';
+
 import '../../../../../../loan_sdk_package.dart';
 import '../../../../../data/values/strings.dart';
 import '../../../../../route/app_pages.dart';
@@ -28,6 +28,7 @@ class KycView extends StatefulWidget {
     required this.pageId,
     required this.page,
     required this.allowSkip,
+    required this.staticPageRes,
   });
 
   final DigioKycResponse digioKycResponse;
@@ -37,6 +38,7 @@ class KycView extends StatefulWidget {
   final String pageId;
   final StepsPage? page;
   final bool allowSkip;
+  final List<StaticPageRes?>? staticPageRes;
 
   @override
   State<KycView> createState() => _KycViewState();
@@ -62,12 +64,14 @@ class _KycViewState extends State<KycView> {
     if (widget.allowSkip) {
       return;
     }
+    debugPrint("kyc data  : ${widget.digioKycResponse.toJson()}");
     context.read<KycBloc>().add(
           OnStartDigioKyc(
             documentId: widget.digioKycResponse.id ?? "",
             identifier: Storage.getSdkUser()?.phoneNumber ?? "",
             tokenId: widget.digioKycResponse.accessToken?.id ?? "",
             pageCategory: widget.pageCategory,
+            pan: widget.staticPageRes?.first?.promoterPan ?? "",
           ),
         );
   }
@@ -114,7 +118,7 @@ class _KycViewState extends State<KycView> {
               )
             ],
             Padding(
-              padding: EdgeInsetsGeometry.only(
+              padding: EdgeInsets.only(
                 left: 20,
                 right: 20,
                 bottom: 20,
@@ -128,6 +132,7 @@ class _KycViewState extends State<KycView> {
                           tokenId:
                               widget.digioKycResponse.accessToken?.id ?? "",
                           pageCategory: widget.pageCategory,
+                          pan: widget.staticPageRes?.first?.promoterPan ?? "",
                         ),
                       );
                 },
@@ -140,8 +145,8 @@ class _KycViewState extends State<KycView> {
           listeners: [
             BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
               listenWhen: (previous, current) =>
-              previous.userProfileStageUpdated !=
-                  current.userProfileStageUpdated &&
+                  previous.userProfileStageUpdated !=
+                      current.userProfileStageUpdated &&
                   current.userProfileStageUpdated == true,
               listener: (context, state) {
                 context.replaceNamed(
@@ -152,63 +157,76 @@ class _KycViewState extends State<KycView> {
                 context.read<CreditOnboardingBloc>().add(coe.OnReset());
               },
             ),
-
             BlocListener<KycBloc, KycState>(
               listenWhen: (previous, current) =>
-              previous.eSignVerified != current.eSignVerified &&
+                  previous.eSignVerified != current.eSignVerified &&
                   current.eSignVerified == true,
               listener: (context, state) {
                 debugPrint("E Sign Verified");
 
                 context.read<KycBloc>().add(
-                  OnPatchKyc(
-                    pageId: widget.pageId,
-                    pageCategory: widget.pageCategory,
-                    esignVerifyResponse: state.esignVerifyResponse,
-                  ),
-                );
+                      OnPatchKyc(
+                        pageId: widget.pageId,
+                        pageCategory: widget.pageCategory,
+                        esignVerifyResponse: state.esignVerifyResponse,
+                      ),
+                    );
 
                 context.read<KycBloc>().add(OnResetESignStatus());
               },
             ),
-
             BlocListener<KycBloc, KycState>(
               listenWhen: (previous, current) =>
-              previous.eMandateVerified != current.eMandateVerified &&
+                  previous.eMandateVerified != current.eMandateVerified &&
                   current.eMandateVerified == true,
               listener: (context, state) {
                 debugPrint("E Mandate Verified");
 
                 context.read<KycBloc>().add(
-                  OnPatchKyc(
-                    pageId: widget.pageId,
-                    pageCategory: widget.pageCategory,
-                    mandateVerifyResponse: state.mandateVerifyResponse,
-                  ),
-                );
+                      OnPatchKyc(
+                        pageId: widget.pageId,
+                        pageCategory: widget.pageCategory,
+                        mandateVerifyResponse: state.mandateVerifyResponse,
+                      ),
+                    );
 
                 context.read<KycBloc>().add(OnResetEMandateStatus());
               },
             ),
-
             BlocListener<KycBloc, KycState>(
               listenWhen: (previous, current) =>
-              previous.userProfileStageMapCompleted !=
-                  current.userProfileStageMapCompleted &&
+                  previous.workflowVerified != current.workflowVerified &&
+                  current.workflowVerified == true,
+              listener: (context, state) {
+                context.read<KycBloc>().add(
+                      OnPatchKyc(
+                        pageId: widget.pageId,
+                        pageCategory: widget.pageCategory,
+                        digioWorkflowResponse: state.digioWorkflowResponse,
+                      ),
+                    );
+
+                context.read<KycBloc>().add(OnResetEMandateStatus());
+              },
+            ),
+            BlocListener<KycBloc, KycState>(
+              listenWhen: (previous, current) =>
+                  previous.userProfileStageMapCompleted !=
+                      current.userProfileStageMapCompleted &&
                   current.userProfileStageMapCompleted == true,
               listener: (context, state) {
                 debugPrint("Updating User Profile Stage");
 
                 context.read<CreditOnboardingBloc>().add(
-                  coe.OnUpdateUserProfileStage(
-                    data: state.userProfileStageMap,
-                    profileId: widget.profileId,
-                  ),
-                );
+                      coe.OnUpdateUserProfileStage(
+                        data: state.userProfileStageMap,
+                        profileId: widget.profileId,
+                      ),
+                    );
 
                 context.read<KycBloc>().add(
-                  OnResetUserProfileStageMapCompleted(),
-                );
+                      OnResetUserProfileStageMapCompleted(),
+                    );
               },
             ),
           ],

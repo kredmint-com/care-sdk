@@ -18,6 +18,7 @@ class SdkRequest {
   ClientMeta? clientMeta;
   String? clientId;
   String? clientSecret;
+  Theme? theme;
 
   SdkRequest({
     this.username,
@@ -32,6 +33,7 @@ class SdkRequest {
     this.clientMeta,
     this.clientId,
     this.clientSecret,
+    this.theme,
   });
 
   factory SdkRequest.fromJson(Map<String, dynamic> json) => SdkRequest(
@@ -51,6 +53,7 @@ class SdkRequest {
             : ClientMeta.fromJson(json["clientMeta"]),
         clientId: json["clientId"],
         clientSecret: json["clientSecret"],
+        theme: json["theme"] == null ? null : Theme.fromJson(json["theme"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -66,6 +69,7 @@ class SdkRequest {
         "clientMeta": clientMeta?.toJson(),
         "clientId": clientId,
         "clientSecret": clientSecret,
+        "theme": theme?.toJson(),
       };
 }
 
@@ -165,4 +169,26 @@ class Address {
         "state": state,
         "pincode": pincode,
       };
+}
+
+class Theme {
+  int? primaryColor;
+  int? secondaryColor;
+
+  Theme({
+    this.primaryColor,
+    this.secondaryColor,
+  });
+
+  Theme.fromJson(Map<String, dynamic> json) {
+    primaryColor = json['primaryColor'];
+    secondaryColor = json['secondaryColor'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['primaryColor'] = primaryColor;
+    data['secondaryColor'] = secondaryColor;
+    return data;
+  }
 }

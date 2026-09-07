@@ -12,6 +12,12 @@ class CreditOnboardingState {
   final List<Document>? documentList;
   final bool? isPanValid;
   final bool? navigate;
+  final bool? nameMatched;
+  final bool? dobMatched;
+  final bool? panValidated;
+  final bool? panValidationApiLimitReached;
+  final Map<String, dynamic>? formDataMap;
+  final String? validationMessage;
 
   // final bool? businessPanFetched;
   // final bool? businessNameFetched;
@@ -29,6 +35,12 @@ class CreditOnboardingState {
     this.documentList,
     this.isPanValid,
     this.navigate,
+    this.nameMatched,
+    this.dobMatched,
+    this.panValidated,
+    this.panValidationApiLimitReached,
+    this.formDataMap,
+    this.validationMessage,
     // this.businessNameFetched,
     // this.businessPanFetched,
     // this.businessTypeFetched,
@@ -46,6 +58,12 @@ class CreditOnboardingState {
     List<Document>? documentList,
     bool? isPanValid,
     bool? navigate,
+    bool? nameMatched,
+    bool? dobMatched,
+    bool? panValidated,
+    bool? panValidationApiLimitReached,
+    Map<String, dynamic>? formDataMap,
+    String? validationMessage,
     // bool? businessPanFetched,
     // bool? businessNameFetched,
     // bool? businessTypeFetched,
@@ -53,17 +71,24 @@ class CreditOnboardingState {
   }) {
     return CreditOnboardingState(
       onboardingStepsResponse:
-      onboardingStepsResponse ?? this.onboardingStepsResponse,
+          onboardingStepsResponse ?? this.onboardingStepsResponse,
       formLoading: formLoading ?? this.formLoading,
       submitClicked: submitClicked ?? this.submitClicked,
       fieldsList: fieldsList ?? this.fieldsList,
       userProfileStageUpdated:
-      userProfileStageUpdated ?? this.userProfileStageUpdated,
+          userProfileStageUpdated ?? this.userProfileStageUpdated,
       stepFound: stepFound ?? this.stepFound,
       fieldAutoPopulated: fieldAutoPopulated ?? this.fieldAutoPopulated,
       documentList: documentList ?? this.documentList,
       isPanValid: isPanValid ?? this.isPanValid,
       navigate: navigate ?? this.navigate,
+      nameMatched: nameMatched ?? this.nameMatched,
+      dobMatched: dobMatched ?? this.dobMatched,
+      panValidated: panValidated ?? this.panValidated,
+      panValidationApiLimitReached:
+          panValidationApiLimitReached ?? this.panValidationApiLimitReached,
+      formDataMap: formDataMap ?? this.formDataMap,
+      validationMessage: validationMessage ?? this.validationMessage,
       // businessPanFetched: businessPanFetched ?? this.businessPanFetched,
       // businessNameFetched: businessNameFetched ?? this.businessNameFetched,
       // businessTypeFetched: businessTypeFetched ?? this.businessTypeFetched,

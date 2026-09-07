@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 class Timeouts {
   Timeouts._privateConstructor();
 
-  static const CONNECT_TIMEOUT = 30000;
-  static const RECEIVE_TIMEOUT = 30000;
+  static const CONNECT_TIMEOUT = 60000;
+  static const RECEIVE_TIMEOUT = 60000;
 }
 
 class Constants {

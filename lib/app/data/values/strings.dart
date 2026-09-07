@@ -48,7 +48,8 @@ class Strings {
   static const String didNotReceiveTheOtpRetryIn =
       "Didn't receive the OTP? Retry in";
   static const String didNotReceiveTheOtp = "Didn't receive the OTP?";
-  static const String secondsVia = "seconds via:";
+  static const String seconds = "seconds";
+  static const String second = "second";
   static const String sms = "SMS";
   static const String whatsapp = "WhatsApp";
   static const String retry = "Retry";
@@ -563,6 +564,12 @@ class Strings {
   static const months = "Months";
   static const weeks = "Weeks";
   static const emiMonthly = "Emi monthly";
+  static const String perMonth = "/mo";
+  static String redirectMessage({required String remainingSeconds}) =>
+      "Redirecting automatically in $remainingSeconds seconds...";
+  static const String justAMoment = "Just a moment…";
+  static const String processingYourRequest =
+      "We’re processing your request. This may take a few seconds.";
 }
 
 class ErrorMessages {
@@ -610,4 +617,12 @@ class ErrorMessages {
 
   static const String bankNameRequired = "Bank name is required";
   static const String fullNameRequired = "Full name is required";
+  static const String fullNameNotMatchingPan =
+      "Name doesn't match the PAN details";
+
+  static const String fullNameAndDobNotMatchingPan =
+      "Name and date of birth don't match the PAN details";
+
+  static const String dobNotMatchingPan =
+      "Date of birth doesn't match the PAN details";
 }

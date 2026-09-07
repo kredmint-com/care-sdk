@@ -19,4 +19,5 @@ abstract class Routes {
   static const emi = '/emi';
   static const bankDetail = '/bank-detail';
   static const downPayment = '/down-payment';
+  static const cKyc = '/c-kyc';
 }

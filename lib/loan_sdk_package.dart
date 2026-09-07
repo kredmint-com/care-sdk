@@ -10,13 +10,18 @@ import 'package:loan_sdk_package/utils/helper/enums.dart';
 import 'package:loan_sdk_package/utils/storage/storage_utils.dart';
 
 import 'app/data/models/dto/sdk_callback.dart';
+import 'app/themes/app_colors.dart';
 import 'injection_container.dart';
 
 class LoanSdkPackage {
   static Future<dynamic> open({
     required BuildContext context,
     required SdkRequest sdkRequest,
-    Function({required String message, required String status, required String invoiceNo})? onSuccess,
+    Function(
+            {required String message,
+            required String status,
+            required String invoiceNo})?
+        onSuccess,
     Function({required String message, required String status})? onFailure,
     Function({required String message, required String status})? onClose,
     String? environment,
@@ -26,6 +31,18 @@ class LoanSdkPackage {
     Storage.clearStorage();
 
     await getIt.reset();
+
+    final theme = sdkRequest.theme;
+
+    if (theme?.primaryColor != null) {
+      AppColors.buttonBgColor = Color(theme!.primaryColor!);
+    }
+
+    if (theme?.secondaryColor != null) {
+      AppColors.headingColor = Color(theme!.secondaryColor!);
+    }
+
+    AppColors.buttonTextColor = AppColors.black;
 
     if (environment?.isNotEmpty ?? false) {
       if (environment == ReleaseEnv.uat.name) {

@@ -9,6 +9,7 @@ import 'package:loan_sdk_package/app/themes/app_colors.dart';
 import 'package:loan_sdk_package/utils/storage/storage_utils.dart';
 import 'config/env.dart';
 import 'data/models/dto/user_model.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 class App extends StatefulWidget {
   const App({super.key, required this.sdkRequest});
@@ -74,30 +75,32 @@ class _AppState extends State<App> {
                     minimum: EdgeInsets.only(
                       bottom: MediaQuery.of(context).padding.bottom,
                     ),
-                    child: MaterialApp.router(
-                      builder: (context, child) {
-                        return MediaQuery(
-                          data: MediaQuery.of(
-                            context,
-                          ).copyWith(textScaler: TextScaler.noScaling),
-                          child: child!,
-                        );
-                      },
-                      title: 'Loan sdk',
-                      debugShowCheckedModeBanner: false,
-                      theme: ThemeData(
-                        colorScheme: ColorScheme.fromSeed(
-                          seedColor: AppColors.primaryColor(),
+                    child: OverlaySupport(
+                      child : MaterialApp.router(
+                        builder: (context, child) {
+                          return MediaQuery(
+                            data: MediaQuery.of(
+                              context,
+                            ).copyWith(textScaler: TextScaler.noScaling),
+                            child: child!,
+                          );
+                        },
+                        title: 'Loan sdk',
+                        debugShowCheckedModeBanner: false,
+                        theme: ThemeData(
+                          colorScheme: ColorScheme.fromSeed(
+                            seedColor: AppColors.primaryColor(),
+                          ),
+                          scaffoldBackgroundColor: AppColors.backgroundColor,
+                          bottomSheetTheme: BottomSheetThemeData(
+                            backgroundColor: AppColors.backgroundColor,
+                          ),
+                          useMaterial3: true,
+                          fontFamily: Env.fontFamily,
                         ),
-                        scaffoldBackgroundColor: AppColors.backgroundColor,
-                        bottomSheetTheme: BottomSheetThemeData(
-                          backgroundColor: AppColors.backgroundColor,
-                        ),
-                        useMaterial3: true,
-                        fontFamily: Env.fontFamily,
+                        routerConfig: AppPages.router,
                       ),
-                      routerConfig: AppPages.router,
-                    ),
+                    )
                   ),
                 ),
         );

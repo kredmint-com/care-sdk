@@ -27,15 +27,17 @@ class CreditOnboardingBloc
     on<OnUpdateField>(_onUpdateField);
     on<OnUpdateUserProfileStage>(_onUpdateUserProfileStage);
     on<OnValidateGst>(_onValidateGst);
-    // on<OnFetchAddressDetail>(_onFetchAddressDetail);
     on<OnReset>(_onReset);
     on<OnResetStepFound>(_onResetStepFound);
     on<OnPickStatementFile>(_onPickStatementFile);
     on<OnDocumentDelete>(_onDocumentDelete);
     on<OnFilterFieldOptions>(_onFilterFieldOptions);
     on<OnResetFieldOptions>(_onResetFieldOptions);
-    on<OnSyncPan>(_onSyncPan);
+    // on<OnSyncPan>(_onSyncPan);
     on<OnResetNavigation>(_onResetNavigation);
+    on<OnValidatePan>(_onValidatePan);
+    on<OnSetFormDataMap>(_onSetFormDataMap);
+    on<OnResetPanValidation>(_onResetPanValidation);
   }
 
   void _onFetchUserProfilePage(
@@ -75,6 +77,7 @@ class CreditOnboardingBloc
             state = baseField.value["state"] ?? "";
             city = baseField.value["city"] ?? "";
           }
+          debugPrint("Pincode data : $pincode");
           fieldsList.insertAll(
             i,
             [
@@ -148,13 +151,14 @@ class CreditOnboardingBloc
                 .map((ele) => Document.fromJson(ele))
                 .toList();
           }
-        } else if (fieldsList?[i]?.name == "pan") {
-          if (fieldsList?[i]?.value?.length == 10) {
-            add(
-              OnSyncPan(panNumber: fieldsList?[i]?.value, fieldIndex: i),
-            );
-          }
         }
+        // else if (fieldsList?[i]?.name == "pan") {
+        //   if (fieldsList?[i]?.value?.length == 10) {
+        //     add(
+        //       OnSyncPan(panNumber: fieldsList?[i]?.value, fieldIndex: i),
+        //     );
+        //   }
+        // }
       }
       emit(
         state.copyWith(
@@ -181,210 +185,6 @@ class CreditOnboardingBloc
     //   debugPrint("Exception : __onFetchUserProfilePage $e");
     // }
   }
-
-  //
-  // void navigateUserToParticularStep({
-  //   required String profileId,
-  //   required String prevPageId,
-  //   required OnboardingStepsResponse? onboardingStepsResponse,
-  // }) async {
-  //   // AppConfigResponse? appConfigResponse = Storage.getAppConfig();
-  //   // // debugPrint("Onboarding step data : ${appConfigResponse?.payload?.meta?.oNBOARDINGSTEPS?.last}...${state.onboardingStepsResponse?.payload?.pageCategory}");
-  //   bool stepPresent = true;
-  //   // appConfigResponse?.payload?.meta?.oNBOARDINGSTEPS
-  //   //     ?.contains(onboardingStepsResponse?.payload?.pageCategory ?? "") ??
-  //   // false;
-  //   debugPrint(
-  //     "Steps present data : $stepPresent .... ${onboardingStepsResponse?.payload?.pageCategory}",
-  //   );
-  //   if (stepPresent) {
-  //     if (onboardingStepsResponse?.payload?.pageCategory ==
-  //         PageCategory.BankStatement.name) {
-  //       AppPages.router.pushNamed(
-  //         Routes.bankStatement,
-  //         extra: {
-  //           "pageId": onboardingStepsResponse?.payload?.pageId ?? "",
-  //           "pageCategory":
-  //               onboardingStepsResponse?.payload?.pageCategory ?? "",
-  //           "profileId": profileId,
-  //           "prevPageId": prevPageId,
-  //           "staticPageRes": onboardingStepsResponse?.payload?.staticPageRes,
-  //           "page": onboardingStepsResponse?.payload?.page,
-  //         },
-  //       );
-  //     } else if (onboardingStepsResponse?.payload?.pageCategory?.contains(
-  //           PageCategory.Promoter.name,
-  //         ) ??
-  //         false) {
-  //       AppPages.router.pushNamed(
-  //         Routes.promoter,
-  //         extra: {
-  //           "pageId": onboardingStepsResponse?.payload?.pageId ?? "",
-  //           "pageCategory":
-  //               onboardingStepsResponse?.payload?.pageCategory ?? "",
-  //           "profileId": profileId,
-  //           "prevPageId": prevPageId,
-  //           "staticPageRes": onboardingStepsResponse?.payload?.staticPageRes,
-  //           "mobileNumber":
-  //               onboardingStepsResponse?.payload?.meta?.mobile ?? "",
-  //           "page": onboardingStepsResponse?.payload?.page,
-  //         },
-  //       );
-  //     } else if (onboardingStepsResponse?.payload?.pageCategory ==
-  //         PageCategory.Gst.name) {
-  //       AppPages.router.pushNamed(
-  //         Routes.gst,
-  //         extra: {
-  //           "pageId": onboardingStepsResponse?.payload?.pageId ?? "",
-  //           "pageCategory":
-  //               onboardingStepsResponse?.payload?.pageCategory ?? "",
-  //           "profileId": profileId,
-  //           "gst": onboardingStepsResponse?.payload?.meta?.gst ?? "",
-  //           "prevPageId": prevPageId,
-  //           "page": onboardingStepsResponse?.payload?.page,
-  //         },
-  //       );
-  //     } else if (onboardingStepsResponse?.payload?.pageCategory ==
-  //         PageCategory.Review.name) {
-  //       AppPages.router.pushNamed(
-  //         Routes.review,
-  //         extra: {
-  //           "profileId": profileId,
-  //           "prevPageId": prevPageId,
-  //           "page": onboardingStepsResponse?.payload?.page,
-  //         },
-  //       );
-  //     } else if (onboardingStepsResponse?.payload?.pageCategory ==
-  //         PageCategory.Itr.name) {
-  //       AppPages.router.pushNamed(
-  //         Routes.itr,
-  //         extra: {
-  //           "profileId": profileId,
-  //           "pan": onboardingStepsResponse?.payload?.meta?.pan ?? "",
-  //           "prevPageId": prevPageId,
-  //           "pageId": onboardingStepsResponse?.payload?.pageId ?? "",
-  //           "pageCategory":
-  //               onboardingStepsResponse?.payload?.pageCategory ?? "",
-  //           "page": onboardingStepsResponse?.payload?.page,
-  //         },
-  //       );
-  //     } else if (onboardingStepsResponse?.payload?.pageCategory ==
-  //         PageCategory.LoiSummary.name) {
-  //       AppPages.router.pushNamed(
-  //         Routes.loiSummary,
-  //         extra: {
-  //           "profileId": profileId,
-  //           "prevPageId": prevPageId,
-  //           "loiSummary": onboardingStepsResponse?.payload?.loiSummary,
-  //           "pageId": onboardingStepsResponse?.payload?.pageId,
-  //           "page": onboardingStepsResponse?.payload?.page,
-  //         },
-  //       );
-  //     } else if (onboardingStepsResponse?.payload?.pageCategory ==
-  //         PageCategory.ProcessingFee.name) {
-  //       AppPages.router.pushNamed(
-  //         Routes.processingFee,
-  //         extra: {
-  //           "profileId": profileId,
-  //           "prevPageId": prevPageId,
-  //           "processingFee": onboardingStepsResponse?.payload?.processingFee,
-  //           "page": onboardingStepsResponse?.payload?.page,
-  //         },
-  //       );
-  //     } else if (onboardingStepsResponse?.payload?.pageCategory ==
-  //         PageCategory.EmiPlans.name) {
-  //       AppPages.router.pushNamed(
-  //         Routes.emi,
-  //         extra: {
-  //           "pageId": onboardingStepsResponse?.payload?.pageId ?? "",
-  //           "pageCategory":
-  //               onboardingStepsResponse?.payload?.pageCategory ?? "",
-  //           "profileId": profileId,
-  //           "prevPageId": prevPageId,
-  //           "staticPageRes": onboardingStepsResponse?.payload?.staticPageRes,
-  //           "page": onboardingStepsResponse?.payload?.page,
-  //           "tenureId": (onboardingStepsResponse
-  //                       ?.payload?.page?.fields?.isEmpty ??
-  //                   true)
-  //               ? ""
-  //               : onboardingStepsResponse?.payload?.page?.fields?.first.fieldId,
-  //           "tenureTypeId": ((onboardingStepsResponse
-  //                           ?.payload?.page?.fields?.length ??
-  //                       0) >=
-  //                   2)
-  //               ? (onboardingStepsResponse?.payload?.page?.fields?[1].fieldId)
-  //               : "",
-  //         },
-  //       );
-  //     } else if ((onboardingStepsResponse?.payload?.pageCategory ==
-  //             PageCategory.KfsEsignUrl.name) ||
-  //         (onboardingStepsResponse?.payload?.pageCategory ==
-  //             PageCategory.MandateSignUrl.name)) {
-  //       AppPages.router.pushNamed(
-  //         Routes.kycDetail,
-  //         extra: {
-  //           "pageId": onboardingStepsResponse?.payload?.pageId ?? "",
-  //           "pageCategory":
-  //               onboardingStepsResponse?.payload?.pageCategory ?? "",
-  //           "profileId": profileId,
-  //           "prevPageId": prevPageId,
-  //           "page": onboardingStepsResponse?.payload?.page,
-  //           "allowSkip": onboardingStepsResponse?.payload?.allowSkip ?? false,
-  //           "digioKycResponse": DigioKycResponse(
-  //             id: onboardingStepsResponse
-  //                     ?.payload?.digioKycResponse?.entityId ??
-  //                 "",
-  //             accessToken: AccessToken(
-  //               id: onboardingStepsResponse?.payload?.digioKycResponse?.id ??
-  //                   "",
-  //             ),
-  //           ),
-  //         },
-  //       );
-  //     } else if (onboardingStepsResponse?.payload?.pageCategory ==
-  //         PageCategory.BankDetail.name) {
-  //       AppPages.router.pushNamed(
-  //         Routes.bankDetail,
-  //         extra: {
-  //           "pageId": onboardingStepsResponse?.payload?.pageId ?? "",
-  //           "pageCategory":
-  //               onboardingStepsResponse?.payload?.pageCategory ?? "",
-  //           "profileId": profileId,
-  //           "prevPageId": prevPageId,
-  //           "staticPageRes": onboardingStepsResponse?.payload?.staticPageRes,
-  //           "page": onboardingStepsResponse?.payload?.page,
-  //         },
-  //       );
-  //     } else if (onboardingStepsResponse?.payload?.pageCategory ==
-  //         PageCategory.Success.name) {
-  //       AppPages.router.pushNamed(
-  //         Routes.success,
-  //         extra: {"profileId": profileId, "prevPageId": prevPageId},
-  //       );
-  //     } else if (onboardingStepsResponse?.payload?.pageCategory ==
-  //         PageCategory.ProfileRejected.name) {
-  //       AppPages.router.pushNamed(
-  //         Routes.profileRejected,
-  //         extra: {"profileId": profileId, "prevPageId": prevPageId},
-  //       );
-  //     } else if (onboardingStepsResponse?.payload?.pageCategory ==
-  //         PageCategory.DownPayment.name) {
-  //       AppPages.router.pushNamed(
-  //         Routes.downPayment,
-  //         extra: {
-  //           "pageId": onboardingStepsResponse?.payload?.pageId ?? "",
-  //           "pageCategory":
-  //               onboardingStepsResponse?.payload?.pageCategory ?? "",
-  //           "profileId": profileId,
-  //           "prevPageId": prevPageId,
-  //           "page": onboardingStepsResponse?.payload?.page,
-  //           "processingFeeData":
-  //               onboardingStepsResponse?.payload?.processingFee,
-  //         },
-  //       );
-  //     }
-  //   }
-  // }
 
   void _onUpdateSubmitStatus(
     OnUpdateSubmitStatus event,
@@ -418,6 +218,9 @@ class CreditOnboardingBloc
     OnUpdateUserProfileStage event,
     Emitter<CreditOnboardingState> emit,
   ) async {
+    if (event.data?.isEmpty ?? true) {
+      return;
+    }
     emit(state.copyWith(userProfileStageUpdated: false));
     LoadingUtils.showLoader();
     Map<String, dynamic>? dataMap = event.data;
@@ -430,7 +233,12 @@ class CreditOnboardingBloc
     );
     LoadingUtils.hideLoader();
     if (response.data != null) {
-      debugPrint("userProfileStageUpdated");
+      if (response.data?.payload?.errorMsg?.isNotEmpty ?? false) {
+        Fluttertoast.showToast(
+          msg: response.data?.payload?.errorMsg ?? "",
+        );
+        return;
+      }
       emit(state.copyWith(userProfileStageUpdated: true));
     }
   }
@@ -532,57 +340,57 @@ class CreditOnboardingBloc
   //   }
   // }
 
-  void _onSyncPan(OnSyncPan event, Emitter<CreditOnboardingState> emit) async {
-    LoadingUtils.showLoader();
-    final response = await repository.syncPan(panNumber: event.panNumber);
-    LoadingUtils.hideLoader();
-    if (response.data != null) {
-      List<Fields?>? fieldsList = state.fieldsList;
-
-      if (response.data?.payload?.status == "INVALID") {
-        Fluttertoast.showToast(msg: response.data?.payload?.message ?? "");
-        emit(state.copyWith(isPanValid: false));
-        return;
-      }
-      for (int i = 0; i < (state.fieldsList?.length ?? 0); i++) {
-        if (state.fieldsList?[i]?.name == "name") {
-          Fields? field = state.fieldsList?[i]?.copyWith(
-            value: response.data?.payload?.registeredName ?? "",
-            textEditingController: TextEditingController(
-              text: response.data?.payload?.registeredName ?? "",
-            ),
-          );
-          fieldsList?[i] = field;
-        }
-        if (state.fieldsList?[i]?.name == "date") {
-          Fields? field = state.fieldsList?[i]?.copyWith(
-            value: response.data?.payload?.dateOfBirth ?? "",
-            textEditingController: TextEditingController(
-              text: response.data?.payload?.dateOfBirth ?? "",
-            ),
-          );
-          fieldsList?[i] = field;
-        }
-        if ((response.data?.payload?.address?.pincode != 0) &&
-            (state.fieldsList?[i]?.name == "pincode")) {
-          Fields? field = state.fieldsList?[i]?.copyWith(
-            value: response.data?.payload?.address?.pincode ?? "",
-            textEditingController: TextEditingController(
-              text: response.data?.payload?.address?.pincode?.toString() ?? "",
-            ),
-          );
-          fieldsList?[i] = field;
-        }
-      }
-      emit(
-        state.copyWith(
-          fieldsList: fieldsList,
-          fieldAutoPopulated: true,
-          isPanValid: true,
-        ),
-      );
-    }
-  }
+  // void _onSyncPan(OnSyncPan event, Emitter<CreditOnboardingState> emit) async {
+  //   LoadingUtils.showLoader();
+  //   final response = await repository.syncPan(panNumber: event.panNumber);
+  //   LoadingUtils.hideLoader();
+  //   if (response.data != null) {
+  //     List<Fields?>? fieldsList = state.fieldsList;
+  //
+  //     if (response.data?.payload?.status == "INVALID") {
+  //       Fluttertoast.showToast(msg: response.data?.payload?.message ?? "");
+  //       emit(state.copyWith(isPanValid: false));
+  //       return;
+  //     }
+  //     for (int i = 0; i < (state.fieldsList?.length ?? 0); i++) {
+  //       if (state.fieldsList?[i]?.name == "name") {
+  //         Fields? field = state.fieldsList?[i]?.copyWith(
+  //           value: response.data?.payload?.registeredName ?? "",
+  //           textEditingController: TextEditingController(
+  //             text: response.data?.payload?.registeredName ?? "",
+  //           ),
+  //         );
+  //         fieldsList?[i] = field;
+  //       }
+  //       if (state.fieldsList?[i]?.name == "date") {
+  //         Fields? field = state.fieldsList?[i]?.copyWith(
+  //           value: response.data?.payload?.dateOfBirth ?? "",
+  //           textEditingController: TextEditingController(
+  //             text: response.data?.payload?.dateOfBirth ?? "",
+  //           ),
+  //         );
+  //         fieldsList?[i] = field;
+  //       }
+  //       if ((response.data?.payload?.address?.pincode != 0) &&
+  //           (state.fieldsList?[i]?.name == "pincode")) {
+  //         Fields? field = state.fieldsList?[i]?.copyWith(
+  //           value: response.data?.payload?.address?.pincode ?? "",
+  //           textEditingController: TextEditingController(
+  //             text: response.data?.payload?.address?.pincode?.toString() ?? "",
+  //           ),
+  //         );
+  //         fieldsList?[i] = field;
+  //       }
+  //     }
+  //     emit(
+  //       state.copyWith(
+  //         fieldsList: fieldsList,
+  //         fieldAutoPopulated: true,
+  //         isPanValid: true,
+  //       ),
+  //     );
+  //   }
+  // }
 
   void _onReset(OnReset event, Emitter<CreditOnboardingState> emit) async {
     emit(state.copyWith(userProfileStageUpdated: false, submitClicked: false));
@@ -691,5 +499,48 @@ class CreditOnboardingBloc
         navigate: false,
       ),
     );
+  }
+
+  void _onValidatePan(
+      OnValidatePan event, Emitter<CreditOnboardingState> emit) async {
+    LoadingUtils.showLoader();
+    final response = await repository.validatePan(
+      panNumber: event.panNumber,
+      name: event.name,
+      dob: event.dob,
+    );
+    LoadingUtils.hideLoader();
+
+    if (response.data != null) {
+      bool nameMatched = response.data?.payload?.nameMatched ?? false;
+      bool dobMatched = response.data?.payload?.dobMatched ?? false;
+
+      emit(
+        state.copyWith(
+          nameMatched: nameMatched,
+          dobMatched: dobMatched,
+          panValidated: true,
+          panValidationApiLimitReached: (response.data == null),
+          validationMessage: response.data?.payload?.message ?? "",
+        ),
+      );
+    }
+  }
+
+  void _onResetPanValidation(
+      OnResetPanValidation event, Emitter<CreditOnboardingState> emit) async {
+    emit(
+      state.copyWith(
+        panValidated: false,
+        nameMatched: true,
+        dobMatched: true,
+        validationMessage: "",
+      ),
+    );
+  }
+
+  void _onSetFormDataMap(
+      OnSetFormDataMap event, Emitter<CreditOnboardingState> emit) {
+    emit(state.copyWith(formDataMap: event.formDataMap));
   }
 }

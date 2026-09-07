@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../app/themes/app_colors.dart';
 import '../app/themes/styles.dart';
 
@@ -67,7 +68,7 @@ class CustomButton extends StatelessWidget {
                   ),
             color: disabled
                 ? AppColors.greyE6
-                : buttonColor ?? AppColors.yellowFA,
+                : buttonColor ?? AppColors.buttonBgColor,
           ),
           // alignment: Alignment.center,
           child: loading
@@ -98,7 +99,9 @@ class CustomButton extends StatelessWidget {
                                 style: disabled
                                     ? Styles.tsGrey62Medium12()
                                     : (buttonTextStyle ??
-                                        Styles.tsBlack3BMedium14()),
+                                        Styles.tsBlack3BMedium14(
+                                          color: AppColors.buttonTextColor,
+                                        )),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),

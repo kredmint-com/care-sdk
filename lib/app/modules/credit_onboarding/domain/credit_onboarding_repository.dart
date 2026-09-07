@@ -1,4 +1,5 @@
 import 'package:file_picker/file_picker.dart';
+import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/ckyc_validation_response.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/loi_response.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/mandate_verify_response.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/pay_response.dart';
@@ -8,10 +9,13 @@ import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/valid
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/verify_esign_response.dart';
 import '../../../data/models/dto/response.dart';
 import '../data/models/bank_account_detail_response.dart';
+import '../data/models/ckyc_initiated_response.dart';
+import '../data/models/digio_workflow_response.dart';
 import '../data/models/fetch_bank_statement_response.dart';
 import '../data/models/onboarding_steps_response.dart';
 import '../data/models/send_report_response.dart';
 import '../data/models/sync_pan_response.dart';
+import '../data/models/update_user_stage_response.dart';
 import '../data/models/upload_document_response.dart';
 import '../data/models/validate_bank_response.dart';
 import '../data/models/validate_ifsc_response.dart';
@@ -22,7 +26,7 @@ abstract class CreditOnboardingRepository {
     String? pageId,
   });
 
-  Future<RepoResponse<bool>> updateUserProfileStage({
+  Future<RepoResponse<UpdateUserStageResponse>> updateUserProfileStage({
     required String profileId,
     required Map<String, dynamic>? data,
   });
@@ -104,7 +108,25 @@ abstract class CreditOnboardingRepository {
     required String digioDocId,
   });
 
+  Future<RepoResponse<DigioWorkflowResponse>> verifyWorkflowStatus({
+    required String digioDocId,
+    required String pan,
+  });
+
   Future<RepoResponse<SyncPanResponse>> syncPan({
     required String panNumber,
+  });
+
+  Future<RepoResponse<CKycInitiatedResponse>> initiateCKyc({
+    required String userProfileId,
+    required bool resendOtp,
+    required bool digioKyc,
+  });
+
+  Future<RepoResponse<CKycValidationResponse>> validateCKyc({
+    required String userProfileId,
+    required String promoterId,
+    required String otp,
+    required String pan,
   });
 }

@@ -1,12 +1,13 @@
-import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:loan_sdk_package/app/data/models/dto/response.dart';
 import 'package:loan_sdk_package/app/data/network/network_requester.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/bank_account_detail_response.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/loi_response.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/payment_patch_response.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/sync_pan_response.dart';
+import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/update_user_stage_response.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/validate_bank_response.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/validate_pan_response.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/verify_esign_response.dart';
@@ -16,6 +17,9 @@ import 'package:loan_sdk_package/utils/storage/storage_utils.dart';
 import '../../../../../utils/helper/enums.dart';
 import '../../../../../utils/helper/exception_handler.dart';
 import '../../../../data/values/urls.dart';
+import '../models/ckyc_initiated_response.dart';
+import '../models/ckyc_validation_response.dart';
+import '../models/digio_workflow_response.dart';
 import '../models/fetch_bank_statement_response.dart';
 import '../models/mandate_verify_response.dart';
 import '../models/onboarding_steps_response.dart';
@@ -50,7 +54,7 @@ class CreditOnboardingRepositoryImpl extends CreditOnboardingRepository {
   }
 
   @override
-  Future<RepoResponse<bool>> updateUserProfileStage({
+  Future<RepoResponse<UpdateUserStageResponse>> updateUserProfileStage({
     required String profileId,
     required Map<String, dynamic>? data,
   }) async {
@@ -64,7 +68,7 @@ class CreditOnboardingRepositoryImpl extends CreditOnboardingRepository {
     );
     return response is APIException
         ? RepoResponse(error: response)
-        : RepoResponse(data: true);
+        : RepoResponse(data: UpdateUserStageResponse.fromJson(response));
   }
 
   @override
@@ -341,6 +345,26 @@ class CreditOnboardingRepositoryImpl extends CreditOnboardingRepository {
   }
 
   @override
+  Future<RepoResponse<DigioWorkflowResponse>> verifyWorkflowStatus({
+    required String digioDocId,
+    required String pan,
+  }) async {
+    final response = await networkRequester.patch(
+      path: Urls.verifyWorkflow(baseUrlType: BaseUrlType.user.name),
+      query: {
+        "userId": Storage.getSdkUser()?.id ?? "",
+        "status": "Accepted",
+        "success": true,
+        "kid": digioDocId,
+        "pan" : pan,
+      },
+    );
+    return response is APIException
+        ? RepoResponse(error: response)
+        : RepoResponse(data: DigioWorkflowResponse.fromJson(response));
+  }
+
+  @override
   Future<RepoResponse<SyncPanResponse>> syncPan({
     required String panNumber,
   }) async {
@@ -351,5 +375,46 @@ class CreditOnboardingRepositoryImpl extends CreditOnboardingRepository {
     return response is APIException
         ? RepoResponse(error: response)
         : RepoResponse(data: SyncPanResponse.fromJson(response));
+  }
+
+  @override
+  Future<RepoResponse<CKycInitiatedResponse>> initiateCKyc({
+    required String userProfileId,
+    required bool resendOtp,
+    required bool digioKyc,
+  }) async {
+    final response = await networkRequester.post(
+      path: Urls.initiateCKyc(baseUrlType: BaseUrlType.lead.name),
+      query: {
+        "userProfileId": userProfileId,
+        "resendOtp": resendOtp,
+        "digioKyc": digioKyc,
+      },
+    );
+    return response is APIException
+        ? RepoResponse(error: response)
+        : RepoResponse(data: CKycInitiatedResponse.fromJson(response));
+  }
+
+  @override
+  Future<RepoResponse<CKycValidationResponse>> validateCKyc({
+    required String userProfileId,
+    required String promoterId,
+    required String otp,
+    required String pan,
+  }) async {
+    final response = await networkRequester.post(
+        path: Urls.validateCKyc(baseUrlType: BaseUrlType.lead.name),
+        query: {
+          "userProfileId": userProfileId,
+          "promoterId": promoterId,
+        },
+        data: {
+          "otp": otp,
+          "pan": pan,
+        });
+    return response is APIException
+        ? RepoResponse(error: response)
+        : RepoResponse(data: CKycValidationResponse.fromJson(response));
   }
 }

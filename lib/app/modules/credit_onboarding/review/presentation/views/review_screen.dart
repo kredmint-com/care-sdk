@@ -4,7 +4,6 @@ import 'package:loan_sdk_package/app/modules/credit_onboarding/presentation/bloc
 import 'package:loan_sdk_package/app/modules/credit_onboarding/review/presentation/views/widgets/review_detail_widget.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../../../../../loan_sdk_package.dart';
 import '../../../../../../widgets/custom_button.dart';
 import '../../../../../data/values/animation.dart';

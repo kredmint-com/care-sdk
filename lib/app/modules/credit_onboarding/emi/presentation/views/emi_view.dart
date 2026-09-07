@@ -118,7 +118,7 @@ class _EmiViewState extends State<EmiView> {
                         );
                   },
                   buttonText:
-                      "${Strings.proceed} ${Strings.withString} ${Strings.rupee}${finalAmount.toString().formatData()}",
+                      "${Strings.proceed} ${Strings.withString} ${Strings.rupee}${finalAmount.toString().formatData()}${Strings.perMonth.toLowerCase()}",
                 ),
               );
             },
@@ -173,7 +173,7 @@ class _EmiViewState extends State<EmiView> {
                   12.h,
                   Expanded(
                     child: ListView.separated(
-                      padding: EdgeInsetsGeometry.only(bottom: 100),
+                      padding: EdgeInsets.only(bottom: 100),
                       itemCount: widget.staticPageRes?.length ?? 0,
                       separatorBuilder: (context, index) {
                         return 10.h;

@@ -17,6 +17,7 @@ class KycBloc extends Bloc<KycEvent, KycState> {
     on<OnStartDigioKyc>(_onStartDigioKyc);
     on<OnVerifyEsignStatus>(_onVerifyEsignStatus);
     on<OnVerifyMandateStatus>(_onVerifyMandateStatus);
+    on<OnVerifyWorkflowStatus>(_onVerifyWorkflowStatus);
     on<OnPatchKyc>(_onPatchKyc);
     on<OnResetESignStatus>(_onResetESignStatus);
     on<OnResetEMandateStatus>(_onResetEMandateStatus);
@@ -26,7 +27,6 @@ class KycBloc extends Bloc<KycEvent, KycState> {
   }
 
   void _onStartDigioKyc(OnStartDigioKyc event, Emitter<KycState> emit) async {
-    debugPrint("OnStartDigioKyc");
     final response = await digioService.startKyc(
       documentId: event.documentId,
       identifier: event.identifier,
@@ -34,11 +34,16 @@ class KycBloc extends Bloc<KycEvent, KycState> {
     );
     if ((response["code"] == 1001) ||
         (response["message"].toLowerCase().contains("success"))) {
-      debugPrint("Adding OnVerifyEsignStatus");
       if (event.pageCategory == PageCategory.MandateSignUrl.name) {
         add(OnVerifyMandateStatus(digioDocId: event.documentId));
-      } else {
+      } else if (event.pageCategory == PageCategory.KfsEsignUrl.name) {
         add(OnVerifyEsignStatus(digioDocId: event.documentId));
+      } else if ((event.pageCategory == PageCategory.KycDetail.name) ||
+          (event.pageCategory == PageCategory.CKycDetail.name)) {
+        add(OnVerifyWorkflowStatus(
+          digioDocId: event.documentId,
+          pan: event.pan,
+        ));
       }
     }
   }
@@ -78,14 +83,31 @@ class KycBloc extends Bloc<KycEvent, KycState> {
     }
   }
 
+  void _onVerifyWorkflowStatus(
+    OnVerifyWorkflowStatus event,
+    Emitter<KycState> emit,
+  ) async {
+    final response = await repository.verifyWorkflowStatus(
+      digioDocId: event.digioDocId,
+      pan : event.pan,
+    );
+    if (response.data != null) {
+      emit(
+        state.copyWith(
+          workflowVerified: true,
+          digioWorkflowResponse: response.data,
+        ),
+      );
+    }
+  }
+
   void _onPatchKyc(OnPatchKyc event, Emitter<KycState> emit) async {
-    // emit(state.copyWith(userProfileStageMapCompleted: false));
     Map<String, dynamic> userProfileStageMap = {
       "pageId": event.pageId,
       "pageCategory": event.pageCategory,
-      "staticPageRes": event.esignVerifyResponse != null
-          ? event.esignVerifyResponse?.toJson()
-          : event.mandateVerifyResponse?.toJson(),
+      "staticPageRes": event.esignVerifyResponse?.toJson() ??
+          event.digioWorkflowResponse?.toJson() ??
+          event.mandateVerifyResponse?.toJson(),
     };
     emit(
       state.copyWith(

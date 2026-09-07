@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,6 +56,8 @@ class SuccessView extends StatefulWidget {
 }
 
 class _SuccessViewState extends State<SuccessView> {
+  Timer? timer;
+
   Future<bool> handleBackPress() async {
     return CreditCommonMethod.onBackPress(
       context: context,
@@ -75,6 +79,23 @@ class _SuccessViewState extends State<SuccessView> {
   }
 
   void init() {
+    if (!widget.isFinalStep) {
+      Timer.periodic(const Duration(seconds: 1), (timer) {
+        final remainingSeconds = 3 - timer.tick;
+        context.read<SuccessBloc>().add(
+              OnTimerCountChange(
+                count: remainingSeconds,
+              ),
+            );
+        if (timer.tick == 3) {
+          timer.cancel();
+          context.replaceNamed(
+            Routes.sdkCreditOnboarding,
+            extra: {"profileId": widget.profileId},
+          );
+        }
+      });
+    }
     SdkBackHandler.onBackPressed = handleBackPress;
     // if (widget.isFinalStep) {
     //   WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -93,7 +114,7 @@ class _SuccessViewState extends State<SuccessView> {
       getIt<SdkCallbacks>().onSuccess?.call(
             message: "Loan applied successfully",
             status: ProfileStatus.PROFILE_COMPLETED.name,
-        invoiceNo: (widget.staticPageRes?.isEmpty ?? true)
+            invoiceNo: (widget.staticPageRes?.isEmpty ?? true)
                 ? ""
                 : widget.staticPageRes?.first?.invoiceId ?? "",
           );
@@ -115,12 +136,25 @@ class _SuccessViewState extends State<SuccessView> {
           children: [
             SafeArea(
               child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: CustomButton(
-                  onTap: _onProceed,
-                  buttonText: Strings.proceed,
-                ),
-              ),
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      if (!widget.isFinalStep) ...[
+                        BlocBuilder<SuccessBloc, SuccessState>(
+                          builder: (context, state) {
+                            return Text(Strings.redirectMessage(
+                                remainingSeconds:
+                                    state.remainingSeconds?.toString() ?? ""));
+                          },
+                        ),
+                        12.h,
+                      ],
+                      CustomButton(
+                        onTap: _onProceed,
+                        buttonText: Strings.proceed,
+                      ),
+                    ],
+                  )),
             ),
           ],
         ),
@@ -335,9 +369,11 @@ class _SuccessViewState extends State<SuccessView> {
         4.h,
         Row(
           children: [
-            Text(
-              value,
-              style: Styles.tsBlack3BSemiBold14(),
+            Expanded(
+              child: Text(
+                value,
+                style: Styles.tsBlack3BSemiBold14(),
+              ),
             ),
             Visibility(
               visible: showCopyIcon,

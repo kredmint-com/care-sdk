@@ -25,11 +25,13 @@ class CreditOnboardingView extends StatefulWidget {
     required this.profileId,
     this.prevPageId,
     this.accessToken,
+    this.manualKycInitiated = false,
   });
 
   final String profileId;
   final String? prevPageId;
   final String? accessToken;
+  final bool? manualKycInitiated;
 
   @override
   State<CreditOnboardingView> createState() => _CreditOnboardingViewState();
@@ -122,8 +124,7 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
             builder: (context, state) {
               return Wrap(
                 children: [
-                  BlocConsumer<CreditOnboardingBloc,
-                      CreditOnboardingState>(
+                  BlocConsumer<CreditOnboardingBloc, CreditOnboardingState>(
                     listener: (context, state) async {
                       if (state.userProfileStageUpdated ?? false) {
                         context.read<CreditOnboardingBloc>().add(
@@ -138,15 +139,15 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           color: AppColors.white,
-                          border: Border(top: BorderSide(color: AppColors.greyE1)),),
+                          border:
+                              Border(top: BorderSide(color: AppColors.greyE1)),
+                        ),
                         child: CustomButton(
                           onTap: () {
-                            // debugPrint("button tap 1");
                             context.read<CreditOnboardingBloc>().add(
-                              OnUpdateSubmitStatus(),
-                            );
-                            bool isFormValid =
-                            formKey.currentState!.validate();
+                                  OnUpdateSubmitStatus(),
+                                );
+                            bool isFormValid = formKey.currentState!.validate();
                             if (!(state.isPanValid ?? true)) {
                               Fluttertoast.showToast(
                                   msg: ErrorMessages.invalidPan);
@@ -158,62 +159,68 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                               Map<String, dynamic> fieldData = {};
                               Map<String, dynamic> dataMap = {};
                               Map<String, dynamic> addressBody = {};
+                              String panNumber = "";
+                              String dob = "";
+                              String fullName = "";
                               String addressFieldId = "";
                               for (int i = 0;
-                              i < (state.fieldsList?.length ?? 0);
-                              i++) {
-                                if (state.fieldsList?[i]?.type ==
-                                    InputType.address.name ||
-                                    (state.fieldsList?[i]?.subType ==
-                                        "pincode")) {
-                                  addressFieldId =
-                                      state.fieldsList?[i]?.fieldId ?? "";
-                                  addressBody[state.fieldsList?[i]?.subType ??
-                                      ""] = state.fieldsList?[i]?.value;
+                                  i < (state.fieldsList?.length ?? 0);
+                                  i++) {
+                                Fields? field = state.fieldsList?[i];
+
+                                if (field?.name == "pan") {
+                                  panNumber = field?.value;
+                                }
+                                if (field?.name == "name") {
+                                  fullName = field?.value;
+                                }
+                                if (field?.name == "date") {
+                                  dob = field?.value;
+                                }
+
+                                if (field?.type == InputType.address.name ||
+                                    (field?.subType == "pincode")) {
+                                  addressFieldId = field?.fieldId ?? "";
+                                  addressBody[field?.subType ?? ""] =
+                                      field?.value;
                                   debugPrint(
-                                    "Address body data : ${state.fieldsList?[i]?.subType ?? ""}...${state.fieldsList?[i]?.value}",
+                                    "Address body data : ${field?.subType ?? ""}...${field?.value}",
                                   );
                                 }
-                                if (state.fieldsList?[i]?.type ==
-                                    InputType.file.name) {
+                                if (field?.type == InputType.file.name) {
                                   bool documentError = ((state
-                                      .fieldsList?[i]?.mandatory ??
-                                      false) &&
+                                              .fieldsList?[i]?.mandatory ??
+                                          false) &&
                                       (state.documentList?.isEmpty ?? true));
                                   if (documentError) {
                                     isFormValid = !documentError;
                                     Fluttertoast.showToast(
-                                      msg:
-                                      "${state.fieldsList?[i]?.name ?? ""} is required",
+                                      msg: "${field?.name ?? ""} is required",
                                     );
                                   }
 
-                                  fieldData[state.fieldsList?[i]?.fieldId ??
-                                      ""] =
-                                      state.documentList
-                                          ?.map((doc) => doc.toJson())
-                                          .toList();
+                                  fieldData[field?.fieldId ?? ""] = state
+                                      .documentList
+                                      ?.map((doc) => doc.toJson())
+                                      .toList();
                                 }
-                                if (state.fieldsList?[i]?.type ==
-                                    InputType.checkbox.name) {
+                                if (field?.type == InputType.checkbox.name) {
                                   bool error =
-                                  ((state.fieldsList?[i]?.mandatory ??
-                                      false) &&
-                                      !(state.fieldsList?[i]?.value ??
-                                          false));
+                                      ((state.fieldsList?[i]?.mandatory ??
+                                              false) &&
+                                          !(field?.value ?? false));
                                   if (error) {
                                     isFormValid = !error;
                                     Fluttertoast.showToast(
-                                      msg:
-                                      "${state.fieldsList?[i]?.name ?? ""} is required",
+                                      msg: "${field?.name ?? ""} is required",
                                     );
                                   }
 
-                                  fieldData[state.fieldsList?[i]?.fieldId ??
-                                      ""] = state.fieldsList?[i]?.value;
+                                  fieldData[field?.fieldId ?? ""] =
+                                      field?.value;
                                 } else {
-                                  fieldData[state.fieldsList?[i]?.fieldId ??
-                                      ""] = state.fieldsList?[i]?.value;
+                                  fieldData[field?.fieldId ?? ""] =
+                                      field?.value;
                                 }
                               }
 
@@ -223,24 +230,40 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
 
                               dataMap["data"] = fieldData;
 
-                              dataMap["pageId"] = state
-                                  .onboardingStepsResponse
-                                  ?.payload
-                                  ?.pageId ??
+                              dataMap["pageId"] = state.onboardingStepsResponse
+                                      ?.payload?.pageId ??
                                   "";
 
                               dataMap["pageCategory"] = state
-                                  .onboardingStepsResponse
-                                  ?.payload
-                                  ?.pageCategory ??
+                                      .onboardingStepsResponse
+                                      ?.payload
+                                      ?.pageCategory ??
                                   "";
                               if (isFormValid) {
                                 context.read<CreditOnboardingBloc>().add(
-                                  OnUpdateUserProfileStage(
-                                    data: dataMap,
-                                    profileId: widget.profileId,
-                                  ),
-                                );
+                                      OnSetFormDataMap(
+                                        formDataMap: dataMap,
+                                      ),
+                                    );
+                                // if (panNumber.isNotEmpty &&
+                                //     fullName.isNotEmpty &&
+                                //     dob.isNotEmpty) {
+                                //   debugPrint("Dob value : $dob");
+                                //   context.read<CreditOnboardingBloc>().add(
+                                //         OnValidatePan(
+                                //           panNumber: panNumber,
+                                //           name: fullName,
+                                //           dob: DateTime.parse(dob).formatInDDMMYYYY(),
+                                //         ),
+                                //       );
+                                // } else {
+                                context.read<CreditOnboardingBloc>().add(
+                                      OnUpdateUserProfileStage(
+                                        data: dataMap,
+                                        profileId: widget.profileId,
+                                      ),
+                                    );
+                                //  }
                               }
                             } else {
                               scrollToFirstInvalidField(
@@ -280,6 +303,41 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                   }
                 },
               ),
+              // BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
+              //   listener: (context, state) async {
+              //     if (state.panValidated ?? false) {
+              //       context
+              //           .read<CreditOnboardingBloc>()
+              //           .add(OnResetPanValidation());
+              //       if (!(state.nameMatched ?? true) ||
+              //           !(state.dobMatched ?? true) &&
+              //               (state.validationMessage?.isNotEmpty ?? false)) {
+              //         Fluttertoast.showToast(
+              //           msg: state.validationMessage ?? "",
+              //         );
+              //         return;
+              //       }
+              //       // if (!(state.nameMatched ?? true)) {
+              //       //   Fluttertoast.showToast(
+              //       //     msg: ErrorMessages.fullNameNotMatchingPan,
+              //       //   );
+              //       //   return;
+              //       // }
+              //       // if (!(state.dobMatched ?? true)) {
+              //       //   Fluttertoast.showToast(
+              //       //     msg: ErrorMessages.dobNotMatchingPan,
+              //       //   );
+              //       //   return;
+              //       // }
+              //       context.read<CreditOnboardingBloc>().add(
+              //             OnUpdateUserProfileStage(
+              //               data: state.formDataMap,
+              //               profileId: widget.profileId,
+              //             ),
+              //           );
+              //     }
+              //   },
+              // ),
               BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
                 listenWhen: (previous, current) =>
                     previous.navigate != current.navigate &&
@@ -288,9 +346,23 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                   final OnboardingStepsPayload? payload =
                       state.onboardingStepsResponse?.payload;
                   final String prevPageId = (payload?.prePageEnable ?? false)
-                        ? (payload?.prvPageId ?? "")
-                        : "";
+                      ? (payload?.prvPageId ?? "")
+                      : "";
                   if (payload == null) return;
+
+                  // AppPages.router.pushNamed(
+                  //   Routes.cKyc,
+                  //   extra: {
+                  //     "pageId": payload.pageId ?? "",
+                  //     "pageCategory": payload.pageCategory ?? "",
+                  //     "profileId": widget.profileId,
+                  //     "prevPageId": prevPageId,
+                  //     "staticPageRes": payload.staticPageRes,
+                  //     "page": payload.page,
+                  //   },
+                  // );
+                  //
+                  // return;
 
                   if (payload.pageCategory == PageCategory.BankStatement.name) {
                     AppPages.router.pushNamed(
@@ -417,6 +489,34 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                         ),
                       },
                     );
+                  } else if ((payload.pageCategory ==
+                          PageCategory.CKycDetail.name &&
+                      ((payload.staticPageRes?.isNotEmpty ?? false) &&
+                              (payload.staticPageRes?.first.ckycFailed ??
+                                  false) ||
+                          (widget.manualKycInitiated ?? false)))) {
+                    AppPages.router.pushNamed(
+                      Routes.kycDetail,
+                      extra: {
+                        "pageId": payload.pageId ?? "",
+                        "pageCategory": payload.pageCategory ?? "",
+                        "profileId": widget.profileId,
+                        "prevPageId": prevPageId,
+                        "page": payload.page,
+                        "allowSkip": payload.allowSkip ?? false,
+                        "digioKycResponse": DigioKycResponse(
+                          id: payload.staticPageRes?.first.digioKycInitResponse
+                                  ?.id ??
+                              "",
+                          accessToken: AccessToken(
+                            id: payload.staticPageRes?.first
+                                    .digioKycInitResponse?.accessToken?.id ??
+                                "",
+                          ),
+                        ),
+                        "staticPageRes": payload.staticPageRes,
+                      },
+                    );
                   } else if (payload.pageCategory ==
                       PageCategory.BankDetail.name) {
                     AppPages.router.pushNamed(
@@ -463,6 +563,19 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                         "prevPageId": prevPageId,
                         "page": payload.page,
                         "processingFeeData": payload.processingFee,
+                      },
+                    );
+                  } else if (payload.pageCategory ==
+                      PageCategory.CKycDetail.name) {
+                    AppPages.router.pushNamed(
+                      Routes.cKyc,
+                      extra: {
+                        "pageId": payload.pageId ?? "",
+                        "pageCategory": payload.pageCategory ?? "",
+                        "profileId": widget.profileId,
+                        "prevPageId": prevPageId,
+                        "staticPageRes": payload.staticPageRes,
+                        "page": payload.page,
                       },
                     );
                   }

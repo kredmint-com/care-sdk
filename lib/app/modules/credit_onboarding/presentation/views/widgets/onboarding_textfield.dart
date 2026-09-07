@@ -55,15 +55,16 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
 
   void init() async {
     inputType = getInputType(val: widget.field?.type ?? "");
-    if (inputType == InputType.date) {
-      widget.field?.textEditingController?.text =
-          DateTime.tryParse(widget.field?.value?.toString() ?? "")
-                  ?.formatInYYYYMMD() ??
-              "";
-    } else {
+    // if (inputType == InputType.date) {
+    //   widget.field?.textEditingController?.text =
+    //       DateTime.tryParse(widget.field?.value?.toString() ?? "")
+    //               ?.formatInYYYYMMD() ??
+    //           "";
+    //   debugPrint("dob value : ${widget.field?.textEditingController?.text}");
+    // } else {
       widget.field?.textEditingController?.text =
           widget.field?.value?.toString() ?? "";
-    }
+    //}
   }
 
   InputType? getInputType({required String val}) {
@@ -95,21 +96,21 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
 
   List<TextInputFormatter> getInputFormatters({required Fields? field}) {
     // final inputType = getTextInputType(inputType: field?.type ?? "");
-    final name = widget.field?.name;
+    final name = widget.field?.name?.toLowerCase();
 
     // if (inputType == TextInputType.number) {
-      if (name == "pincode") {
-        return [
-          FilteringTextInputFormatter.digitsOnly,
-          LengthLimitingTextInputFormatter(6),
-        ];
-      }
-      if (name == "pan") {
-        return [
-          LengthLimitingTextInputFormatter(10),
-        ];
-      }
-      return [FilteringTextInputFormatter.digitsOnly];
+    if (name == "pincode") {
+      return [
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(6),
+      ];
+    }
+    if (name == "pan") {
+      return [
+        LengthLimitingTextInputFormatter(10),
+      ];
+    }
+    return [FilteringTextInputFormatter.digitsOnly];
     // }
 
     return [];
@@ -155,14 +156,14 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
             //     OnFetchAddressDetail(pincode: val),
             //   );
             // }
-            if (widget.field?.name == "pan") {
-              if (val.length == 10) {
-                FocusManager.instance.primaryFocus?.unfocus();
-                context.read<CreditOnboardingBloc>().add(
-                      OnSyncPan(panNumber: val, fieldIndex: widget.index),
-                    );
-              }
-            }
+            // if (widget.field?.name == "pan") {
+            //   if (val.length == 10) {
+            //     FocusManager.instance.primaryFocus?.unfocus();
+            //     context.read<CreditOnboardingBloc>().add(
+            //           OnSyncPan(panNumber: val, fieldIndex: widget.index),
+            //         );
+            //   }
+            // }
           });
           Fields? data = widget.field?.copyWith(
             value: (widget.field?.type == KeyboardType.number.name)
@@ -177,16 +178,18 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
           }
         },
         readOnly: (inputType == InputType.select) ||
-            (inputType == InputType.date) ||
-            (widget.field?.name == "name") ||
-            !(widget.field?.editable ?? true),
+            (!(widget.field?.editable ?? true) &&
+                (widget.field?.backendFieldValue?.toString().isNotEmpty ?? false)),
         focusNode: (inputType == InputType.select) ||
                 (inputType == InputType.date) ||
                 (widget.field?.name == "name")
             ? AlwaysDisabledFocusNode()
             : null,
         suffix: (inputType == InputType.date)
-            ? Icon(Icons.date_range,color: AppColors.primaryColor(),)
+            ? Icon(
+                Icons.date_range,
+                color: AppColors.primaryColor(),
+              )
             : ((widget.field?.value?.toString().isNotEmpty ?? false) &&
                     (inputType == InputType.select) &&
                     (!(widget.field?.editable ?? true)))

@@ -173,7 +173,7 @@ class Urls {
       "${Env.getBaseUrl()[baseUrlType]}/bill/session/id/$id";
 
   static String validatePan({required String baseUrlType}) =>
-      "${Env.getBaseUrl()[baseUrlType]}/kyc/validate/pan";
+      "${Env.getBaseUrl()[baseUrlType]}/master/kyc/validate/pan/v3";
 
   static String footerNotification({required String baseUrlType}) =>
       "${Env.getBaseUrl()[baseUrlType]}/notifications";
@@ -450,6 +450,15 @@ class Urls {
   static String verifyMandate({required String baseUrlType}) =>
       "${Env.getBaseUrl()[baseUrlType]}/user/mandate";
 
+  static String verifyWorkflow({required String baseUrlType}) =>
+      "${Env.getBaseUrl()[baseUrlType]}/user/kyc/digio/workflow";
+
   static String syncPan({required String baseUrlType}) =>
       "${Env.getBaseUrl()[baseUrlType]}/master/kyc/sync/pan";
+
+  static String initiateCKyc({required String baseUrlType}) =>
+      "${Env.getBaseUrl()[baseUrlType]}/lead/ckyc/initiate";
+
+  static String validateCKyc({required String baseUrlType}) =>
+      "${Env.getBaseUrl()[baseUrlType]}/lead/ckyc/validate";
 }

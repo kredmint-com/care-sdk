@@ -4,15 +4,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:kyc_workflow/digio_config.dart';
 import 'package:kyc_workflow/environment.dart';
 import 'package:kyc_workflow/kyc_workflow.dart';
+import 'package:loan_sdk_package/app/themes/app_colors.dart';
+import 'package:loan_sdk_package/utils/helper/common_method.dart';
 
 import '../utils/loading/loading_utils.dart';
 
 class DigioService {
   DigioConfig getKycDigioConfig() {
     var digioConfig = DigioConfig();
-    digioConfig.theme.primaryColor = "#1268b1";
-    digioConfig.logo =
-        "https://www.digio.in/images/digio_blue.png";
+    digioConfig.theme.primaryColor = CommonMethod().colorToHex(
+      AppColors.buttonBgColor,
+    );
+    digioConfig.logo = "https://www.digio.in/images/digio_blue.png";
     digioConfig.environment = Environment.PRODUCTION;
     return digioConfig;
   }
@@ -26,6 +29,8 @@ class DigioService {
     additionalData["dg_disable_upi_collect_flow"] =
         "false"; // optional for mandate
     DigioConfig digioConfig = getKycDigioConfig();
+
+    debugPrint("digio data : ${documentId}....${identifier}....$tokenId");
 
     KycWorkflow kycWorkflowPlugin = KycWorkflow(digioConfig);
     LoadingUtils.showLoader();
@@ -49,5 +54,4 @@ class DigioService {
     debugPrint("digio result : ${digioResult.toString()}");
     return digioResult;
   }
-
 }

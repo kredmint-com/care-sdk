@@ -73,7 +73,7 @@ class _DownPaymentViewState extends State<DownPaymentView> {
             /// 🔹 Credit onboarding listener — now routes straight to SuccessView
             BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
               listenWhen: (prev, curr) =>
-              prev.userProfileStageUpdated != curr.userProfileStageUpdated,
+                  prev.userProfileStageUpdated != curr.userProfileStageUpdated,
               listener: (context, state) {
                 if (state.userProfileStageUpdated == true) {
                   final paymentDetails = context
@@ -100,16 +100,16 @@ class _DownPaymentViewState extends State<DownPaymentView> {
             /// 🔹 Payment success listener
             BlocListener<DownPaymentBloc, DownPaymentState>(
               listenWhen: (prev, curr) =>
-              prev.paymentSuccessfull != curr.paymentSuccessfull,
+                  prev.paymentSuccessfull != curr.paymentSuccessfull,
               listener: (context, state) {
                 if (state.paymentSuccessfull == true) {
                   context.read<DownPaymentBloc>().add(
-                    OnPatchDownPayment(
-                      pageId: widget.pageId,
-                      pageCategory: widget.pageCategory,
-                      paymentPatchResponse: state.paymentPatchResponse,
-                    ),
-                  );
+                        OnPatchDownPayment(
+                          pageId: widget.pageId,
+                          pageCategory: widget.pageCategory,
+                          paymentPatchResponse: state.paymentPatchResponse,
+                        ),
+                      );
 
                   context.read<DownPaymentBloc>().add(OnReset());
                 }
@@ -119,20 +119,20 @@ class _DownPaymentViewState extends State<DownPaymentView> {
             /// 🔹 Profile update listener
             BlocListener<DownPaymentBloc, DownPaymentState>(
               listenWhen: (prev, curr) =>
-              prev.userProfileStageMapCompleted !=
+                  prev.userProfileStageMapCompleted !=
                   curr.userProfileStageMapCompleted,
               listener: (context, state) {
                 if (state.userProfileStageMapCompleted == true) {
                   context.read<CreditOnboardingBloc>().add(
-                    coe.OnUpdateUserProfileStage(
-                      data: state.userProfileStageMap,
-                      profileId: widget.profileId,
-                    ),
-                  );
+                        coe.OnUpdateUserProfileStage(
+                          data: state.userProfileStageMap,
+                          profileId: widget.profileId,
+                        ),
+                      );
 
                   context.read<DownPaymentBloc>().add(
-                    OnResetUserProfileStageMapCompleted(),
-                  );
+                        OnResetUserProfileStageMapCompleted(),
+                      );
                 }
               },
             ),
@@ -165,27 +165,30 @@ class _DownPaymentViewState extends State<DownPaymentView> {
                 border: Border(top: BorderSide(color: AppColors.greyE1)),
               ),
               child: CustomButton(
+                disabled:
+                    ((widget.processingFeeData?.pgOrderRequest?.amount ?? 0) <=
+                        0),
                 onTap: () {
                   if (widget.processingFeeData?.pgEnable ?? false) {
                     context.read<DownPaymentBloc>().add(
-                      OnPay(
-                        amount: widget
-                            .processingFeeData?.pgOrderRequest?.amount
-                            ?.toString() ??
-                            "",
-                        lenderId: widget.processingFeeData?.pgOrderRequest
-                            ?.lenderId ??
-                            "",
-                        profileId: widget.profileId,
-                        paymentType: widget.processingFeeData
-                            ?.pgOrderRequest?.paymentType ??
-                            "",
-                      ),
-                    );
+                          OnPay(
+                            amount: widget
+                                    .processingFeeData?.pgOrderRequest?.amount
+                                    ?.toString() ??
+                                "",
+                            lenderId: widget.processingFeeData?.pgOrderRequest
+                                    ?.lenderId ??
+                                "",
+                            profileId: widget.profileId,
+                            paymentType: widget.processingFeeData
+                                    ?.pgOrderRequest?.paymentType ??
+                                "",
+                          ),
+                        );
                   }
                 },
                 buttonText:
-                "${Strings.proceed} with ${Strings.rupee}${widget.processingFeeData?.pgOrderRequest?.amount?.toString().formatData() ?? ""}",
+                    "${Strings.proceed} with ${Strings.rupee}${widget.processingFeeData?.pgOrderRequest?.amount?.toString().formatData() ?? ""}",
               ),
             );
           },
@@ -283,16 +286,16 @@ class _DownPaymentViewState extends State<DownPaymentView> {
                   _columnItem(
                       title: Strings.downPayment,
                       value:
-                      "${Strings.rupee}${widget.processingFeeData?.pgOrderRequest?.amount?.toString().formatData() ?? ""}"),
+                          "${Strings.rupee}${widget.processingFeeData?.pgOrderRequest?.amount?.toString().formatData() ?? ""}"),
                   _columnItem(
                     title: Strings.emi,
                     value:
-                    "${Strings.rupee}${widget.processingFeeData?.emiAmt?.toString().formatData() ?? ""}${Strings.multiply}${widget.processingFeeData?.tenure}",
+                        "${Strings.rupee}${widget.processingFeeData?.emiAmt?.toString().formatData() ?? ""}${Strings.multiply}${widget.processingFeeData?.tenure}",
                   ),
                   _columnItem(
                       title: Strings.total,
                       value:
-                      "${Strings.rupee}${widget.processingFeeData?.totalPayable?.toString().formatData() ?? ""}"),
+                          "${Strings.rupee}${widget.processingFeeData?.totalPayable?.toString().formatData() ?? ""}"),
                 ],
               ),
             ],
@@ -326,18 +329,17 @@ class _DownPaymentViewState extends State<DownPaymentView> {
               _rowItem(
                 title: Strings.today.capitalize(),
                 amount: widget.processingFeeData?.pgOrderRequest?.amount
-                    ?.toString()
-                    .formatData() ??
+                        ?.toString()
+                        .formatData() ??
                     "",
                 subtitle: Strings.downPayment,
               ),
               12.h,
               _rowItem(
                 title: "Month 1-${widget.processingFeeData?.tenure ?? ""}",
-                amount: widget.processingFeeData?.emiAmt
-                    ?.toString()
-                    .formatData() ??
-                    "",
+                amount:
+                    widget.processingFeeData?.emiAmt?.toString().formatData() ??
+                        "",
                 subtitle: Strings.emiMonthly,
               ),
               const Divider(
@@ -347,8 +349,8 @@ class _DownPaymentViewState extends State<DownPaymentView> {
               _rowItem(
                 title: Strings.totalPayable,
                 amount: widget.processingFeeData?.totalPayable
-                    ?.toString()
-                    .formatData() ??
+                        ?.toString()
+                        .formatData() ??
                     "",
                 showDot: false,
               ),

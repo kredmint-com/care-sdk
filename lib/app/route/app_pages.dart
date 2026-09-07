@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/bank_detail/presentation/bloc/bank_detail_bloc.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/bank_detail/presentation/views/bank_detail_view.dart';
+import 'package:loan_sdk_package/app/modules/credit_onboarding/ckyc/presentation/views/ckyc_view.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/down_payment/presentation/bloc/down_payment_bloc.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/down_payment/presentation/views/down_payment_view.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/emi/presentation/bloc/emi_bloc.dart';
@@ -14,6 +15,7 @@ import '../../injection_container.dart';
 import '../../service/navigation_service.dart';
 import '../modules/credit_onboarding/bank_statement/presentation/bloc/bank_statement_bloc.dart';
 import '../modules/credit_onboarding/bank_statement/presentation/views/bank_statement_view.dart';
+import '../modules/credit_onboarding/ckyc/presentation/bloc/ckyc_bloc.dart';
 import '../modules/credit_onboarding/gst/presentation/bloc/gst_bloc.dart';
 import '../modules/credit_onboarding/gst/presentation/views/gst_view.dart';
 import '../modules/credit_onboarding/kyc/presentation/bloc/kyc_bloc.dart';
@@ -50,6 +52,7 @@ class AppPages {
                 profileId: args["profileId"],
                 prevPageId: args["prevPageId"],
                 accessToken: args["accessToken"],
+                  manualKycInitiated : args["manualKycInitiated"],
               ),
             ),
           );
@@ -248,6 +251,7 @@ class AppPages {
                 pageId: args["pageId"],
                 page: args["page"],
                 allowSkip: args["allowSkip"],
+                staticPageRes: args["staticPageRes"],
               ),
             ),
           );
@@ -298,7 +302,7 @@ class AppPages {
                 prevPageId: args?["prevPageId"],
                 paymentDetails: args?["paymentDetails"],
                 isFinalStep: args?["isFinalStep"] ?? true,
-                staticPageRes : args?["staticPageRes"],
+                staticPageRes: args?["staticPageRes"],
               ),
             ),
           );
@@ -335,6 +339,29 @@ class AppPages {
                 pageCategory: args["pageCategory"],
                 pageId: args["pageId"],
                 processingFeeData: args["processingFeeData"],
+              ),
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        name: Routes.cKyc,
+        path: Routes.cKyc,
+        pageBuilder: (_, state) {
+          final args = state.extra as Map<String, dynamic>;
+          return MaterialPage(
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider.value(value: getIt<CreditOnboardingBloc>()),
+                BlocProvider(create: (context) => getIt<CKycBloc>()),
+              ],
+              child: CKycView(
+                profileId: args["profileId"],
+                prevPageId: args["prevPageId"],
+                page: args["page"],
+                pageCategory: args["pageCategory"],
+                pageId: args["pageId"],
+                staticPageRes: args["staticPageRes"],
               ),
             ),
           );

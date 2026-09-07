@@ -490,8 +490,8 @@ class Styles {
         fontFamily: fontFamily,
       );
 
-  static tsBlack3BMedium14({String? fontFamily}) => TextStyle(
-        color: AppColors.black3B,
+  static tsBlack3BMedium14({String? fontFamily, Color? color}) => TextStyle(
+        color:  color ?? AppColors.black3B,
         fontWeight: FontWeight.w500,
         fontSize: 14.0,
         fontFamily: fontFamily,
@@ -1471,21 +1471,21 @@ class Styles {
       );
 
   static tsBlue12Medium14({String? fontFamily}) => TextStyle(
-    color: AppColors.blue12,
+    color: AppColors.headingColor,
     fontWeight: FontWeight.w500,
     fontSize: 14.0,
     fontFamily: fontFamily,
   );
 
     static tsBlue12Medium16({String? fontFamily}) => TextStyle(
-    color: AppColors.blue12,
+    color: AppColors.headingColor,
     fontWeight: FontWeight.w500,
     fontSize: 16.0,
     fontFamily: fontFamily,
   );
 
   static tsBlue12Regular10({String? fontFamily}) => TextStyle(
-    color: AppColors.blue12,
+    color: AppColors.headingColor,
     fontSize: 10,
     fontWeight: FontWeight.w400,
     fontFamily: fontFamily,
