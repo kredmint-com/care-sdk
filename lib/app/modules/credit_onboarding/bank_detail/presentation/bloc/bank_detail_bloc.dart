@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/bank_detail/presentation/bloc/bank_detail_event.dart';
 import 'package:loan_sdk_package/utils/loading/loading_utils.dart';
+
 import '../../../domain/credit_onboarding_repository.dart';
 import 'bank_detail_state.dart';
 
@@ -20,6 +21,7 @@ class BankDetailBloc extends Bloc<BankDetailEvent, BankDetailState> {
       _onResetUserProfileStageMapCompleted,
     );
     on<OnUpdateSubmitStatus>(_onUpdateSubmitStatus);
+    on<OnResetUserFullName>(_onResetUserFullName);
   }
 
   void _onResetBankVerified(
@@ -35,7 +37,6 @@ class BankDetailBloc extends Bloc<BankDetailEvent, BankDetailState> {
   ) async {
     LoadingUtils.showLoader();
     final response = await repository.validateBank(
-      name: event.fullName,
       bankAccount: event.accountNumber,
       ifsc: event.ifscCode,
     );
@@ -44,11 +45,14 @@ class BankDetailBloc extends Bloc<BankDetailEvent, BankDetailState> {
       if (response.data?.payload?.message?.isNotEmpty ?? false) {
         Fluttertoast.showToast(msg: response.data?.payload?.message ?? "");
       }
-      emit(
-        state.copyWith(
-          bankVerified: (response.data?.payload?.accountStatus == "VALID"),
-        ),
-      );
+      if (response.data?.payload?.accountStatus == "VALID") {
+        emit(
+          state.copyWith(
+            bankVerified: true,
+            userFullName: response.data?.payload?.nameAtBank ?? "",
+          ),
+        );
+      }
     }
   }
 
@@ -134,5 +138,16 @@ class BankDetailBloc extends Bloc<BankDetailEvent, BankDetailState> {
     Emitter<BankDetailState> emit,
   ) async {
     emit(state.copyWith(submitClicked: true));
+  }
+
+  void _onResetUserFullName(
+    OnResetUserFullName event,
+    Emitter<BankDetailState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        userFullName: "",
+      ),
+    );
   }
 }

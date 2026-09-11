@@ -275,13 +275,12 @@ class CreditOnboardingRepositoryImpl extends CreditOnboardingRepository {
 
   @override
   Future<RepoResponse<ValidateBankResponse>> validateBank({
-    required String name,
     required String bankAccount,
     required String ifsc,
   }) async {
     final response = await networkRequester.get(
       path: Urls.validateBank(baseUrlType: BaseUrlType.master.name),
-      query: {"name": name, "bankAccount": bankAccount, "ifsc": ifsc},
+      query: {"bankAccount": bankAccount, "ifsc": ifsc},
     );
     return response is APIException
         ? RepoResponse(error: response)

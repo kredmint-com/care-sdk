@@ -55,3 +55,5 @@ class OnSubmitBankDetail extends BankDetailEvent {
 class OnResetUserProfileStageMapCompleted extends BankDetailEvent {}
 
 class OnUpdateSubmitStatus extends BankDetailEvent {}
+
+class OnResetUserFullName extends BankDetailEvent {}

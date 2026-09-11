@@ -88,7 +88,6 @@ abstract class CreditOnboardingRepository {
   });
 
   Future<RepoResponse<ValidateBankResponse>> validateBank({
-    required String name,
     required String bankAccount,
     required String ifsc,
   });

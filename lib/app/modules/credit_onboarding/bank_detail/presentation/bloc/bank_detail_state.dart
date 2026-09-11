@@ -8,6 +8,7 @@ class BankDetailState {
   final Map<String, dynamic>? userProfileStageMap;
   final bool? userProfileStageMapCompleted;
   final bool? submitClicked;
+  final String? userFullName;
 
   BankDetailState({
     this.bankVerified,
@@ -17,6 +18,7 @@ class BankDetailState {
     this.userProfileStageMap,
     this.userProfileStageMapCompleted,
     this.submitClicked,
+    this.userFullName,
   });
 
   BankDetailState copyWith({
@@ -27,6 +29,7 @@ class BankDetailState {
     Map<String, dynamic>? userProfileStageMap,
     bool? userProfileStageMapCompleted,
     bool? submitClicked,
+    String? userFullName,
   }) {
     return BankDetailState(
       bankVerified: bankVerified ?? this.bankVerified,
@@ -39,6 +42,7 @@ class BankDetailState {
       userProfileStageMapCompleted:
           userProfileStageMapCompleted ?? this.userProfileStageMapCompleted,
       submitClicked: submitClicked ?? this.submitClicked,
+      userFullName: userFullName ?? this.userFullName,
     );
   }
 }

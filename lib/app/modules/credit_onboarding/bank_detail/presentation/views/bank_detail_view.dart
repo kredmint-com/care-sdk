@@ -175,7 +175,7 @@ class _PromoterViewState extends State<BankDetailView> {
                   accountNumber: accountController.text.trim(),
                   ifsc: ifscController.text.trim(),
                   bankName: bankNameController.text.trim(),
-                  accountHolderName: fullNameController.text.trim(),
+                  accountHolderName: state.userFullName?.trim() ?? "",
                 ),
               );
 
@@ -220,6 +220,22 @@ class _PromoterViewState extends State<BankDetailView> {
               );
             },
           ),
+
+          BlocListener<BankDetailBloc, BankDetailState>(
+            listener: (context, state) {
+              if(state.userFullName?.isNotEmpty ?? false) {
+                fullNameController.text = state.userFullName ?? "";
+
+                if (state.submitClicked == true) {
+                  _formKey.currentState?.validate();
+                }
+
+                context.read<BankDetailBloc>().add(OnResetUserFullName());
+              }
+            },
+          ),
+
+
         ],
         child: BlocBuilder<BankDetailBloc, BankDetailState>(
           builder: (context, state) {
