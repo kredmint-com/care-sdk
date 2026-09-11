@@ -13,6 +13,7 @@ import 'package:loan_sdk_package/utils/helper/string_extension.dart';
 
 import '../../../../../../loan_sdk_package.dart';
 import '../../../../../../widgets/custom_button.dart';
+import '../../../../../../widgets/stepper_widget.dart';
 import '../../../../../data/values/strings.dart';
 import '../../../../../route/app_pages.dart';
 import '../../../credit_common_method.dart';
@@ -162,6 +163,11 @@ class _EmiViewState extends State<EmiView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  StepperWidget(
+                    currentStep: 2,
+                    totalSteps: 8,
+                  ),
+                  20.h,
                   HeaderWidget(
                     heading: widget.page?.heading?.title ?? "",
                     subHeading: widget.page?.heading?.subTitle ?? "",

@@ -143,6 +143,7 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
         },
         inputFormatters: getInputFormatters(field: widget.field),
         onChanged: (val) {
+          debugPrint("On chnage called");
           if (debounce?.isActive ?? false) debounce?.cancel();
 
           debounce = Timer(const Duration(milliseconds: 500), () {
@@ -156,14 +157,14 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
             //     OnFetchAddressDetail(pincode: val),
             //   );
             // }
-            // if (widget.field?.name == "pan") {
-            //   if (val.length == 10) {
-            //     FocusManager.instance.primaryFocus?.unfocus();
-            //     context.read<CreditOnboardingBloc>().add(
-            //           OnSyncPan(panNumber: val, fieldIndex: widget.index),
-            //         );
-            //   }
-            // }
+            if (widget.field?.name == "pan") {
+              if (val.length == 10) {
+                FocusManager.instance.primaryFocus?.unfocus();
+                context.read<CreditOnboardingBloc>().add(
+                      OnSyncPan(panNumber: val, fieldIndex: widget.index),
+                    );
+              }
+            }
           });
           Fields? data = widget.field?.copyWith(
             value: (widget.field?.type == KeyboardType.number.name)

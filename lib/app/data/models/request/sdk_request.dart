@@ -11,6 +11,7 @@ class SdkRequest {
   String? program;
   String? requestId;
   String? puId;
+  String? policyNo;
   String? anchorId;
   String? channel;
   String? version;
@@ -26,6 +27,7 @@ class SdkRequest {
     this.program,
     this.requestId,
     this.puId,
+    this.policyNo,
     this.anchorId,
     this.channel,
     this.version,
@@ -36,12 +38,14 @@ class SdkRequest {
     this.theme,
   });
 
-  factory SdkRequest.fromJson(Map<String, dynamic> json) => SdkRequest(
+  factory SdkRequest.fromJson(Map<String, dynamic> json) =>
+      SdkRequest(
         username: json["username"],
         source: json["source"],
         program: json["program"],
         requestId: json["requestId"],
         puId: json["puId"],
+        policyNo: json["policyNo"],
         anchorId: json["anchorId"],
         channel: json["channel"],
         version: json["version"],
@@ -56,12 +60,14 @@ class SdkRequest {
         theme: json["theme"] == null ? null : Theme.fromJson(json["theme"]),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "username": username,
         "source": source,
         "program": program,
         "requestId": requestId,
         "puId": puId,
+        "policyNo": policyNo,
         "anchorId": anchorId,
         "channel": channel,
         "version": version,
@@ -86,14 +92,16 @@ class ClientMeta {
     this.premium,
   });
 
-  factory ClientMeta.fromJson(Map<String, dynamic> json) => ClientMeta(
+  factory ClientMeta.fromJson(Map<String, dynamic> json) =>
+      ClientMeta(
         productNo: json["productNo"],
         productName: json["productName"],
         sumInsured: json["sumInsured"],
         premium: json["premium"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "productNo": productNo,
         "productName": productName,
         "sumInsured": sumInsured,
@@ -118,23 +126,32 @@ class UserContext {
     this.address,
   });
 
-  factory UserContext.fromJson(Map<String, dynamic> json) => UserContext(
+  factory UserContext.fromJson(Map<String, dynamic> json) =>
+      UserContext(
         pancard: json["pancard"],
         fullName: json["fullName"],
         gender: json["gender"],
         email: json["email"],
-        dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
+        dob: json["dob"] == null || (json["dob"]
+            ?.toString()
+            .isEmpty ?? true)
+            ? null
+            : DateTime.parse(json["dob"]),
         address:
-            json["address"] == null ? null : Address.fromJson(json["address"]),
+        json["address"] == null ? null : Address.fromJson(json["address"]),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "pancard": pancard,
         "fullName": fullName,
         "gender": gender,
         "email": email,
-        "dob":
-            "${dob!.year.toString().padLeft(4, '0')}-${dob!.month.toString().padLeft(2, '0')}-${dob!.day.toString().padLeft(2, '0')}",
+        "dob": (dob == null) || (dob.toString().isEmpty) ? null :
+        "${dob!.year.toString().padLeft(4, '0')}-${dob!
+            .month
+            .toString()
+            .padLeft(2, '0')}-${dob!.day.toString().padLeft(2, '0')}",
         "address": address?.toJson(),
       };
 }
@@ -154,7 +171,8 @@ class Address {
     this.pincode,
   });
 
-  factory Address.fromJson(Map<String, dynamic> json) => Address(
+  factory Address.fromJson(Map<String, dynamic> json) =>
+      Address(
         addressLine1: json["addressLine1"],
         addressLine2: json["addressLine2"],
         city: json["city"],
@@ -162,7 +180,8 @@ class Address {
         pincode: json["pincode"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "addressLine1": addressLine1,
         "addressLine2": addressLine2,
         "city": city,

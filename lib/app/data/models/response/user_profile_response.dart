@@ -54,6 +54,7 @@ class Payload {
   String? userId;
   String? accId;
   String? puId;
+  String? proposalId;
 
   Payload({
     this.show,
@@ -69,6 +70,7 @@ class Payload {
     this.userId,
     this.accId,
     this.puId,
+    this.proposalId,
   });
 
   factory Payload.fromJson(Map<String, dynamic> json) => Payload(
@@ -85,6 +87,7 @@ class Payload {
         userId: json["userId"],
         accId: json["accId"],
         puId: json["puId"],
+        proposalId: json["proposalId"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -101,6 +104,7 @@ class Payload {
         "userId": userId,
         "accId": accId,
         "puId": puId,
+        'proposalId': proposalId,
       };
 }
 

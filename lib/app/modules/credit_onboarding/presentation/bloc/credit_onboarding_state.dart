@@ -10,7 +10,8 @@ class CreditOnboardingState {
   final bool? stepFound;
   final bool? fieldAutoPopulated;
   final List<Document>? documentList;
-  final bool? isPanValid;
+  final bool? isNameValid;
+  final bool? isDobValid;
   final bool? navigate;
   final bool? nameMatched;
   final bool? dobMatched;
@@ -18,11 +19,7 @@ class CreditOnboardingState {
   final bool? panValidationApiLimitReached;
   final Map<String, dynamic>? formDataMap;
   final String? validationMessage;
-
-  // final bool? businessPanFetched;
-  // final bool? businessNameFetched;
-  // final bool? businessTypeFetched;
-  // final bool? dateOfIncorporationFetched;
+  final String? refId;
 
   CreditOnboardingState({
     this.onboardingStepsResponse,
@@ -33,7 +30,8 @@ class CreditOnboardingState {
     this.stepFound,
     this.fieldAutoPopulated,
     this.documentList,
-    this.isPanValid,
+    this.isNameValid,
+    this.isDobValid,
     this.navigate,
     this.nameMatched,
     this.dobMatched,
@@ -41,10 +39,7 @@ class CreditOnboardingState {
     this.panValidationApiLimitReached,
     this.formDataMap,
     this.validationMessage,
-    // this.businessNameFetched,
-    // this.businessPanFetched,
-    // this.businessTypeFetched,
-    // this.dateOfIncorporationFetched,
+    this.refId,
   });
 
   CreditOnboardingState copyWith({
@@ -56,7 +51,8 @@ class CreditOnboardingState {
     bool? stepFound,
     bool? fieldAutoPopulated,
     List<Document>? documentList,
-    bool? isPanValid,
+    bool? isNameValid,
+    bool? isDobValid,
     bool? navigate,
     bool? nameMatched,
     bool? dobMatched,
@@ -64,10 +60,7 @@ class CreditOnboardingState {
     bool? panValidationApiLimitReached,
     Map<String, dynamic>? formDataMap,
     String? validationMessage,
-    // bool? businessPanFetched,
-    // bool? businessNameFetched,
-    // bool? businessTypeFetched,
-    // bool? dateOfIncorporationFetched,
+    String? refId,
   }) {
     return CreditOnboardingState(
       onboardingStepsResponse:
@@ -80,7 +73,8 @@ class CreditOnboardingState {
       stepFound: stepFound ?? this.stepFound,
       fieldAutoPopulated: fieldAutoPopulated ?? this.fieldAutoPopulated,
       documentList: documentList ?? this.documentList,
-      isPanValid: isPanValid ?? this.isPanValid,
+      isNameValid: isNameValid ?? this.isNameValid,
+      isDobValid: isDobValid ?? this.isDobValid,
       navigate: navigate ?? this.navigate,
       nameMatched: nameMatched ?? this.nameMatched,
       dobMatched: dobMatched ?? this.dobMatched,
@@ -89,11 +83,7 @@ class CreditOnboardingState {
           panValidationApiLimitReached ?? this.panValidationApiLimitReached,
       formDataMap: formDataMap ?? this.formDataMap,
       validationMessage: validationMessage ?? this.validationMessage,
-      // businessPanFetched: businessPanFetched ?? this.businessPanFetched,
-      // businessNameFetched: businessNameFetched ?? this.businessNameFetched,
-      // businessTypeFetched: businessTypeFetched ?? this.businessTypeFetched,
-      // dateOfIncorporationFetched:
-      //     dateOfIncorporationFetched ?? this.dateOfIncorporationFetched,
+      refId: refId ?? this.refId,
     );
   }
 }

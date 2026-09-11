@@ -354,6 +354,13 @@ class Styles {
         fontFamily: fontFamily,
       );
 
+  static tsPrimaryBold24({String? fontFamily}) => TextStyle(
+    color: AppColors.primaryColor(),
+    fontWeight: FontWeight.w700,
+    fontSize: 24.0,
+    fontFamily: fontFamily,
+  );
+
   static tsWhiteOpacity50Regular14({String? fontFamily}) => TextStyle(
         color: AppColors.whiteOpacity50,
         fontWeight: FontWeight.w400,

@@ -37,12 +37,12 @@ class OnValidateGst extends CreditOnboardingEvent {
 //   OnFetchAddressDetail({required this.pincode});
 // }
 
-// class OnSyncPan extends CreditOnboardingEvent {
-//   final String panNumber;
-//   final int fieldIndex;
-//
-//   OnSyncPan({required this.panNumber, required this.fieldIndex});
-// }
+class OnSyncPan extends CreditOnboardingEvent {
+  final String panNumber;
+  final int fieldIndex;
+
+  OnSyncPan({required this.panNumber, required this.fieldIndex});
+}
 
 class OnReset extends CreditOnboardingEvent {}
 
@@ -100,3 +100,13 @@ class OnSetFormDataMap extends CreditOnboardingEvent {
 }
 
 class OnResetPanValidation extends CreditOnboardingEvent {}
+
+class OnResetIsNameValid extends CreditOnboardingEvent {}
+
+class OnResetIsDobValid extends CreditOnboardingEvent {}
+
+class OnSetRefId extends  CreditOnboardingEvent {
+  final String refId;
+
+  OnSetRefId({required this.refId});
+}

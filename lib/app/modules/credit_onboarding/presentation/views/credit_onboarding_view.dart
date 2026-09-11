@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:loan_sdk_package/app/data/values/strings.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/presentation/views/widgets/credit_onboarding_widgets.dart';
+import 'package:loan_sdk_package/app/modules/credit_onboarding/presentation/views/widgets/detail_mismatch_bottomsheet.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/presentation/views/widgets/header_widget.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/presentation/views/widgets/onboarding_app_bar.dart';
 import 'package:loan_sdk_package/app/themes/app_colors.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
+import 'package:loan_sdk_package/widgets/stepper_widget.dart';
 
+import '../../../../../injection_container.dart';
 import '../../../../../loan_sdk_package.dart';
 import '../../../../../utils/helper/enums.dart';
 import '../../../../../utils/storage/storage_utils.dart';
 import '../../../../../widgets/custom_button.dart';
+import '../../../../data/models/dto/sdk_callback.dart';
 import '../../../../route/app_pages.dart';
 import '../../credit_common_method.dart';
 import '../../data/models/onboarding_steps_response.dart';
@@ -26,12 +31,14 @@ class CreditOnboardingView extends StatefulWidget {
     this.prevPageId,
     this.accessToken,
     this.manualKycInitiated = false,
+    this.refId,
   });
 
   final String profileId;
   final String? prevPageId;
   final String? accessToken;
   final bool? manualKycInitiated;
+  final String? refId;
 
   @override
   State<CreditOnboardingView> createState() => _CreditOnboardingViewState();
@@ -62,17 +69,22 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
         Storage.getSdkUser()?.copyWith(accessToken: widget.accessToken),
       );
     }
-    debugPrint("Entered init : ${Storage.getSdkUser()?.id}");
     context.read<CreditOnboardingBloc>().add(
           OnFetchUserProfilePage(
             profileId: widget.profileId,
             pageId: widget.prevPageId,
           ),
         );
+    if (widget.refId?.isNotEmpty ?? false) {
+      context.read<CreditOnboardingBloc>().add(
+            OnSetRefId(
+              refId: widget.refId ?? "",
+            ),
+          );
+    }
   }
 
   void scrollToFirstInvalidField({required List<Fields?> fieldsList}) {
-    debugPrint("Entered scrollToFirstInvalidField");
     final fieldKeys = fieldsList.map((field) => field?.fieldKey).toList();
 
     for (final key in fieldKeys) {
@@ -107,6 +119,95 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
           : "",
       profileId: widget.profileId,
     );
+  }
+
+  void onSubmitButtonTap({
+    required CreditOnboardingState state,
+    bool forceProceed = false,
+  }) {
+    context.read<CreditOnboardingBloc>().add(
+          OnUpdateSubmitStatus(),
+        );
+    bool isFormValid = formKey.currentState!.validate();
+    if (isFormValid) {
+      FocusManager.instance.primaryFocus?.unfocus();
+
+      Map<String, dynamic> fieldData = {};
+      Map<String, dynamic> dataMap = {};
+      Map<String, dynamic> addressBody = {};
+      String addressFieldId = "";
+      for (int i = 0; i < (state.fieldsList?.length ?? 0); i++) {
+        Fields? field = state.fieldsList?[i];
+
+        if (field?.type == InputType.address.name ||
+            (field?.subType == "pincode")) {
+          addressFieldId = field?.fieldId ?? "";
+          addressBody[field?.subType ?? ""] = field?.value;
+          debugPrint(
+            "Address body data : ${field?.subType ?? ""}...${field?.value}",
+          );
+        }
+        if (field?.type == InputType.file.name) {
+          bool documentError = ((state.fieldsList?[i]?.mandatory ?? false) &&
+              (state.documentList?.isEmpty ?? true));
+          if (documentError) {
+            isFormValid = !documentError;
+            Fluttertoast.showToast(
+              msg: "${field?.name ?? ""} is required",
+            );
+          }
+
+          fieldData[field?.fieldId ?? ""] =
+              state.documentList?.map((doc) => doc.toJson()).toList();
+        }
+        if (field?.type == InputType.checkbox.name) {
+          bool error = ((state.fieldsList?[i]?.mandatory ?? false) &&
+              !(field?.value ?? false));
+          if (error) {
+            isFormValid = !error;
+            Fluttertoast.showToast(
+              msg: "${field?.name ?? ""} is required",
+            );
+          }
+
+          fieldData[field?.fieldId ?? ""] = field?.value;
+        } else {
+          if (forceProceed && field?.name == "forceproceed") {
+            fieldData[field?.fieldId ?? ""] = true;
+          } else {
+            fieldData[field?.fieldId ?? ""] = field?.value;
+          }
+        }
+      }
+
+      if (addressFieldId.isNotEmpty) {
+        fieldData[addressFieldId] = addressBody;
+      }
+
+      dataMap["data"] = fieldData;
+
+      dataMap["pageId"] = state.onboardingStepsResponse?.payload?.pageId ?? "";
+
+      dataMap["pageCategory"] =
+          state.onboardingStepsResponse?.payload?.pageCategory ?? "";
+      if (isFormValid) {
+        context.read<CreditOnboardingBloc>().add(
+              OnSetFormDataMap(
+                formDataMap: dataMap,
+              ),
+            );
+        context.read<CreditOnboardingBloc>().add(
+              OnUpdateUserProfileStage(
+                data: dataMap,
+                profileId: widget.profileId,
+              ),
+            );
+      }
+    } else {
+      scrollToFirstInvalidField(
+        fieldsList: state.fieldsList ?? [],
+      );
+    }
   }
 
   @override
@@ -144,135 +245,11 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                         ),
                         child: CustomButton(
                           onTap: () {
-                            context.read<CreditOnboardingBloc>().add(
-                                  OnUpdateSubmitStatus(),
-                                );
-                            bool isFormValid = formKey.currentState!.validate();
-                            if (!(state.isPanValid ?? true)) {
-                              Fluttertoast.showToast(
-                                  msg: ErrorMessages.invalidPan);
-                              return;
-                            }
-                            if (isFormValid) {
-                              FocusManager.instance.primaryFocus?.unfocus();
-
-                              Map<String, dynamic> fieldData = {};
-                              Map<String, dynamic> dataMap = {};
-                              Map<String, dynamic> addressBody = {};
-                              String panNumber = "";
-                              String dob = "";
-                              String fullName = "";
-                              String addressFieldId = "";
-                              for (int i = 0;
-                                  i < (state.fieldsList?.length ?? 0);
-                                  i++) {
-                                Fields? field = state.fieldsList?[i];
-
-                                if (field?.name == "pan") {
-                                  panNumber = field?.value;
-                                }
-                                if (field?.name == "name") {
-                                  fullName = field?.value;
-                                }
-                                if (field?.name == "date") {
-                                  dob = field?.value;
-                                }
-
-                                if (field?.type == InputType.address.name ||
-                                    (field?.subType == "pincode")) {
-                                  addressFieldId = field?.fieldId ?? "";
-                                  addressBody[field?.subType ?? ""] =
-                                      field?.value;
-                                  debugPrint(
-                                    "Address body data : ${field?.subType ?? ""}...${field?.value}",
-                                  );
-                                }
-                                if (field?.type == InputType.file.name) {
-                                  bool documentError = ((state
-                                              .fieldsList?[i]?.mandatory ??
-                                          false) &&
-                                      (state.documentList?.isEmpty ?? true));
-                                  if (documentError) {
-                                    isFormValid = !documentError;
-                                    Fluttertoast.showToast(
-                                      msg: "${field?.name ?? ""} is required",
-                                    );
-                                  }
-
-                                  fieldData[field?.fieldId ?? ""] = state
-                                      .documentList
-                                      ?.map((doc) => doc.toJson())
-                                      .toList();
-                                }
-                                if (field?.type == InputType.checkbox.name) {
-                                  bool error =
-                                      ((state.fieldsList?[i]?.mandatory ??
-                                              false) &&
-                                          !(field?.value ?? false));
-                                  if (error) {
-                                    isFormValid = !error;
-                                    Fluttertoast.showToast(
-                                      msg: "${field?.name ?? ""} is required",
-                                    );
-                                  }
-
-                                  fieldData[field?.fieldId ?? ""] =
-                                      field?.value;
-                                } else {
-                                  fieldData[field?.fieldId ?? ""] =
-                                      field?.value;
-                                }
-                              }
-
-                              if (addressFieldId.isNotEmpty) {
-                                fieldData[addressFieldId] = addressBody;
-                              }
-
-                              dataMap["data"] = fieldData;
-
-                              dataMap["pageId"] = state.onboardingStepsResponse
-                                      ?.payload?.pageId ??
-                                  "";
-
-                              dataMap["pageCategory"] = state
-                                      .onboardingStepsResponse
-                                      ?.payload
-                                      ?.pageCategory ??
-                                  "";
-                              if (isFormValid) {
-                                context.read<CreditOnboardingBloc>().add(
-                                      OnSetFormDataMap(
-                                        formDataMap: dataMap,
-                                      ),
-                                    );
-                                // if (panNumber.isNotEmpty &&
-                                //     fullName.isNotEmpty &&
-                                //     dob.isNotEmpty) {
-                                //   debugPrint("Dob value : $dob");
-                                //   context.read<CreditOnboardingBloc>().add(
-                                //         OnValidatePan(
-                                //           panNumber: panNumber,
-                                //           name: fullName,
-                                //           dob: DateTime.parse(dob).formatInDDMMYYYY(),
-                                //         ),
-                                //       );
-                                // } else {
-                                context.read<CreditOnboardingBloc>().add(
-                                      OnUpdateUserProfileStage(
-                                        data: dataMap,
-                                        profileId: widget.profileId,
-                                      ),
-                                    );
-                                //  }
-                              }
-                            } else {
-                              scrollToFirstInvalidField(
-                                fieldsList: state.fieldsList ?? [],
-                              );
-                            }
+                            onSubmitButtonTap(
+                              state: state,
+                            );
                           },
                           buttonText: Strings.proceed,
-                          // buttonColor: AppColors.blue24,
                         ),
                       );
                     },
@@ -303,41 +280,67 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                   }
                 },
               ),
-              // BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
-              //   listener: (context, state) async {
-              //     if (state.panValidated ?? false) {
-              //       context
-              //           .read<CreditOnboardingBloc>()
-              //           .add(OnResetPanValidation());
-              //       if (!(state.nameMatched ?? true) ||
-              //           !(state.dobMatched ?? true) &&
-              //               (state.validationMessage?.isNotEmpty ?? false)) {
-              //         Fluttertoast.showToast(
-              //           msg: state.validationMessage ?? "",
-              //         );
-              //         return;
-              //       }
-              //       // if (!(state.nameMatched ?? true)) {
-              //       //   Fluttertoast.showToast(
-              //       //     msg: ErrorMessages.fullNameNotMatchingPan,
-              //       //   );
-              //       //   return;
-              //       // }
-              //       // if (!(state.dobMatched ?? true)) {
-              //       //   Fluttertoast.showToast(
-              //       //     msg: ErrorMessages.dobNotMatchingPan,
-              //       //   );
-              //       //   return;
-              //       // }
-              //       context.read<CreditOnboardingBloc>().add(
-              //             OnUpdateUserProfileStage(
-              //               data: state.formDataMap,
-              //               profileId: widget.profileId,
-              //             ),
-              //           );
-              //     }
-              //   },
-              // ),
+              BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
+                listener: (context, state) async {
+                  if (state.isNameValid == false) {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      barrierColor: Colors.black.withValues(alpha: 0.35),
+                      builder: (context) {
+                        return DetailMismatchBottomsheet(
+                          onProceed: () {
+                            context.pop();
+                            onSubmitButtonTap(
+                              state: state,
+                              forceProceed: true,
+                            );
+                          },
+                          onCrossTap: () {
+                            context.pop();
+                          },
+                          mismatchText: Strings.nameMismatchDescription,
+                          changeDetailsText: Strings.detailMismatchQuestion,
+                          trustText: Strings.kycSecurityDescription,
+                        );
+                      },
+                    );
+                    context
+                        .read<CreditOnboardingBloc>()
+                        .add(OnResetIsNameValid());
+                  }
+                },
+              ),
+              BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
+                listener: (context, state) async {
+                  if (state.isDobValid == false) {
+                    showModalBottomSheet(
+                      context: context,
+                      isDismissible: false,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      barrierColor: Colors.black.withValues(alpha: 0.35),
+                      builder: (context) {
+                        return DetailMismatchBottomsheet(
+                          mismatchText: Strings.dobMismatchDescription,
+                          trustText: Strings.pleaseContactSupportTeamForDob,
+                          onCancelTap: () {
+                            getIt<SdkCallbacks>().onFailure?.call(
+                                  message: "DOB Mismatch",
+                                  status: "DOB Mismatch",
+                                );
+                            Navigator.of(context, rootNavigator: true).pop();
+                          },
+                        );
+                      },
+                    );
+                    context
+                        .read<CreditOnboardingBloc>()
+                        .add(OnResetIsDobValid());
+                  }
+                },
+              ),
               BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
                 listenWhen: (previous, current) =>
                     previous.navigate != current.navigate &&
@@ -583,59 +586,73 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                 },
               )
             ],
-            child: Form(
-              key: formKey,
-              child: BlocBuilder<CreditOnboardingBloc, CreditOnboardingState>(
-                builder: (context, state) {
-                  final List<Fields?> fieldsList = state.fieldsList ?? [];
-                  return SingleChildScrollView(
-                    controller: scrollController,
-                    padding: EdgeInsets.all(
-                      MediaQuery.of(context).padding.bottom + 16.0,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        HeaderWidget(
-                          heading: state.onboardingStepsResponse?.payload?.page
-                                  ?.heading?.title ??
-                              "",
-                          subHeading: state.onboardingStepsResponse?.payload
-                                  ?.page?.heading?.subTitle ??
-                              "",
-                          iconUrl: (state.onboardingStepsResponse?.payload?.page
-                                      ?.heading?.appLogo?.isNotEmpty ??
-                                  false)
-                              ? (state.onboardingStepsResponse?.payload?.page
-                                      ?.heading?.appLogo ??
-                                  "")
-                              : ((state.onboardingStepsResponse?.payload?.page
-                                      ?.heading?.pageLogo) ??
-                                  ""),
-                        ),
-                        12.h,
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: List<Widget>.generate(
-                            fieldsList.length,
-                            (index) {
-                              return CreditOnboardingWidget(
-                                field: fieldsList[index],
-                                formKey: formKey,
-                                submitClicked: (state.submitClicked ?? false),
-                                index: index,
-                                profileId: widget.profileId,
-                              );
-                            },
+            child: (state.formLoading ?? true) || (state.navigate ?? true)
+                ? const SizedBox.shrink()
+                : Form(
+                    key: formKey,
+                    child: BlocBuilder<CreditOnboardingBloc,
+                        CreditOnboardingState>(
+                      builder: (context, state) {
+                        final List<Fields?> fieldsList = state.fieldsList ?? [];
+                        return SingleChildScrollView(
+                          controller: scrollController,
+                          padding: EdgeInsets.all(
+                            MediaQuery.of(context).padding.bottom + 16.0,
                           ),
-                        ),
-                        80.h,
-                      ],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              StepperWidget(
+                                currentStep: 1,
+                                totalSteps: 8,
+                              ),
+                              20.h,
+                              HeaderWidget(
+                                heading: state.onboardingStepsResponse?.payload
+                                        ?.page?.heading?.title ??
+                                    "",
+                                subHeading: state.onboardingStepsResponse
+                                        ?.payload?.page?.heading?.subTitle ??
+                                    "",
+                                iconUrl: (state
+                                            .onboardingStepsResponse
+                                            ?.payload
+                                            ?.page
+                                            ?.heading
+                                            ?.appLogo
+                                            ?.isNotEmpty ??
+                                        false)
+                                    ? (state.onboardingStepsResponse?.payload
+                                            ?.page?.heading?.appLogo ??
+                                        "")
+                                    : ((state.onboardingStepsResponse?.payload
+                                            ?.page?.heading?.pageLogo) ??
+                                        ""),
+                              ),
+                              12.h,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: List<Widget>.generate(
+                                  fieldsList.length,
+                                  (index) {
+                                    return CreditOnboardingWidget(
+                                      field: fieldsList[index],
+                                      formKey: formKey,
+                                      submitClicked:
+                                          (state.submitClicked ?? false),
+                                      index: index,
+                                      profileId: widget.profileId,
+                                    );
+                                  },
+                                ),
+                              ),
+                              80.h,
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-            ),
+                  ),
           ),
         );
       },

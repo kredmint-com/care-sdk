@@ -20,7 +20,7 @@ class CreditOnboardingBloc
 
   CreditOnboardingBloc({required this.repository, required this.commonMethod})
       : super(CreditOnboardingState(
-          isPanValid: true,
+          isNameValid: true,
         )) {
     on<OnFetchUserProfilePage>(_onFetchUserProfilePage);
     on<OnUpdateSubmitStatus>(_onUpdateSubmitStatus);
@@ -33,18 +33,20 @@ class CreditOnboardingBloc
     on<OnDocumentDelete>(_onDocumentDelete);
     on<OnFilterFieldOptions>(_onFilterFieldOptions);
     on<OnResetFieldOptions>(_onResetFieldOptions);
-    // on<OnSyncPan>(_onSyncPan);
+    on<OnSyncPan>(_onSyncPan);
     on<OnResetNavigation>(_onResetNavigation);
     on<OnValidatePan>(_onValidatePan);
     on<OnSetFormDataMap>(_onSetFormDataMap);
     on<OnResetPanValidation>(_onResetPanValidation);
+    on<OnResetIsNameValid>(_onResetPanValid);
+    on<OnResetIsDobValid>(_onResetIsDobValid);
+    on<OnSetRefId>(_onSetRefId);
   }
 
   void _onFetchUserProfilePage(
     OnFetchUserProfilePage event,
     Emitter<CreditOnboardingState> emit,
   ) async {
-    // try {
     emit(state.copyWith(formLoading: true));
     LoadingUtils.showLoader();
     final response = await repository.getOnboardingSteps(
@@ -55,14 +57,32 @@ class CreditOnboardingBloc
     if (response.data != null) {
       List<Document>? documentList = [];
       List<Fields?>? fieldsList = response.data?.payload?.page?.fields;
+      String panNumber = "";
+      String name = "";
+      String dob = "";
+      String pincode = "";
+      int panFieldIndex = -1;
       for (int i = (fieldsList?.length ?? 0) - 1; i >= 0; i--) {
+        String fieldName = fieldsList?[i]?.name.toString().toLowerCase() ?? "";
+        String fieldValue = fieldsList?[i]?.value?.toString() ?? "";
+        if (fieldName == "name") {
+          name = fieldValue;
+        }
+        if (fieldName == "date") {
+          dob = fieldValue;
+        }
+        if (fieldName == "pincode") {
+          pincode = fieldValue;
+        }
+        if (fieldName == "pan") {
+          panNumber = fieldValue;
+          panFieldIndex = i;
+        }
         if (fieldsList?[i]?.type == InputType.address.name) {
           final baseField = fieldsList![i]!;
 
           fieldsList.removeAt(i);
-          debugPrint(
-            "Base data value : ${baseField.fieldId} ... ${baseField.type} .. ${baseField.value}",
-          );
+
           String addressLine1 = "";
           String addressLine2 = "";
           String addressLine3 = "";
@@ -152,13 +172,16 @@ class CreditOnboardingBloc
                 .toList();
           }
         }
-        // else if (fieldsList?[i]?.name == "pan") {
-        //   if (fieldsList?[i]?.value?.length == 10) {
-        //     add(
-        //       OnSyncPan(panNumber: fieldsList?[i]?.value, fieldIndex: i),
-        //     );
-        //   }
-        // }
+      }
+      if (name.isEmpty || dob.isEmpty || pincode.isEmpty) {
+        if (panNumber.length == 10) {
+          add(
+            OnSyncPan(
+              panNumber: panNumber,
+              fieldIndex: panFieldIndex,
+            ),
+          );
+        }
       }
       emit(
         state.copyWith(
@@ -171,19 +194,7 @@ class CreditOnboardingBloc
           navigate: true,
         ),
       );
-      // navigateUserToParticularStep(
-      //   profileId: event.profileId,
-      //   prevPageId: (response.data?.payload?.prePageEnable ?? false)
-      //       ? (response.data?.payload?.prvPageId ?? "")
-      //       : "",
-      //   onboardingStepsResponse: response.data,
-      // );
-
-      // emit(state.copyWith(stepFound: stepPresent));
     }
-    // } catch (e) {
-    //   debugPrint("Exception : __onFetchUserProfilePage $e");
-    // }
   }
 
   void _onUpdateSubmitStatus(
@@ -224,9 +235,7 @@ class CreditOnboardingBloc
     emit(state.copyWith(userProfileStageUpdated: false));
     LoadingUtils.showLoader();
     Map<String, dynamic>? dataMap = event.data;
-    // if(dataMap?["staticPageRes"] == null) {
-    //   dataMap?["staticPageRes"] = {};
-    // }
+    dataMap?["refId"] = state.refId;
     final response = await repository.updateUserProfileStage(
       profileId: event.profileId,
       data: dataMap,
@@ -234,9 +243,24 @@ class CreditOnboardingBloc
     LoadingUtils.hideLoader();
     if (response.data != null) {
       if (response.data?.payload?.errorMsg?.isNotEmpty ?? false) {
-        Fluttertoast.showToast(
-          msg: response.data?.payload?.errorMsg ?? "",
-        );
+        String errorMsg = response.data?.payload?.errorMsg ?? "";
+        if (errorMsg.toLowerCase().contains("name does not match pan records")) {
+          emit(
+            state.copyWith(
+              isNameValid: false,
+            ),
+          );
+        } else if (errorMsg.toLowerCase().contains("date of birth")) {
+          emit(
+            state.copyWith(
+              isDobValid: false,
+            ),
+          );
+        } else {
+          Fluttertoast.showToast(
+            msg: response.data?.payload?.errorMsg ?? "",
+          );
+        }
         return;
       }
       emit(state.copyWith(userProfileStageUpdated: true));
@@ -340,57 +364,58 @@ class CreditOnboardingBloc
   //   }
   // }
 
-  // void _onSyncPan(OnSyncPan event, Emitter<CreditOnboardingState> emit) async {
-  //   LoadingUtils.showLoader();
-  //   final response = await repository.syncPan(panNumber: event.panNumber);
-  //   LoadingUtils.hideLoader();
-  //   if (response.data != null) {
-  //     List<Fields?>? fieldsList = state.fieldsList;
-  //
-  //     if (response.data?.payload?.status == "INVALID") {
-  //       Fluttertoast.showToast(msg: response.data?.payload?.message ?? "");
-  //       emit(state.copyWith(isPanValid: false));
-  //       return;
-  //     }
-  //     for (int i = 0; i < (state.fieldsList?.length ?? 0); i++) {
-  //       if (state.fieldsList?[i]?.name == "name") {
-  //         Fields? field = state.fieldsList?[i]?.copyWith(
-  //           value: response.data?.payload?.registeredName ?? "",
-  //           textEditingController: TextEditingController(
-  //             text: response.data?.payload?.registeredName ?? "",
-  //           ),
-  //         );
-  //         fieldsList?[i] = field;
-  //       }
-  //       if (state.fieldsList?[i]?.name == "date") {
-  //         Fields? field = state.fieldsList?[i]?.copyWith(
-  //           value: response.data?.payload?.dateOfBirth ?? "",
-  //           textEditingController: TextEditingController(
-  //             text: response.data?.payload?.dateOfBirth ?? "",
-  //           ),
-  //         );
-  //         fieldsList?[i] = field;
-  //       }
-  //       if ((response.data?.payload?.address?.pincode != 0) &&
-  //           (state.fieldsList?[i]?.name == "pincode")) {
-  //         Fields? field = state.fieldsList?[i]?.copyWith(
-  //           value: response.data?.payload?.address?.pincode ?? "",
-  //           textEditingController: TextEditingController(
-  //             text: response.data?.payload?.address?.pincode?.toString() ?? "",
-  //           ),
-  //         );
-  //         fieldsList?[i] = field;
-  //       }
-  //     }
-  //     emit(
-  //       state.copyWith(
-  //         fieldsList: fieldsList,
-  //         fieldAutoPopulated: true,
-  //         isPanValid: true,
-  //       ),
-  //     );
-  //   }
-  // }
+  void _onSyncPan(OnSyncPan event, Emitter<CreditOnboardingState> emit) async {
+    LoadingUtils.showLoader();
+    final response = await repository.syncPan(panNumber: event.panNumber);
+    LoadingUtils.hideLoader();
+    if (response.data != null) {
+      List<Fields?>? fieldsList = state.fieldsList;
+
+      if (response.data?.payload?.status == "INVALID") {
+        return;
+      }
+      for (int i = 0; i < (state.fieldsList?.length ?? 0); i++) {
+        Fields? field = state.fieldsList?[i];
+        if (field?.name == "name" &&
+            (field?.value?.toString().isEmpty ?? true)) {
+          Fields? field = state.fieldsList?[i]?.copyWith(
+            value: response.data?.payload?.registeredName ?? "",
+            textEditingController: TextEditingController(
+              text: response.data?.payload?.registeredName ?? "",
+            ),
+          );
+          fieldsList?[i] = field;
+        }
+        if (state.fieldsList?[i]?.name == "date" &&
+            (field?.value?.toString().isEmpty ?? true)) {
+          Fields? field = state.fieldsList?[i]?.copyWith(
+            value: response.data?.payload?.dateOfBirth ?? "",
+            textEditingController: TextEditingController(
+              text: response.data?.payload?.dateOfBirth ?? "",
+            ),
+          );
+          fieldsList?[i] = field;
+        }
+        if ((response.data?.payload?.address?.pincode != 0) &&
+            (state.fieldsList?[i]?.name == "pincode") &&
+            (field?.value?.toString().isEmpty ?? true)) {
+          Fields? field = state.fieldsList?[i]?.copyWith(
+            value: response.data?.payload?.address?.pincode ?? "",
+            textEditingController: TextEditingController(
+              text: response.data?.payload?.address?.pincode?.toString() ?? "",
+            ),
+          );
+          fieldsList?[i] = field;
+        }
+      }
+      emit(
+        state.copyWith(
+          fieldsList: fieldsList,
+          fieldAutoPopulated: true,
+        ),
+      );
+    }
+  }
 
   void _onReset(OnReset event, Emitter<CreditOnboardingState> emit) async {
     emit(state.copyWith(userProfileStageUpdated: false, submitClicked: false));
@@ -542,5 +567,32 @@ class CreditOnboardingBloc
   void _onSetFormDataMap(
       OnSetFormDataMap event, Emitter<CreditOnboardingState> emit) {
     emit(state.copyWith(formDataMap: event.formDataMap));
+  }
+
+  void _onResetPanValid(
+      OnResetIsNameValid event, Emitter<CreditOnboardingState> emit) {
+    emit(
+      state.copyWith(
+        isNameValid: true,
+      ),
+    );
+  }
+
+  void _onResetIsDobValid(
+      OnResetIsDobValid event, Emitter<CreditOnboardingState> emit) {
+    emit(
+      state.copyWith(
+        isDobValid: true,
+      ),
+    );
+  }
+
+  void _onSetRefId(
+      OnSetRefId event, Emitter<CreditOnboardingState> emit) {
+    emit(
+      state.copyWith(
+        refId : event.refId,
+      ),
+    );
   }
 }

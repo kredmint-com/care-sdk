@@ -44,15 +44,16 @@ class AppPages {
         name: Routes.sdkCreditOnboarding,
         path: Routes.sdkCreditOnboarding,
         pageBuilder: (_, state) {
-          final args = state.extra as Map<String, dynamic>;
+          final args = state.extra as Map<String, dynamic>?;
           return MaterialPage(
             child: BlocProvider.value(
               value: getIt<CreditOnboardingBloc>(),
               child: CreditOnboardingView(
-                profileId: args["profileId"],
-                prevPageId: args["prevPageId"],
-                accessToken: args["accessToken"],
-                  manualKycInitiated : args["manualKycInitiated"],
+                profileId: args?["profileId"],
+                prevPageId: args?["prevPageId"],
+                accessToken: args?["accessToken"],
+                manualKycInitiated: args?["manualKycInitiated"],
+                refId: args?["refId"],
               ),
             ),
           );

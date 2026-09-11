@@ -10,6 +10,7 @@ import 'package:loan_sdk_package/app/themes/styles.dart';
 
 import '../../../../../../loan_sdk_package.dart';
 import '../../../../../../utils/helper/sizedbox_extension.dart';
+import '../../../../../../widgets/stepper_widget.dart';
 import '../../../../../route/app_pages.dart';
 import '../../../credit_common_method.dart';
 import '../../../presentation/bloc/credit_onboarding_bloc.dart';
@@ -263,6 +264,11 @@ class _CKycViewState extends State<CKycView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                StepperWidget(
+                  currentStep: 5,
+                  totalSteps: 8,
+                ),
+                20.h,
                 HeaderWidget(
                   heading: widget.page?.heading?.title ?? "",
                   subHeading: widget.page?.heading?.subTitle ?? "",

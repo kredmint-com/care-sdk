@@ -565,11 +565,31 @@ class Strings {
   static const weeks = "Weeks";
   static const emiMonthly = "Emi monthly";
   static const String perMonth = "/mo";
+
   static String redirectMessage({required String remainingSeconds}) =>
       "Redirecting automatically in $remainingSeconds seconds...";
   static const String justAMoment = "Just a moment…";
   static const String processingYourRequest =
       "We’re processing your request. This may take a few seconds.";
+  static const String verificationFailed = "We couldn't verify your details";
+
+  static const String nameMismatchDescription =
+      "The name provided in your application does not match the name on your PAN card";
+
+  static const String dobMismatchDescription =
+      "The Date of Birth provided in your application does not match the Date of Birth on your PAN card";
+
+  static const String pleaseContactSupportTeamForDob = "Please contact the Care Health Insurance Support Team to update your Date of Birth as per your PAN card before proceeding";
+
+  static const String detailMismatchQuestion =
+      "Are you sure you want to proceed with this name?";
+
+  static const String kycSecurityDescription =
+      "By proceeding, you confirm that both names belong to you and agree to continue. Your application may be rejected if it does not meet the applicable credit and approval criteria";
+
+  static const String changeDetails = "Change details";
+
+  static const String proceedAnyway = "Proceed anyway";
 }
 
 class ErrorMessages {

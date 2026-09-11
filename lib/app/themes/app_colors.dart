@@ -188,6 +188,10 @@ class AppColors {
   static Color grey200 = Colors.grey.shade200;
   static const Color greyE1 = Color(0xFFE1E7EF);
 
+  static const Color blue1F7 = Color(0xFFF1F7FE);
+  static const Color yellowFFF7 = Color(0xFFFFF7D8);
+  static const Color yellowE5 = Color(0xFFE5B600);
+
   static Color _buttonBgColor = AppColors.blue477;
   static Color _headingColor = AppColors.black3B;
   static Color _buttonTextColor = AppColors.white;

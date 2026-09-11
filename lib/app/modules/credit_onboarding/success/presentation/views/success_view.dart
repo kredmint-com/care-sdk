@@ -20,6 +20,7 @@ import 'package:lottie/lottie.dart';
 import '../../../../../../injection_container.dart';
 import '../../../../../../loan_sdk_package.dart';
 import '../../../../../../utils/helper/enums.dart';
+import '../../../../../../widgets/stepper_widget.dart';
 import '../../../../../data/models/dto/sdk_callback.dart';
 import '../../../../../data/values/animation.dart';
 import '../../../../../data/values/constants.dart';
@@ -30,6 +31,7 @@ import '../../../data/models/onboarding_steps_response.dart';
 import '../../../presentation/bloc/credit_onboarding_bloc.dart';
 import '../../../presentation/bloc/credit_onboarding_event.dart' as coe;
 import '../../../presentation/bloc/credit_onboarding_state.dart';
+import '../../../presentation/views/widgets/onboarding_app_bar.dart';
 
 class SuccessView extends StatefulWidget {
   const SuccessView({
@@ -158,6 +160,12 @@ class _SuccessViewState extends State<SuccessView> {
             ),
           ],
         ),
+        appBar: (widget.isFinalStep)
+            ? null
+            : CreditOnboardingAppBar(
+                title: "",
+                onBackPressed: handleBackPress,
+              ),
         body: _bodyWidget(),
       ),
     );
@@ -196,84 +204,109 @@ class _SuccessViewState extends State<SuccessView> {
           },
         ),
       ],
-      child: Stack(
-        children: [
-          Container(
-            height: screenHeight * 0.32,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF6FCF97), Color(0xFF56CC8A)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              margin: EdgeInsets.only(top: screenHeight * 0.22),
-              constraints: BoxConstraints(minHeight: screenHeight * 0.78),
-              decoration: const BoxDecoration(
-                color: Color(0xFFF4F5F7),
-                borderRadius: BorderRadius.vertical(top: Radius.circular(80)),
-              ),
-            ),
-          ),
-          Positioned(
-            top: screenHeight * 0.12,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Container(
-                height: circleSize,
-                width: circleSize,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 6),
-                  color: Colors.white,
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (!widget.isFinalStep) ...[
+              24.h,
+              Padding(
+                padding: EdgeInsetsGeometry.symmetric(
+                  horizontal: 16,
                 ),
-                child: Lottie.asset(
-                  Animations.review,
-                  package: Constants.packageName,
+                child: StepperWidget(
+                  currentStep: 4,
+                  totalSteps: 8,
                 ),
               ),
-            ),
-          ),
-          Positioned.fill(
-            top: screenHeight * 0.12 + circleSize + 30,
-            child: SingleChildScrollView(
-              child: Column(
+              20.h,
+            ],
+            Expanded(
+              child: Stack(
                 children: [
-                  Text(
-                    widget.paymentDetails?.title ?? Strings.congratulations,
-                    style: Styles.tsBlack3BBold26(),
-                    textAlign: TextAlign.center,
-                  ),
-                  12.h,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: Text(
-                      widget.paymentDetails?.subTitle ??
-                          Strings
-                              .yourLoanApplicationHasBeenApprovedSuccessfully,
-                      textAlign: TextAlign.center,
-                      style: Styles.tsBlack3BRegular16().copyWith(
-                        color: Colors.black54,
-                        height: 1.5,
+                  Container(
+                    height: screenHeight * 0.32,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Color(0xFF6FCF97), Color(0xFF56CC8A)],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
                       ),
                     ),
                   ),
-                  if (widget.paymentDetails != null) ...[
-                    24.h,
-                    _transactionDetailsCard(
-                        widget.paymentDetails ?? PatchPaymentPayload()),
-                  ],
-                  100.h,
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      margin: EdgeInsets.only(top: screenHeight * 0.22),
+                      constraints:
+                          BoxConstraints(minHeight: screenHeight * 0.78),
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFF4F5F7),
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(80)),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: screenHeight * 0.12,
+                    left: 0,
+                    right: 0,
+                    child: Center(
+                      child: Container(
+                        height: circleSize,
+                        width: circleSize,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 6),
+                          color: Colors.white,
+                        ),
+                        child: Lottie.asset(
+                          Animations.review,
+                          package: Constants.packageName,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned.fill(
+                    top: screenHeight * 0.12 + circleSize + 30,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Text(
+                            widget.paymentDetails?.title ??
+                                Strings.congratulations,
+                            style: Styles.tsBlack3BBold26(),
+                            textAlign: TextAlign.center,
+                          ),
+                          12.h,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 32),
+                            child: Text(
+                              widget.paymentDetails?.subTitle ??
+                                  Strings
+                                      .yourLoanApplicationHasBeenApprovedSuccessfully,
+                              textAlign: TextAlign.center,
+                              style: Styles.tsBlack3BRegular16().copyWith(
+                                color: Colors.black54,
+                                height: 1.5,
+                              ),
+                            ),
+                          ),
+                          if (widget.paymentDetails != null) ...[
+                            24.h,
+                            _transactionDetailsCard(
+                                widget.paymentDetails ?? PatchPaymentPayload()),
+                          ],
+                          100.h,
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
-            ),
-          ),
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

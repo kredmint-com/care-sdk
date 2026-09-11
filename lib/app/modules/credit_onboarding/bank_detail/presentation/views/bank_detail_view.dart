@@ -11,6 +11,7 @@ import 'package:loan_sdk_package/widgets/input_text_field.dart';
 
 import '../../../../../../loan_sdk_package.dart';
 import '../../../../../../widgets/custom_button.dart';
+import '../../../../../../widgets/stepper_widget.dart';
 import '../../../../../route/app_pages.dart';
 import '../../../credit_common_method.dart';
 import '../../../data/models/onboarding_steps_response.dart';
@@ -224,7 +225,6 @@ class _PromoterViewState extends State<BankDetailView> {
           builder: (context, state) {
             return SingleChildScrollView(
               padding: const EdgeInsets.symmetric(
-                vertical: 24,
                 horizontal: 16,
               ),
               child: Form(
@@ -232,6 +232,11 @@ class _PromoterViewState extends State<BankDetailView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    StepperWidget(
+                      currentStep: 7,
+                      totalSteps: 8,
+                    ),
+                    20.h,
                     HeaderWidget(
                       heading: widget.page?.heading?.title ?? "",
                       subHeading: widget.page?.heading?.subTitle ?? "",

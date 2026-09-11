@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../../../widgets/common_widget.dart';
 import '../../../../../themes/app_colors.dart';
 
@@ -28,35 +29,7 @@ class CreditOnboardingAppBar extends StatelessWidget
         }
       },
       backgroundColor: AppColors.white,
-      leadingIconColor: Colors.black,
-      // suffixWidget: [
-      //   IconButton(
-      //     onPressed: () {
-      //       OnboardingBottomsheetWidget.showBottomSheetWidget(
-      //         context: context,
-      //         type: BottomSheetType.CONTACT_SUPPORT,
-      //       );
-      //     },
-      //     icon: SvgPicture.asset(
-      //       Images.contactHelp,
-      //       height: 20,
-      //       width: 20,
-      //     ),
-      //   ),
-      //   IconButton(
-      //     onPressed: () {
-      //       OnboardingBottomsheetWidget.showBottomSheetWidget(
-      //         context: context,
-      //         type: BottomSheetType.EXIT,
-      //       );
-      //     },
-      //     icon: SvgPicture.asset(
-      //       Images.exit,
-      //       height: 20,
-      //       width: 20,
-      //     ),
-      //   ),
-      // ],
+      leadingIconColor: AppColors.black,
     );
   }
 }

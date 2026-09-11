@@ -4,10 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/onboarding_steps_response.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/kyc/presentation/bloc/kyc_bloc.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/kyc/presentation/bloc/kyc_state.dart';
+import 'package:loan_sdk_package/utils/helper/enums.dart';
 import 'package:loan_sdk_package/utils/storage/storage_utils.dart';
 import 'package:loan_sdk_package/widgets/custom_button.dart';
 
 import '../../../../../../loan_sdk_package.dart';
+import '../../../../../../utils/helper/sizedbox_extension.dart';
+import '../../../../../../widgets/stepper_widget.dart';
 import '../../../../../data/values/strings.dart';
 import '../../../../../route/app_pages.dart';
 import '../../../credit_common_method.dart';
@@ -82,6 +85,18 @@ class _KycViewState extends State<KycView> {
       prevPageId: widget.prevPageId,
       profileId: widget.profileId,
     );
+  }
+
+  int getStepperIndex() {
+    int index = 0;
+    if (widget.pageCategory == PageCategory.KfsEsignUrl.name) {
+      index = 5;
+    } else if (widget.pageCategory == PageCategory.CKycDetail.name) {
+      index = 6;
+    } else if (widget.pageCategory == PageCategory.MandateSignUrl.name) {
+      index = 8;
+    }
+    return index;
   }
 
   @override
@@ -238,6 +253,11 @@ class _KycViewState extends State<KycView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                StepperWidget(
+                  currentStep: getStepperIndex(),
+                  totalSteps: 8,
+                ),
+                20.h,
                 HeaderWidget(
                   heading: widget.page?.heading?.title ?? "",
                   subHeading: widget.page?.heading?.subTitle ?? "",
