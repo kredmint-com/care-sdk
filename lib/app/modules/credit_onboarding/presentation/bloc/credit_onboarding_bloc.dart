@@ -40,7 +40,7 @@ class CreditOnboardingBloc
     on<OnResetPanValidation>(_onResetPanValidation);
     on<OnResetIsNameValid>(_onResetPanValid);
     on<OnResetIsDobValid>(_onResetIsDobValid);
-    on<OnSetRefId>(_onSetRefId);
+    on<OnSetProposalId>(_onSetProposalId);
   }
 
   void _onFetchUserProfilePage(
@@ -235,7 +235,7 @@ class CreditOnboardingBloc
     emit(state.copyWith(userProfileStageUpdated: false));
     LoadingUtils.showLoader();
     Map<String, dynamic>? dataMap = event.data;
-    dataMap?["refId"] = state.refId;
+    dataMap?["proposalId"] = state.proposalId;
     final response = await repository.updateUserProfileStage(
       profileId: event.profileId,
       data: dataMap,
@@ -587,11 +587,11 @@ class CreditOnboardingBloc
     );
   }
 
-  void _onSetRefId(
-      OnSetRefId event, Emitter<CreditOnboardingState> emit) {
+  void _onSetProposalId(
+      OnSetProposalId event, Emitter<CreditOnboardingState> emit) {
     emit(
       state.copyWith(
-        refId : event.refId,
+        proposalId : event.proposalId,
       ),
     );
   }

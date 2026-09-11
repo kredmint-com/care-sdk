@@ -105,8 +105,8 @@ class OnResetIsNameValid extends CreditOnboardingEvent {}
 
 class OnResetIsDobValid extends CreditOnboardingEvent {}
 
-class OnSetRefId extends  CreditOnboardingEvent {
-  final String refId;
+class OnSetProposalId extends  CreditOnboardingEvent {
+  final String proposalId;
 
-  OnSetRefId({required this.refId});
+  OnSetProposalId({required this.proposalId});
 }

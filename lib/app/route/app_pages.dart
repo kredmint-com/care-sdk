@@ -53,7 +53,7 @@ class AppPages {
                 prevPageId: args?["prevPageId"],
                 accessToken: args?["accessToken"],
                 manualKycInitiated: args?["manualKycInitiated"],
-                refId: args?["refId"],
+                proposalId: args?["proposalId"],
               ),
             ),
           );

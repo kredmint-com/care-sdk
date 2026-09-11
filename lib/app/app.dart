@@ -54,7 +54,7 @@ class _AppState extends State<App> {
               "accessToken":
                   state.userProfileResponse?.payload?.token?.accessToken ?? "",
               "prevPageId": "",
-              "refId" : state.userProfileResponse?.payload?.proposalId ?? "",
+              "proposalId" : state.userProfileResponse?.payload?.proposalId ?? "",
             },
           );
           context.read<AppBloc>().add(OnResetUserProfile());

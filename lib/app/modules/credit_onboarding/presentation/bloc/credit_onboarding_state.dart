@@ -19,7 +19,7 @@ class CreditOnboardingState {
   final bool? panValidationApiLimitReached;
   final Map<String, dynamic>? formDataMap;
   final String? validationMessage;
-  final String? refId;
+  final String? proposalId;
 
   CreditOnboardingState({
     this.onboardingStepsResponse,
@@ -39,7 +39,7 @@ class CreditOnboardingState {
     this.panValidationApiLimitReached,
     this.formDataMap,
     this.validationMessage,
-    this.refId,
+    this.proposalId,
   });
 
   CreditOnboardingState copyWith({
@@ -60,7 +60,7 @@ class CreditOnboardingState {
     bool? panValidationApiLimitReached,
     Map<String, dynamic>? formDataMap,
     String? validationMessage,
-    String? refId,
+    String? proposalId,
   }) {
     return CreditOnboardingState(
       onboardingStepsResponse:
@@ -83,7 +83,7 @@ class CreditOnboardingState {
           panValidationApiLimitReached ?? this.panValidationApiLimitReached,
       formDataMap: formDataMap ?? this.formDataMap,
       validationMessage: validationMessage ?? this.validationMessage,
-      refId: refId ?? this.refId,
+      proposalId: proposalId ?? this.proposalId,
     );
   }
 }

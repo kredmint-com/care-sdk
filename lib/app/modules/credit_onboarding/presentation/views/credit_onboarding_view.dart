@@ -31,14 +31,14 @@ class CreditOnboardingView extends StatefulWidget {
     this.prevPageId,
     this.accessToken,
     this.manualKycInitiated = false,
-    this.refId,
+    this.proposalId,
   });
 
   final String profileId;
   final String? prevPageId;
   final String? accessToken;
   final bool? manualKycInitiated;
-  final String? refId;
+  final String? proposalId;
 
   @override
   State<CreditOnboardingView> createState() => _CreditOnboardingViewState();
@@ -75,10 +75,10 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
             pageId: widget.prevPageId,
           ),
         );
-    if (widget.refId?.isNotEmpty ?? false) {
+    if (widget.proposalId?.isNotEmpty ?? false) {
       context.read<CreditOnboardingBloc>().add(
-            OnSetRefId(
-              refId: widget.refId ?? "",
+            OnSetProposalId(
+              proposalId: widget.proposalId ?? "",
             ),
           );
     }
