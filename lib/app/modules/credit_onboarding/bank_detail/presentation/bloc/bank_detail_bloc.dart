@@ -31,10 +31,35 @@ class BankDetailBloc extends Bloc<BankDetailEvent, BankDetailState> {
     emit(state.copyWith(bankVerified: false));
   }
 
+  // void _onVerifyBankDetail(
+  //   OnVerifyBankDetail event,
+  //   Emitter<BankDetailState> emit,
+  // ) async {
+  //   LoadingUtils.showLoader();
+  //   final response = await repository.validateBank(
+  //     bankAccount: event.accountNumber,
+  //     ifsc: event.ifscCode,
+  //   );
+  //   LoadingUtils.hideLoader();
+  //   if (response.data != null) {
+  //     if (response.data?.payload?.message?.isNotEmpty ?? false) {
+  //       Fluttertoast.showToast(msg: response.data?.payload?.message ?? "");
+  //     }
+  //     if (response.data?.payload?.accountStatus == "VALID") {
+  //       emit(
+  //         state.copyWith(
+  //           bankVerified: true,
+  //           userFullName: response.data?.payload?.nameAtBank ?? "",
+  //         ),
+  //       );
+  //     }
+  //   }
+  // }
+
   void _onVerifyBankDetail(
-    OnVerifyBankDetail event,
-    Emitter<BankDetailState> emit,
-  ) async {
+      OnVerifyBankDetail event,
+      Emitter<BankDetailState> emit,
+      ) async {
     LoadingUtils.showLoader();
     final response = await repository.validateBank(
       bankAccount: event.accountNumber,
@@ -42,16 +67,17 @@ class BankDetailBloc extends Bloc<BankDetailEvent, BankDetailState> {
     );
     LoadingUtils.hideLoader();
     if (response.data != null) {
-      if (response.data?.payload?.message?.isNotEmpty ?? false) {
-        Fluttertoast.showToast(msg: response.data?.payload?.message ?? "");
+      // if (response.data?.payload?.message?.isNotEmpty ?? false) {
+      //   Fluttertoast.showToast(msg: response.data?.payload?.message ?? "");
+      // }
+
+      final nameAtBank = response.data?.payload?.nameAtBank ?? "";
+      if (nameAtBank.isNotEmpty) {
+        emit(state.copyWith(userFullName: nameAtBank));
       }
+
       if (response.data?.payload?.accountStatus == "VALID") {
-        emit(
-          state.copyWith(
-            bankVerified: true,
-            userFullName: response.data?.payload?.nameAtBank ?? "",
-          ),
-        );
+        emit(state.copyWith(bankVerified: true));
       }
     }
   }

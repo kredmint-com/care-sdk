@@ -48,6 +48,7 @@ class BankDetailView extends StatefulWidget {
 
 class _PromoterViewState extends State<BankDetailView> {
   final _formKey = GlobalKey<FormState>();
+  String? _lastVerifiedKey;
 
   final TextEditingController accountController = TextEditingController();
   final TextEditingController ifscController = TextEditingController();
@@ -67,6 +68,32 @@ class _PromoterViewState extends State<BankDetailView> {
     });
   }
 
+  void _checkAndVerify() {
+    final account = accountController.text.trim();
+    final ifsc = ifscController.text.trim().toUpperCase();
+    final bankName = bankNameController.text.trim();
+
+    final isAccountValid = account.length >= 9;
+    final isIfscValid = RegExp(r'^[A-Z]{4}0[A-Z0-9]{6}$').hasMatch(ifsc);
+    final isBankNameFilled = bankName.isNotEmpty;
+
+    if (!(isAccountValid && isIfscValid && isBankNameFilled)) {
+      return;
+    }
+
+    final key = '$account|$ifsc';
+    if (key == _lastVerifiedKey) return;
+    _lastVerifiedKey = key;
+
+    context.read<BankDetailBloc>().add(
+      OnVerifyBankDetail(
+        accountNumber: account,
+        ifscCode: ifsc,
+        fullName: fullNameController.text.trim(),
+      ),
+    );
+  }
+
   Future<bool> handleBackPress() async {
     return await CreditCommonMethod.onBackPress(
       context: context,
@@ -83,10 +110,16 @@ class _PromoterViewState extends State<BankDetailView> {
 
   void init() {
     SdkBackHandler.onBackPressed = handleBackPress;
+    accountController.addListener(_checkAndVerify);
+    ifscController.addListener(_checkAndVerify);
+    bankNameController.addListener(_checkAndVerify);
   }
 
   @override
   void dispose() {
+    accountController.removeListener(_checkAndVerify);
+    ifscController.removeListener(_checkAndVerify);
+    bankNameController.removeListener(_checkAndVerify);
     accountController.dispose();
     ifscController.dispose();
     bankNameController.dispose();
@@ -113,12 +146,13 @@ class _PromoterViewState extends State<BankDetailView> {
                 if (_formKey.currentState?.validate() ?? false) {
                   FocusManager.instance.primaryFocus?.unfocus();
                   context.read<BankDetailBloc>().add(
-                        OnVerifyBankDetail(
-                          accountNumber: accountController.text.trim(),
-                          ifscCode: ifscController.text.trim(),
-                          fullName: fullNameController.text.trim(),
-                        ),
-                      );
+                    OnFetchBankDetail(
+                      accountNumber: accountController.text.trim(),
+                      ifsc: ifscController.text.trim(),
+                      bankName: bankNameController.text.trim(),
+                      accountHolderName: fullNameController.text.trim(),
+                    ),
+                  );
                 }
               },
               buttonText: Strings.proceed,
@@ -170,14 +204,14 @@ class _PromoterViewState extends State<BankDetailView> {
             previous.bankVerified != current.bankVerified &&
                 current.bankVerified == true,
             listener: (context, state) {
-              context.read<BankDetailBloc>().add(
-                OnFetchBankDetail(
-                  accountNumber: accountController.text.trim(),
-                  ifsc: ifscController.text.trim(),
-                  bankName: bankNameController.text.trim(),
-                  accountHolderName: state.userFullName?.trim() ?? "",
-                ),
-              );
+              // context.read<BankDetailBloc>().add(
+              //   OnFetchBankDetail(
+              //     accountNumber: accountController.text.trim(),
+              //     ifsc: ifscController.text.trim(),
+              //     bankName: bankNameController.text.trim(),
+              //     accountHolderName: state.userFullName?.trim() ?? "",
+              //   ),
+              // );
 
               context.read<BankDetailBloc>().add(OnResetBankVerified());
             },
@@ -257,9 +291,9 @@ class _PromoterViewState extends State<BankDetailView> {
                       heading: widget.page?.heading?.title ?? "",
                       subHeading: widget.page?.heading?.subTitle ?? "",
                       iconUrl:
-                          (widget.page?.heading?.appLogo?.isNotEmpty ?? false)
-                              ? (widget.page?.heading?.appLogo ?? "")
-                              : ((widget.page?.heading?.pageLogo) ?? ""),
+                      (widget.page?.heading?.appLogo?.isNotEmpty ?? false)
+                          ? (widget.page?.heading?.appLogo ?? "")
+                          : ((widget.page?.heading?.pageLogo) ?? ""),
                     ),
                     40.h,
 
@@ -340,6 +374,7 @@ class _PromoterViewState extends State<BankDetailView> {
                       textFieldWrapper: fullNameController,
                       hintText: Strings.fullNameHint,
                       labelText: Strings.fullNameLabel,
+                      readOnly: true,
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
                           return ErrorMessages.fullNameRequired;
@@ -364,3 +399,4 @@ class _PromoterViewState extends State<BankDetailView> {
     );
   }
 }
+
