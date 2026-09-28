@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loan_sdk_package/app/config/release_env.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/data/models/onboarding_steps_response.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/kyc/presentation/bloc/kyc_bloc.dart';
 import 'package:loan_sdk_package/app/modules/credit_onboarding/kyc/presentation/bloc/kyc_state.dart';
@@ -92,9 +93,15 @@ class _KycViewState extends State<KycView> {
     if (widget.pageCategory == PageCategory.KfsEsignUrl.name) {
       index = 5;
     } else if (widget.pageCategory == PageCategory.CKycDetail.name) {
-      index = 6;
+      if (releaseEv == ReleaseEnv.prod) {
+        index = 5;
+      }
     } else if (widget.pageCategory == PageCategory.MandateSignUrl.name) {
-      index = 8;
+      if (releaseEv == ReleaseEnv.prod) {
+        index = 7;
+      } else {
+        index = 6;
+      }
     }
     return index;
   }
@@ -107,9 +114,9 @@ class _KycViewState extends State<KycView> {
         appBar: (widget.prevPageId.isEmpty)
             ? null
             : CreditOnboardingAppBar(
-          title: "",
-          onBackPressed: handleBackPress,
-        ),
+                title: "",
+                onBackPressed: handleBackPress,
+              ),
         bottomSheet: Wrap(
           children: [
             if (widget.allowSkip) ...[
@@ -257,7 +264,6 @@ class _KycViewState extends State<KycView> {
               children: [
                 StepperWidget(
                   currentStep: getStepperIndex(),
-                  totalSteps: 8,
                 ),
                 20.h,
                 HeaderWidget(

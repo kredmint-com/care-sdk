@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:loan_sdk_package/app/config/release_env.dart';
-import 'package:loan_sdk_package/app/data/values/strings.dart';
 import 'package:loan_sdk_package/app/themes/styles.dart';
 
 import '../app/themes/app_colors.dart';
@@ -8,12 +7,10 @@ import '../utils/helper/sizedbox_extension.dart';
 
 class StepperWidget extends StatefulWidget {
   final int currentStep;
-  final int totalSteps;
 
   const StepperWidget({
     super.key,
     required this.currentStep,
-    this.totalSteps = 10,
   });
 
   @override
@@ -30,7 +27,6 @@ class _StepperWidgetState extends State<StepperWidget> {
           "Down Payment",
           "Kfs & Sign",
           "C-Kyc",
-          "Kyc",
           "Bank Detail",
           "Mandate",
         ]
@@ -39,7 +35,6 @@ class _StepperWidgetState extends State<StepperWidget> {
           "Emi Plan",
           "Down Payment",
           "Kfs & Sign",
-          "Kyc",
           "Bank Detail",
           "Mandate",
         ];
@@ -107,7 +102,7 @@ class _StepperWidgetState extends State<StepperWidget> {
           children: [
             Expanded(child: Text("Step ${widget.currentStep}", style: Styles.tsBlack3BSemiBold14()),),
             Text(
-              '${widget.currentStep}/${widget.totalSteps}',
+              '${widget.currentStep}/${stepsList.length}',
               style: Styles.tsBlack3BSemiBold14()
             ),
           ],

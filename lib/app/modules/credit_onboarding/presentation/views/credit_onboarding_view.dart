@@ -609,7 +609,6 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                             children: [
                               StepperWidget(
                                 currentStep: 1,
-                                totalSteps: 8,
                               ),
                               20.h,
                               HeaderWidget(

@@ -214,7 +214,6 @@ class _DownPaymentViewState extends State<DownPaymentView> {
         children: [
           StepperWidget(
             currentStep: 3,
-            totalSteps: 8,
           ),
           20.h,
           HeaderWidget(

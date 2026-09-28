@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loan_sdk_package/app/config/release_env.dart';
 import 'package:loan_sdk_package/app/data/values/strings.dart';
 import 'package:loan_sdk_package/app/themes/app_colors.dart';
 import 'package:loan_sdk_package/utils/helper/sizedbox_extension.dart';
@@ -279,8 +280,7 @@ class _PromoterViewState extends State<BankDetailView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   StepperWidget(
-                    currentStep: 7,
-                    totalSteps: 8,
+                    currentStep: releaseEv == ReleaseEnv.prod ? 6 : 5,
                   ),
                   20.h,
                   HeaderWidget(

@@ -172,7 +172,6 @@ class _EmiViewState extends State<EmiView> {
                 children: [
                   StepperWidget(
                     currentStep: 2,
-                    totalSteps: 8,
                   ),
                   20.h,
                   HeaderWidget(

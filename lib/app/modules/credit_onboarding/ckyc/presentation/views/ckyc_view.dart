@@ -268,7 +268,6 @@ class _CKycViewState extends State<CKycView> {
               children: [
                 StepperWidget(
                   currentStep: 5,
-                  totalSteps: 8,
                 ),
                 20.h,
                 HeaderWidget(
