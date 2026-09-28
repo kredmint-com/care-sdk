@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loan_sdk_package/app/config/release_env.dart';
 import 'package:loan_sdk_package/app/themes/styles.dart';
 
 import '../app/themes/app_colors.dart';
@@ -21,16 +22,26 @@ class StepperWidget extends StatefulWidget {
 class _StepperWidgetState extends State<StepperWidget> {
   final ScrollController _scrollController = ScrollController();
 
-  final List<String> stepsList = [
-    "Personal details",
-    "Emi Plan",
-    "Down Payment",
-    "Kfs & Sign",
-    "Kyc",
-    "Bank Detail",
-    "Mandate",
-    "Success",
-  ];
+  final List<String> stepsList = releaseEv == ReleaseEnv.prod
+      ? [
+          "Personal details",
+          "Emi Plan",
+          "Down Payment",
+          "Kfs & Sign",
+          "C-Kyc",
+          "Kyc",
+          "Bank Detail",
+          "Mandate",
+        ]
+      : [
+          "Personal details",
+          "Emi Plan",
+          "Down Payment",
+          "Kfs & Sign",
+          "Kyc",
+          "Bank Detail",
+          "Mandate",
+        ];
 
   late final List<GlobalKey> _stepKeys;
 
