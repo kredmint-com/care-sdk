@@ -86,12 +86,12 @@ class _PromoterViewState extends State<BankDetailView> {
     _lastVerifiedKey = key;
 
     context.read<BankDetailBloc>().add(
-      OnVerifyBankDetail(
-        accountNumber: account,
-        ifscCode: ifsc,
-        fullName: fullNameController.text.trim(),
-      ),
-    );
+          OnVerifyBankDetail(
+            accountNumber: account,
+            ifscCode: ifsc,
+            fullName: fullNameController.text.trim(),
+          ),
+        );
   }
 
   Future<bool> handleBackPress() async {
@@ -130,273 +130,267 @@ class _PromoterViewState extends State<BankDetailView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
-      bottomSheet: BlocBuilder<BankDetailBloc, BankDetailState>(
-        builder: (context, state) {
-          return Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-                color: AppColors.white,
-                border: Border(top: BorderSide(color: AppColors.greyE1))),
-            child: CustomButton(
-              onTap: () {
-                context.read<BankDetailBloc>().add(OnUpdateSubmitStatus());
-                if (_formKey.currentState?.validate() ?? false) {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  context.read<BankDetailBloc>().add(
-                    OnFetchBankDetail(
-                      accountNumber: accountController.text.trim(),
-                      ifsc: ifscController.text.trim(),
-                      bankName: bankNameController.text.trim(),
-                      accountHolderName: fullNameController.text.trim(),
-                    ),
-                  );
-                }
-              },
-              buttonText: Strings.proceed,
-            ),
-          );
-        },
-      ),
-      body: bodyWidget(context: context),
-    );
+    return WillPopScope(
+        onWillPop: handleBackPress,
+        child: Scaffold(
+          backgroundColor: AppColors.white,
+          appBar:
+          (widget.prevPageId.isEmpty)
+              ? null
+              :
+          CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
+          bottomSheet: BlocBuilder<BankDetailBloc, BankDetailState>(
+            builder: (context, state) {
+              return Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                    color: AppColors.white,
+                    border: Border(top: BorderSide(color: AppColors.greyE1))),
+                child: CustomButton(
+                  onTap: () {
+                    context.read<BankDetailBloc>().add(OnUpdateSubmitStatus());
+                    if (_formKey.currentState?.validate() ?? false) {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      context.read<BankDetailBloc>().add(
+                            OnFetchBankDetail(
+                              accountNumber: accountController.text.trim(),
+                              ifsc: ifscController.text.trim(),
+                              bankName: bankNameController.text.trim(),
+                              accountHolderName: fullNameController.text.trim(),
+                            ),
+                          );
+                    }
+                  },
+                  buttonText: Strings.proceed,
+                ),
+              );
+            },
+          ),
+          body: bodyWidget(context: context),
+        ));
   }
 
   Widget bodyWidget({required BuildContext context}) {
-    return WillPopScope(
-      onWillPop: handleBackPress,
-      child: MultiBlocListener(
-        listeners: [
-          BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
-            listenWhen: (previous, current) =>
-            previous.userProfileStageUpdated !=
-                current.userProfileStageUpdated &&
-                current.userProfileStageUpdated == true,
-            listener: (context, state) {
-              context.replaceNamed(
-                Routes.sdkCreditOnboarding,
-                extra: {"profileId": widget.profileId},
-              );
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<CreditOnboardingBloc, CreditOnboardingState>(
+          listenWhen: (previous, current) =>
+              previous.userProfileStageUpdated !=
+                  current.userProfileStageUpdated &&
+              current.userProfileStageUpdated == true,
+          listener: (context, state) {
+            context.replaceNamed(
+              Routes.sdkCreditOnboarding,
+              extra: {"profileId": widget.profileId},
+            );
 
-              context.read<CreditOnboardingBloc>().add(coe.OnReset());
-            },
-          ),
+            context.read<CreditOnboardingBloc>().add(coe.OnReset());
+          },
+        ),
+        BlocListener<BankDetailBloc, BankDetailState>(
+          listenWhen: (previous, current) =>
+              previous.bankName != current.bankName &&
+              (current.bankName?.isNotEmpty ?? false),
+          listener: (context, state) {
+            bankNameController.text = state.bankName ?? "";
 
-          BlocListener<BankDetailBloc, BankDetailState>(
-            listenWhen: (previous, current) =>
-            previous.bankName != current.bankName &&
-                (current.bankName?.isNotEmpty ?? false),
-            listener: (context, state) {
-              bankNameController.text = state.bankName ?? "";
+            if (state.submitClicked == true) {
+              _formKey.currentState?.validate();
+            }
+
+            context.read<BankDetailBloc>().add(OnResetBankName());
+          },
+        ),
+        BlocListener<BankDetailBloc, BankDetailState>(
+          listenWhen: (previous, current) =>
+              previous.bankVerified != current.bankVerified &&
+              current.bankVerified == true,
+          listener: (context, state) {
+            // context.read<BankDetailBloc>().add(
+            //   OnFetchBankDetail(
+            //     accountNumber: accountController.text.trim(),
+            //     ifsc: ifscController.text.trim(),
+            //     bankName: bankNameController.text.trim(),
+            //     accountHolderName: state.userFullName?.trim() ?? "",
+            //   ),
+            // );
+
+            context.read<BankDetailBloc>().add(OnResetBankVerified());
+          },
+        ),
+        BlocListener<BankDetailBloc, BankDetailState>(
+          listenWhen: (previous, current) =>
+              previous.bankAccountDetailFetched !=
+                  current.bankAccountDetailFetched &&
+              current.bankAccountDetailFetched == true,
+          listener: (context, state) {
+            context.read<BankDetailBloc>().add(
+                  OnSubmitBankDetail(
+                    pageId: widget.pageId,
+                    pageCategory: widget.pageCategory,
+                    bankAccountDetailResponse: state.bankAccountDetailResponse,
+                  ),
+                );
+
+            context.read<BankDetailBloc>().add(OnResetBankDetail());
+          },
+        ),
+        BlocListener<BankDetailBloc, BankDetailState>(
+          listenWhen: (previous, current) =>
+              previous.userProfileStageMapCompleted !=
+                  current.userProfileStageMapCompleted &&
+              current.userProfileStageMapCompleted == true,
+          listener: (context, state) {
+            context.read<CreditOnboardingBloc>().add(
+                  coe.OnUpdateUserProfileStage(
+                    data: state.userProfileStageMap,
+                    profileId: widget.profileId,
+                  ),
+                );
+
+            context.read<BankDetailBloc>().add(
+                  OnResetUserProfileStageMapCompleted(),
+                );
+          },
+        ),
+        BlocListener<BankDetailBloc, BankDetailState>(
+          listener: (context, state) {
+            if (state.userFullName?.isNotEmpty ?? false) {
+              fullNameController.text = state.userFullName ?? "";
 
               if (state.submitClicked == true) {
                 _formKey.currentState?.validate();
               }
 
-              context.read<BankDetailBloc>().add(OnResetBankName());
-            },
-          ),
-
-          BlocListener<BankDetailBloc, BankDetailState>(
-            listenWhen: (previous, current) =>
-            previous.bankVerified != current.bankVerified &&
-                current.bankVerified == true,
-            listener: (context, state) {
-              // context.read<BankDetailBloc>().add(
-              //   OnFetchBankDetail(
-              //     accountNumber: accountController.text.trim(),
-              //     ifsc: ifscController.text.trim(),
-              //     bankName: bankNameController.text.trim(),
-              //     accountHolderName: state.userFullName?.trim() ?? "",
-              //   ),
-              // );
-
-              context.read<BankDetailBloc>().add(OnResetBankVerified());
-            },
-          ),
-
-          BlocListener<BankDetailBloc, BankDetailState>(
-            listenWhen: (previous, current) =>
-            previous.bankAccountDetailFetched !=
-                current.bankAccountDetailFetched &&
-                current.bankAccountDetailFetched == true,
-            listener: (context, state) {
-              context.read<BankDetailBloc>().add(
-                OnSubmitBankDetail(
-                  pageId: widget.pageId,
-                  pageCategory: widget.pageCategory,
-                  bankAccountDetailResponse:
-                  state.bankAccountDetailResponse,
-                ),
-              );
-
-              context.read<BankDetailBloc>().add(OnResetBankDetail());
-            },
-          ),
-
-          BlocListener<BankDetailBloc, BankDetailState>(
-            listenWhen: (previous, current) =>
-            previous.userProfileStageMapCompleted !=
-                current.userProfileStageMapCompleted &&
-                current.userProfileStageMapCompleted == true,
-            listener: (context, state) {
-              context.read<CreditOnboardingBloc>().add(
-                coe.OnUpdateUserProfileStage(
-                  data: state.userProfileStageMap,
-                  profileId: widget.profileId,
-                ),
-              );
-
-              context.read<BankDetailBloc>().add(
-                OnResetUserProfileStageMapCompleted(),
-              );
-            },
-          ),
-
-          BlocListener<BankDetailBloc, BankDetailState>(
-            listener: (context, state) {
-              if(state.userFullName?.isNotEmpty ?? false) {
-                fullNameController.text = state.userFullName ?? "";
-
-                if (state.submitClicked == true) {
-                  _formKey.currentState?.validate();
-                }
-
-                context.read<BankDetailBloc>().add(OnResetUserFullName());
-              }
-            },
-          ),
-
-
-        ],
-        child: BlocBuilder<BankDetailBloc, BankDetailState>(
-          builder: (context, state) {
-            return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    StepperWidget(
-                      currentStep: 7,
-                      totalSteps: 8,
-                    ),
-                    20.h,
-                    HeaderWidget(
-                      heading: widget.page?.heading?.title ?? "",
-                      subHeading: widget.page?.heading?.subTitle ?? "",
-                      iconUrl:
-                      (widget.page?.heading?.appLogo?.isNotEmpty ?? false)
-                          ? (widget.page?.heading?.appLogo ?? "")
-                          : ((widget.page?.heading?.pageLogo) ?? ""),
-                    ),
-                    40.h,
-
-                    /// Account Number
-                    InputTextField(
-                      textFieldWrapper: accountController,
-                      hintText: Strings.accountHint,
-                      labelText: Strings.accountLabel,
-                      validator: (value) {
-                        if (value?.isEmpty ?? true) {
-                          return ErrorMessages.accountRequired;
-                        }
-                        if ((value?.length ?? 0) < 9) {
-                          return ErrorMessages.accountInvalid;
-                        }
-                        return null;
-                      },
-                      onChanged: (_) {
-                        if (state.submitClicked ?? false) {
-                          _formKey.currentState?.validate();
-                        }
-                      },
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    ),
-
-                    14.h,
-
-                    /// IFSC Code
-                    InputTextField(
-                      capitalize: true,
-                      textFieldWrapper: ifscController,
-                      hintText: Strings.ifscHint,
-                      labelText: Strings.ifscLabel,
-                      onChanged: (value) {
-                        _onIfscChanged(value: value);
-                        if (state.submitClicked ?? false) {
-                          _formKey.currentState?.validate();
-                        }
-                      },
-                      validator: (value) {
-                        if (value?.isEmpty ?? true) {
-                          return ErrorMessages.ifscRequired;
-                        } else if (!RegExp(
-                          r'^[A-Z]{4}0[A-Z0-9]{6}$',
-                        ).hasMatch(value?.toUpperCase() ?? "")) {
-                          return ErrorMessages.ifscInvalid;
-                        }
-                        return null;
-                      },
-                    ),
-
-                    14.h,
-
-                    /// Bank Name
-                    InputTextField(
-                      textFieldWrapper: bankNameController,
-                      hintText: Strings.bankNameHint,
-                      labelText: Strings.bankNameLabel,
-                      readOnly: true,
-                      validator: (value) {
-                        if (value?.isEmpty ?? true) {
-                          return ErrorMessages.bankNameRequired;
-                        }
-                        return null;
-                      },
-                      onChanged: (_) {
-                        if (state.submitClicked ?? false) {
-                          _formKey.currentState?.validate();
-                        }
-                      },
-                    ),
-
-                    14.h,
-
-                    /// Full Name
-                    InputTextField(
-                      textFieldWrapper: fullNameController,
-                      hintText: Strings.fullNameHint,
-                      labelText: Strings.fullNameLabel,
-                      readOnly: true,
-                      validator: (value) {
-                        if (value?.isEmpty ?? true) {
-                          return ErrorMessages.fullNameRequired;
-                        }
-                        return null;
-                      },
-                      onChanged: (_) {
-                        if (state.submitClicked ?? false) {
-                          _formKey.currentState?.validate();
-                        }
-                      },
-                    ),
-
-                    80.h,
-                  ],
-                ),
-              ),
-            );
+              context.read<BankDetailBloc>().add(OnResetUserFullName());
+            }
           },
         ),
+      ],
+      child: BlocBuilder<BankDetailBloc, BankDetailState>(
+        builder: (context, state) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+            ),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  StepperWidget(
+                    currentStep: 7,
+                    totalSteps: 8,
+                  ),
+                  20.h,
+                  HeaderWidget(
+                    heading: widget.page?.heading?.title ?? "",
+                    subHeading: widget.page?.heading?.subTitle ?? "",
+                    iconUrl:
+                        (widget.page?.heading?.appLogo?.isNotEmpty ?? false)
+                            ? (widget.page?.heading?.appLogo ?? "")
+                            : ((widget.page?.heading?.pageLogo) ?? ""),
+                  ),
+                  40.h,
+
+                  /// Account Number
+                  InputTextField(
+                    textFieldWrapper: accountController,
+                    hintText: Strings.accountHint,
+                    labelText: Strings.accountLabel,
+                    validator: (value) {
+                      if (value?.isEmpty ?? true) {
+                        return ErrorMessages.accountRequired;
+                      }
+                      if ((value?.length ?? 0) < 9) {
+                        return ErrorMessages.accountInvalid;
+                      }
+                      return null;
+                    },
+                    onChanged: (_) {
+                      if (state.submitClicked ?? false) {
+                        _formKey.currentState?.validate();
+                      }
+                    },
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  ),
+
+                  14.h,
+
+                  /// IFSC Code
+                  InputTextField(
+                    capitalize: true,
+                    textFieldWrapper: ifscController,
+                    hintText: Strings.ifscHint,
+                    labelText: Strings.ifscLabel,
+                    onChanged: (value) {
+                      _onIfscChanged(value: value);
+                      if (state.submitClicked ?? false) {
+                        _formKey.currentState?.validate();
+                      }
+                    },
+                    validator: (value) {
+                      if (value?.isEmpty ?? true) {
+                        return ErrorMessages.ifscRequired;
+                      } else if (!RegExp(
+                        r'^[A-Z]{4}0[A-Z0-9]{6}$',
+                      ).hasMatch(value?.toUpperCase() ?? "")) {
+                        return ErrorMessages.ifscInvalid;
+                      }
+                      return null;
+                    },
+                  ),
+
+                  14.h,
+
+                  /// Bank Name
+                  InputTextField(
+                    textFieldWrapper: bankNameController,
+                    hintText: Strings.bankNameHint,
+                    labelText: Strings.bankNameLabel,
+                    readOnly: true,
+                    validator: (value) {
+                      if (value?.isEmpty ?? true) {
+                        return ErrorMessages.bankNameRequired;
+                      }
+                      return null;
+                    },
+                    onChanged: (_) {
+                      if (state.submitClicked ?? false) {
+                        _formKey.currentState?.validate();
+                      }
+                    },
+                  ),
+
+                  14.h,
+
+                  /// Full Name
+                  InputTextField(
+                    textFieldWrapper: fullNameController,
+                    hintText: Strings.fullNameHint,
+                    labelText: Strings.fullNameLabel,
+                    readOnly: true,
+                    validator: (value) {
+                      if (value?.isEmpty ?? true) {
+                        return ErrorMessages.fullNameRequired;
+                      }
+                      return null;
+                    },
+                    onChanged: (_) {
+                      if (state.submitClicked ?? false) {
+                        _formKey.currentState?.validate();
+                      }
+                    },
+                  ),
+
+                  80.h,
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 }
-

@@ -35,6 +35,7 @@ class EmiView extends StatefulWidget {
     required this.page,
     required this.tenureId,
     required this.tenureTypeId,
+    required this.proposalId,
   });
 
   final String pageId;
@@ -45,6 +46,7 @@ class EmiView extends StatefulWidget {
   final String tenureTypeId;
   final List<StaticPageRes?>? staticPageRes;
   final StepsPage? page;
+  final String? proposalId;
 
   @override
   State<EmiView> createState() => _EmiViewState();
@@ -79,7 +81,9 @@ class _EmiViewState extends State<EmiView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      appBar: CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
+      appBar: (widget.prevPageId.isEmpty)
+          ? null
+          : CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
       bottomSheet: Wrap(
         children: [
           BlocBuilder<EmiBloc, EmiState>(
@@ -138,7 +142,10 @@ class _EmiViewState extends State<EmiView> {
           if ((state.userProfileStageUpdated) ?? false) {
             context.replaceNamed(
               Routes.sdkCreditOnboarding,
-              extra: {"profileId": widget.profileId},
+              extra: {
+                "profileId": widget.profileId,
+                "proposalId": widget.proposalId,
+              },
             );
             context.read<CreditOnboardingBloc>().add(coe.OnReset());
           }

@@ -122,7 +122,7 @@ class _OnboardingTextfieldState extends State<OnboardingTextfield> {
       padding: const EdgeInsets.only(top: 14.0),
       child: InputTextField(
         capitalize: widget.field?.name == "pan",
-        formFieldKey: widget.field?.fieldKey,
+        // formFieldKey: widget.field?.fieldKey,
         textFieldWrapper:
             widget.field?.textEditingController ?? TextEditingController(),
         keyboardType: getTextInputType(inputType: widget.field?.type ?? ""),

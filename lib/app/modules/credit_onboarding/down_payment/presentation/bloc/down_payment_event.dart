@@ -24,10 +24,12 @@ class OnPatchDownPayment extends DownPaymentEvent {
   final String? pageId;
   final String? pageCategory;
   final PaymentPatchResponse? paymentPatchResponse;
+  final String proposalId;
 
   OnPatchDownPayment({
     required this.pageId,
     required this.pageCategory,
     required this.paymentPatchResponse,
+    required this.proposalId,
   });
 }

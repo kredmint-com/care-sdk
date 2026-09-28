@@ -71,7 +71,6 @@ class _AppState extends State<App> {
                     }
                   },
                   child: SafeArea(
-                    top: false,
                     bottom: true,
                     minimum: EdgeInsets.only(
                       bottom: MediaQuery.of(context).padding.bottom,

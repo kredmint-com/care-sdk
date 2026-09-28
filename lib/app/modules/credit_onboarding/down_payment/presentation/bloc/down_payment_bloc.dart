@@ -117,6 +117,7 @@ class DownPaymentBloc extends Bloc<DownPaymentEvent, DownPaymentState> {
       "pageId": event.pageId,
       "pageCategory": event.pageCategory,
       "staticPageRes": event.paymentPatchResponse?.toJson(),
+      "proposalId" : event.proposalId,
     };
     emit(
       state.copyWith(

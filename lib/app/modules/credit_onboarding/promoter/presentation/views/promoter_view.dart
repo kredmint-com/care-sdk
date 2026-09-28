@@ -108,7 +108,9 @@ class _PromoterViewState extends State<PromoterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
+      appBar: (widget.prevPageId.isEmpty)
+          ? null
+          :  CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
       bottomSheet: Wrap(
         children: [
           Padding(

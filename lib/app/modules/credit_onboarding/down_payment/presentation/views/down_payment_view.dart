@@ -31,6 +31,7 @@ class DownPaymentView extends StatefulWidget {
     required this.pageCategory,
     required this.page,
     required this.processingFeeData,
+    required this.proposalId,
   });
 
   final String pageId;
@@ -39,6 +40,7 @@ class DownPaymentView extends StatefulWidget {
   final String prevPageId;
   final StepsPage? page;
   final ProcessingFeeData? processingFeeData;
+  final String proposalId;
 
   @override
   State<DownPaymentView> createState() => _DownPaymentViewState();
@@ -52,6 +54,7 @@ class _DownPaymentViewState extends State<DownPaymentView> {
   }
 
   void init() {
+    debugPrint("Proposal Id : ${widget.proposalId}");
     SdkBackHandler.onBackPressed = handleBackPress;
   }
 
@@ -65,7 +68,9 @@ class _DownPaymentViewState extends State<DownPaymentView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      appBar: CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
+      appBar: (widget.prevPageId.isEmpty)
+          ? null
+          :  CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
       bottomSheet: _bottomSheet(),
       body: WillPopScope(
         onWillPop: handleBackPress,
@@ -109,6 +114,7 @@ class _DownPaymentViewState extends State<DownPaymentView> {
                           pageId: widget.pageId,
                           pageCategory: widget.pageCategory,
                           paymentPatchResponse: state.paymentPatchResponse,
+                          proposalId: widget.proposalId,
                         ),
                       );
 
@@ -150,6 +156,7 @@ class _DownPaymentViewState extends State<DownPaymentView> {
       context: context,
       prevPageId: widget.prevPageId,
       profileId: widget.profileId,
+      proposalId: widget.proposalId,
     );
   }
 

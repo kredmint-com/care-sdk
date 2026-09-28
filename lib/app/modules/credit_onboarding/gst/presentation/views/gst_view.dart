@@ -80,7 +80,9 @@ class _GstViewState extends State<GstView> {
     return Scaffold(
       appBar:
           // CommonWidget().customAppBar(title: "", onBackPressed: onBackPress),
-          CreditOnboardingAppBar(onBackPressed: handleBackPress),
+      (widget.prevPageId.isEmpty)
+          ? null
+          :   CreditOnboardingAppBar(onBackPressed: handleBackPress),
       body: bodyWidget(context: context),
     );
   }

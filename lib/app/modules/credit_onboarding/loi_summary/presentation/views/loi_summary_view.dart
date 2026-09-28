@@ -72,7 +72,9 @@ class _LoiSummaryViewState extends State<LoiSummaryView> {
       //   title: "",
       //   onBackPressed: onBackPress,
       // ),
-      appBar: CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
+      appBar: (widget.prevPageId.isEmpty)
+          ? null
+          :  CreditOnboardingAppBar(title: "", onBackPressed: handleBackPress),
       bottomSheet: Wrap(
         children: [
           Padding(

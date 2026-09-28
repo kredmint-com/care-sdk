@@ -77,7 +77,9 @@ class _CKycViewState extends State<CKycView> {
     return WillPopScope(
       onWillPop: handleBackPress,
       child: Scaffold(
-        appBar: CreditOnboardingAppBar(
+        appBar: (widget.prevPageId.isEmpty)
+            ? null
+            :  CreditOnboardingAppBar(
           title: "",
           onBackPressed: handleBackPress,
         ),
@@ -292,13 +294,13 @@ class _CKycViewState extends State<CKycView> {
                       ),
                       20.h,
                       Padding(
-                        padding: EdgeInsetsGeometry.symmetric(horizontal: 16),
+                        padding: EdgeInsets.symmetric(horizontal: 16),
                         child: Text('Fetching your KYC record',
                             style: Styles.tsBlack3BSemiBold24()),
                       ),
                       const SizedBox(height: 8),
                       Padding(
-                        padding: EdgeInsetsGeometry.symmetric(horizontal: 16),
+                        padding: EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
                             'Please wait while we securely retrieve and verify your KYC details.',
                             textAlign: TextAlign.center,

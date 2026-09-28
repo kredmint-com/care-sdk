@@ -570,7 +570,7 @@ class Strings {
       "Redirecting automatically in $remainingSeconds seconds...";
   static const String justAMoment = "Just a moment…";
   static const String processingYourRequest =
-      "We’re processing your request. This may take a few seconds.";
+      "We’re processing your request.Please do not refresh or close the page";
   static const String verificationFailed = "We couldn't verify your details";
 
   static const String nameMismatchDescription =
@@ -579,7 +579,8 @@ class Strings {
   static const String dobMismatchDescription =
       "The Date of Birth provided in your application does not match the Date of Birth on your PAN card";
 
-  static const String pleaseContactSupportTeamForDob = "Please contact the Care Health Insurance Support Team to update your Date of Birth as per your PAN card before proceeding";
+  static const String pleaseContactSupportTeamForDob =
+      "Please contact the Care Health Insurance Support Team to update your Date of Birth as per your PAN card before proceeding";
 
   static const String detailMismatchQuestion =
       "Are you sure you want to proceed with this name?";

@@ -279,6 +279,7 @@ class AppPages {
                 tenureTypeId: args["tenureTypeId"],
                 pageCategory: args["pageCategory"],
                 pageId: args["pageId"],
+                proposalId: args["proposalId"],
               ),
             ),
           );
@@ -340,6 +341,7 @@ class AppPages {
                 pageCategory: args["pageCategory"],
                 pageId: args["pageId"],
                 processingFeeData: args["processingFeeData"],
+                proposalId: args["proposalId"],
               ),
             ),
           );

@@ -47,7 +47,10 @@ class CreditOnboardingBloc
     OnFetchUserProfilePage event,
     Emitter<CreditOnboardingState> emit,
   ) async {
-    emit(state.copyWith(formLoading: true));
+    emit(state.copyWith(
+      formLoading: true,
+      fieldsList: [],
+    ));
     LoadingUtils.showLoader();
     final response = await repository.getOnboardingSteps(
       profileId: event.profileId,
@@ -109,7 +112,7 @@ class CreditOnboardingBloc
                 value: addressLine1,
                 mandatory: baseField.mandatory,
                 textEditingController: TextEditingController(),
-                fieldKey: GlobalKey(),
+                // fieldKey: GlobalKey(),
               ),
               Fields(
                 fieldId: baseField.fieldId,
@@ -119,7 +122,7 @@ class CreditOnboardingBloc
                 value: addressLine2,
                 mandatory: false,
                 textEditingController: TextEditingController(),
-                fieldKey: GlobalKey(),
+                // fieldKey: GlobalKey(),
               ),
               Fields(
                 fieldId: baseField.fieldId,
@@ -129,7 +132,7 @@ class CreditOnboardingBloc
                 value: addressLine3,
                 mandatory: false,
                 textEditingController: TextEditingController(),
-                fieldKey: GlobalKey(),
+                // fieldKey: GlobalKey(),
               ),
               Fields(
                 fieldId: baseField.fieldId,
@@ -141,7 +144,7 @@ class CreditOnboardingBloc
                 regex: r'^\d{6}$',
                 regexMessage: ErrorMessages.invalidInput,
                 textEditingController: TextEditingController(),
-                fieldKey: GlobalKey(),
+                // fieldKey: GlobalKey(),
               ),
               Fields(
                 fieldId: baseField.fieldId,
@@ -151,7 +154,7 @@ class CreditOnboardingBloc
                 value: state,
                 mandatory: baseField.mandatory,
                 textEditingController: TextEditingController(),
-                fieldKey: GlobalKey(),
+                // fieldKey: GlobalKey(),
               ),
               Fields(
                 fieldId: baseField.fieldId,
@@ -161,7 +164,7 @@ class CreditOnboardingBloc
                 value: city,
                 mandatory: baseField.mandatory,
                 textEditingController: TextEditingController(),
-                fieldKey: GlobalKey(),
+                // fieldKey: GlobalKey(),
               ),
             ].whereType<Fields>(),
           );
@@ -235,7 +238,6 @@ class CreditOnboardingBloc
     emit(state.copyWith(userProfileStageUpdated: false));
     LoadingUtils.showLoader();
     Map<String, dynamic>? dataMap = event.data;
-    dataMap?["proposalId"] = state.proposalId;
     final response = await repository.updateUserProfileStage(
       profileId: event.profileId,
       data: dataMap,
@@ -244,7 +246,9 @@ class CreditOnboardingBloc
     if (response.data != null) {
       if (response.data?.payload?.errorMsg?.isNotEmpty ?? false) {
         String errorMsg = response.data?.payload?.errorMsg ?? "";
-        if (errorMsg.toLowerCase().contains("name does not match pan records")) {
+        if (errorMsg
+            .toLowerCase()
+            .contains("name does not match pan records")) {
           emit(
             state.copyWith(
               isNameValid: false,
@@ -591,7 +595,7 @@ class CreditOnboardingBloc
       OnSetProposalId event, Emitter<CreditOnboardingState> emit) {
     emit(
       state.copyWith(
-        proposalId : event.proposalId,
+        proposalId: event.proposalId,
       ),
     );
   }

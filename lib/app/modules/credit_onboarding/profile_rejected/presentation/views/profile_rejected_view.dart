@@ -145,7 +145,7 @@ class _ProfileRejectedViewState extends State<ProfileRejectedView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Text(
-                "We’re sorry, your loan application could not be approved at this time. You can try again later or contact support for help.",
+                "We’re sorry, your loan application could not be approved at this time. Kindly proceed with a different payment option.",
                 textAlign: TextAlign.center,
                 style: Styles.tsBlack3BRegular16().copyWith(
                   color: Colors.black54,

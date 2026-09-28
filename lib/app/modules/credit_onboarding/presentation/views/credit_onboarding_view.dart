@@ -75,6 +75,7 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
             pageId: widget.prevPageId,
           ),
         );
+    debugPrint("Proposal amount : ${widget.proposalId}");
     if (widget.proposalId?.isNotEmpty ?? false) {
       context.read<CreditOnboardingBloc>().add(
             OnSetProposalId(
@@ -216,10 +217,12 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: AppColors.white,
-          appBar: CreditOnboardingAppBar(
-            title: "",
-            onBackPressed: handleBackPress,
-          ),
+          appBar: (widget.prevPageId?.isEmpty ?? true)
+              ? null
+              : CreditOnboardingAppBar(
+                  title: "",
+                  onBackPressed: handleBackPress,
+                ),
           body: bodyWidget(),
           bottomSheet: BlocBuilder<CreditOnboardingBloc, CreditOnboardingState>(
             builder: (context, state) {
@@ -469,6 +472,7 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                             ((payload.page?.fields?.length ?? 0) >= 2)
                                 ? (payload.page?.fields?[1].fieldId)
                                 : "",
+                        "proposalId" : widget.proposalId,
                       },
                     );
                   } else if ((payload.pageCategory ==
@@ -566,6 +570,7 @@ class _CreditOnboardingViewState extends State<CreditOnboardingView> {
                         "prevPageId": prevPageId,
                         "page": payload.page,
                         "processingFeeData": payload.processingFee,
+                        "proposalId" : widget.proposalId,
                       },
                     );
                   } else if (payload.pageCategory ==

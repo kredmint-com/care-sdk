@@ -162,10 +162,12 @@ class _SuccessViewState extends State<SuccessView> {
         ),
         appBar: (widget.isFinalStep)
             ? null
-            : CreditOnboardingAppBar(
-                title: "",
-                onBackPressed: handleBackPress,
-              ),
+            : (widget.prevPageId.isEmpty)
+                ? null
+                : CreditOnboardingAppBar(
+                    title: "",
+                    onBackPressed: handleBackPress,
+                  ),
         body: _bodyWidget(),
       ),
     );
@@ -211,7 +213,7 @@ class _SuccessViewState extends State<SuccessView> {
             if (!widget.isFinalStep) ...[
               24.h,
               Padding(
-                padding: EdgeInsetsGeometry.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: 16,
                 ),
                 child: StepperWidget(
@@ -292,6 +294,11 @@ class _SuccessViewState extends State<SuccessView> {
                               ),
                             ),
                           ),
+                          if (widget.isFinalStep) ...[
+                            12.h,
+                            Text("Click Proceed to download policy PDF",
+                                style: Styles.tsBlack3BSemiBold16()),
+                          ],
                           if (widget.paymentDetails != null) ...[
                             24.h,
                             _transactionDetailsCard(

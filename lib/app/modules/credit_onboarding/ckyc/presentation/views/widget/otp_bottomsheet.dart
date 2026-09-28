@@ -133,7 +133,7 @@ class _OtpBottomSheetState extends State<OtpBottomSheet> {
               // Timer / Resend
               (widget.otpTimer) > 0
                   ? Padding(
-                      padding: EdgeInsetsGeometry.only(
+                      padding: EdgeInsets.only(
                         bottom: 10,
                         top: 28,
                       ),
@@ -164,7 +164,7 @@ class _OtpBottomSheetState extends State<OtpBottomSheet> {
                       ),
                     )
                   : Padding(
-                      padding: EdgeInsetsGeometry.only(top: 12),
+                      padding: EdgeInsets.only(top: 12),
                       child: TextButton(
                         onPressed: () {
                           widget.onResendOtp();

@@ -22,7 +22,10 @@ class OnUpdateUserProfileStage extends CreditOnboardingEvent {
   final Map<String, dynamic>? data;
   final String profileId;
 
-  OnUpdateUserProfileStage({required this.data, required this.profileId});
+  OnUpdateUserProfileStage({
+    required this.data,
+    required this.profileId,
+  });
 }
 
 class OnValidateGst extends CreditOnboardingEvent {
@@ -105,7 +108,7 @@ class OnResetIsNameValid extends CreditOnboardingEvent {}
 
 class OnResetIsDobValid extends CreditOnboardingEvent {}
 
-class OnSetProposalId extends  CreditOnboardingEvent {
+class OnSetProposalId extends CreditOnboardingEvent {
   final String proposalId;
 
   OnSetProposalId({required this.proposalId});

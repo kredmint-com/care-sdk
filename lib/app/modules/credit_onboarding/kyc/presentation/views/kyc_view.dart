@@ -104,7 +104,9 @@ class _KycViewState extends State<KycView> {
     return WillPopScope(
       onWillPop: handleBackPress,
       child: Scaffold(
-        appBar: CreditOnboardingAppBar(
+        appBar: (widget.prevPageId.isEmpty)
+            ? null
+            : CreditOnboardingAppBar(
           title: "",
           onBackPressed: handleBackPress,
         ),
