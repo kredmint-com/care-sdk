@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loan_sdk_package/app/config/release_env.dart';
+import 'package:loan_sdk_package/app/data/values/strings.dart';
 import 'package:loan_sdk_package/app/themes/styles.dart';
 
 import '../app/themes/app_colors.dart';
@@ -85,8 +86,7 @@ class _StepperWidgetState extends State<StepperWidget> {
 
     Scrollable.ensureVisible(
       stepContext,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
+      duration: Duration.zero,
       alignment: 0.0,
     );
   }
@@ -103,14 +103,12 @@ class _StepperWidgetState extends State<StepperWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Expanded(child: Text("Step ${widget.currentStep}", style: Styles.tsBlack3BSemiBold14()),),
             Text(
               '${widget.currentStep}/${widget.totalSteps}',
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
+              style: Styles.tsBlack3BSemiBold14()
             ),
           ],
         ),
