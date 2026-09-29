@@ -91,7 +91,7 @@ class _KycViewState extends State<KycView> {
   int getStepperIndex() {
     int index = 0;
     if (widget.pageCategory == PageCategory.KfsEsignUrl.name) {
-      index = 5;
+      index = 4;
     } else if (widget.pageCategory == PageCategory.CKycDetail.name) {
       if (releaseEv == ReleaseEnv.prod) {
         index = 5;

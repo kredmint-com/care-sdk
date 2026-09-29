@@ -111,7 +111,7 @@ class _StepperWidgetState extends State<StepperWidget> {
         SingleChildScrollView(
           controller: _scrollController,
           scrollDirection: Axis.horizontal,
-          physics: const NeverScrollableScrollPhysics(),
+          // physics: const NeverScrollableScrollPhysics(),
           child: Row(
             children: List.generate(
               stepsList.length,

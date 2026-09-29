@@ -217,7 +217,7 @@ class _SuccessViewState extends State<SuccessView> {
                   horizontal: 16,
                 ),
                 child: StepperWidget(
-                  currentStep: 4,
+                  currentStep: 3,
                 ),
               ),
               20.h,
